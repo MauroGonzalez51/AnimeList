@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=./assets/schema.json
+
+meta:
+  name: Mauro Gonzalez
+  github: MauroGonzalez51
+
+animes:
+  - name: Sousou no Frieren
+    chronology: 1st Season
+    kind: anime
+    meta:
+      watched: true

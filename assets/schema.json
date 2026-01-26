@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome6",
+    "definitions": {
+        "Welcome6": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "meta": {
+                    "$ref": "#/definitions/FileMeta"
+                },
+                "animes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Anime"
+                    }
+                }
+            },
+            "required": [
+                "animes",
+                "meta"
+            ],
+            "title": "Welcome6"
+        },
+        "Anime": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "anime",
+                        "ova",
+                        "movie",
+                        "other"
+                    ]
+                },
+                "chronology": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/AnimeMeta"
+                },
+                "childs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Anime"
+                    }
+                }
+            },
+            "required": [
+                "kind",
+                "name"
+            ],
+            "title": "Anime"
+        },
+        "FileMeta": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "github": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "github",
+                "name"
+            ],
+            "title": "Meta"
+        },
+        "AnimeMeta": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "watched": {
+                    "type": "boolean"
+                },
+                "favorite": {
+                    "type": "boolean"
+                },
+                "comments": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [],
+            "title": "AnimeMeta"
+        }
+    }
+}
