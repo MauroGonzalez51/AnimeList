@@ -7,16 +7,16 @@
             "$ref": "#/$defs/FileMeta",
             "description": "Metadata about this file, such as its name and repository source."
         },
-        "animes": {
+        "entries": {
             "type": "array",
             "items": {
-                "$ref": "#/$defs/Anime"
+                "$ref": "#/$defs/Entry"
             },
             "description": "Top-level entries of the universe tree. Usually contains a single $root node."
         }
     },
     "$defs": {
-        "Anime": {
+        "Entry": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -48,27 +48,27 @@
                     "description": "Optional information describing the chronological order of this entry within its universe."
                 },
                 "status": {
-                    "$ref": "#/$defs/AnimeStatus",
+                    "$ref": "#/$defs/EntryStatus",
                     "description": "Tracking information such as watch progress, reading progress, and personal notes."
                 },
                 "childs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/Anime"
+                        "$ref": "#/$defs/Entry"
                     },
                     "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content."
                 },
                 "related": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/Anime"
+                        "$ref": "#/$defs/Entry"
                     },
                     "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy."
                 },
                 "$reference": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/AnimeReference"
+                        "$ref": "#/$defs/EntryReference"
                     },
                     "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object."
                 }
@@ -76,10 +76,10 @@
             "required": [
                 "name"
             ],
-            "title": "Anime",
+            "title": "Entry",
             "description": "A node representing a media entry within the universe tree. It can be a root node, a series, a movie, or any related media."
         },
-        "AnimeReference": {
+        "EntryReference": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -111,7 +111,7 @@
             "title": "Meta",
             "description": "Metadata describing the dataset itself."
         },
-        "AnimeStatus": {
+        "EntryStatus": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -131,6 +131,10 @@
                     "type": "boolean",
                     "description": "Indicates whether this entry has been fully completed."
                 },
+                "rating": {
+                    "type": "number",
+                    "description": "Personal rating for the current entry."
+                },
                 "comments": {
                     "type": [
                         "string",
@@ -139,7 +143,7 @@
                     "description": "Optional free-form notes or comments."
                 }
             },
-            "title": "AnimeStatus",
+            "title": "EntryStatus",
             "description": "User-specific status and progress information for an entry."
         }
     }

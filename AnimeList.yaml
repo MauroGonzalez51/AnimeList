@@ -4,7 +4,7 @@ meta:
   name: Mauro Gonzalez
   github: https://github.com/MauroGonzalez51/AnimeList
 
-animes:
+entries:
   - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
     $id: kaguya-sama-wa-kokurasetai
     kind: $root
