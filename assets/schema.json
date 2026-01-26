@@ -20,7 +20,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "id": {
+                "$id": {
                     "type": "string",
                     "description": "Stable identifier used for referencing this entry across the dataset."
                 },

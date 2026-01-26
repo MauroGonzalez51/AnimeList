@@ -2,9 +2,52 @@
 
 meta:
   name: Mauro Gonzalez
-  github: MauroGonzalez51
+  github: https://github.com/MauroGonzalez51/AnimeList
 
 animes:
+  - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+    $id: kaguya-sama-wa-kokurasetai
+    kind: $root
+    related:
+      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+        kind: manga
+        status:
+          chapter: 247
+          completed: true
+    $reference:
+      - id: oshi-no-ko
+    childs:
+      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+        chronology: 1st Season
+        status:
+          watched: true
+
+      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
+        chronology: 2nd Season
+        status:
+          watched: true
+
+      - name: "Kaguya-sama wa Kokurasetai: Ultra Romantic"
+        chronology: 3th Season
+        status:
+          watched: true
+
+      - name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
+        kind: movie
+        status:
+          watched: true
+          comments: "Movie was divided into episodes"
+
+      - name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
+        kind: ova
+        status:
+          watched: true
+
+  - name: Oshi No Ko
+    $id: oshi-no-ko
+    $reference:
+      - id: kaguya-sama-wa-kokurasetai
+
   - name: Sousou no Frieren
     chronology: 1st Season
     status:
