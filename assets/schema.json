@@ -1,60 +1,96 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/Welcome6",
-    "definitions": {
-        "Welcome6": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "meta": {
-                    "$ref": "#/definitions/FileMeta"
-                },
-                "animes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Anime"
-                    }
-                }
-            },
-            "required": [
-                "animes",
-                "meta"
-            ],
-            "title": "Welcome6"
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "meta": {
+            "$ref": "#/$defs/FileMeta",
+            "description": "Metadata about this file, such as its name and repository source."
         },
+        "animes": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/Anime"
+            },
+            "description": "Top-level entries of the universe tree. Usually contains a single $root node."
+        }
+    },
+    "$defs": {
         "Anime": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Stable identifier used for referencing this entry across the dataset."
+                },
                 "name": {
                     "type": "string"
                 },
                 "kind": {
                     "type": "string",
                     "enum": [
+                        "$root",
                         "anime",
                         "ova",
                         "movie",
+                        "manhwa",
+                        "manga",
+                        "donghua",
+                        "light-novel",
+                        "web-novel",
                         "other"
-                    ]
+                    ],
+                    "description": "Type of media this entry represents. '$root' is a virtual node used to group all entries belonging to the same universe."
                 },
                 "chronology": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Optional information describing the chronological order of this entry within its universe."
                 },
                 "status": {
-                    "$ref": "#/definitions/AnimeStatus"
+                    "$ref": "#/$defs/AnimeStatus",
+                    "description": "Tracking information such as watch progress, reading progress, and personal notes."
                 },
                 "childs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Anime"
-                    }
+                        "$ref": "#/$defs/Anime"
+                    },
+                    "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content."
+                },
+                "related": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Anime"
+                    },
+                    "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy."
+                },
+                "$reference": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/AnimeReference"
+                    },
+                    "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object."
                 }
             },
             "required": [
                 "name"
             ],
-            "title": "Anime"
+            "title": "Anime",
+            "description": "A node representing a media entry within the universe tree. It can be a root node, a series, a movie, or any related media."
+        },
+        "AnimeReference": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "description": "Lightweight reference to another Anime entry."
         },
         "FileMeta": {
             "type": "object",
@@ -64,34 +100,47 @@
                     "type": "string"
                 },
                 "github": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "URL or identifier of the GitHub repository where this data is maintained."
                 }
             },
             "required": [
                 "github",
                 "name"
             ],
-            "title": "Meta"
+            "title": "Meta",
+            "description": "Metadata describing the dataset itself."
         },
         "AnimeStatus": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "watched": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indicates whether this entry has been watched."
                 },
                 "favorite": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Marks this entry as a personal favorite."
+                },
+                "chapter": {
+                    "type": "number",
+                    "description": "Current chapter reached. Used for readable media such as manga, manhwa, or novels."
+                },
+                "completed": {
+                    "type": "boolean",
+                    "description": "Indicates whether this entry has been fully completed."
                 },
                 "comments": {
                     "type": [
                         "string",
                         "null"
-                    ]
+                    ],
+                    "description": "Optional free-form notes or comments."
                 }
             },
-            "required": [],
-            "title": "AnimeMeta"
+            "title": "AnimeStatus",
+            "description": "User-specific status and progress information for an entry."
         }
     }
 }

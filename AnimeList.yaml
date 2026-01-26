@@ -38,11 +38,21 @@ animes:
     status:
       watched: true
 
-  - name: Ore dake Level Up na Ken
-    chronology: 1st Season
-    status:
-      watched: true
+  - name: Solo Leveling
+    kind: $root
+    related:
+      - name: Solo Leveling
+        kind: manhwa
+        status:
+          chapter: 200
+          completed: true
+
     childs:
+      - name: Ore dake Level Up na Ken
+        chronology: 1st Season
+        status:
+          watched: true
+
       - name: "Ore dake Level Up na Ken Season 2: Arise from the Shadow"
         chronology: 2nd Season
         status:
