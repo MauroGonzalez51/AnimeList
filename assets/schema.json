@@ -41,8 +41,8 @@
                 "chronology": {
                     "type": "string"
                 },
-                "meta": {
-                    "$ref": "#/definitions/AnimeMeta"
+                "status": {
+                    "$ref": "#/definitions/AnimeStatus"
                 },
                 "childs": {
                     "type": "array",
@@ -52,7 +52,6 @@
                 }
             },
             "required": [
-                "kind",
                 "name"
             ],
             "title": "Anime"
@@ -74,7 +73,7 @@
             ],
             "title": "Meta"
         },
-        "AnimeMeta": {
+        "AnimeStatus": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
