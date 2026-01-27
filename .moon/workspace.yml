@@ -2,8 +2,8 @@
 $schema: "./cache/schemas/workspace.json"
 
 projects:
-  - "apps/**"
-  - "packages/**"
+  - "apps/**/moon.yml"
+  - "packages/**/moon.yml"
 
 vcs:
   manager: "git"

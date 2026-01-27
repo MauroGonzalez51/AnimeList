@@ -1,0 +1,10 @@
+[package]
+name = "apps-cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+chrono = "0.4.43"
+directories = "6.0.0"
+fs_extra = "1.3.0"
