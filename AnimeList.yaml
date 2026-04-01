@@ -1,186 +1,194 @@
 # yaml-language-server: $schema=./assets/schema.json
 
 meta:
-  name: Mauro Gonzalez
-  github: https://github.com/MauroGonzalez51/AnimeList
+    name: Mauro Gonzalez
+    github: https://github.com/MauroGonzalez51/AnimeList
 
 entries:
-  - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
-    $id: kaguya-sama-wa-kokurasetai
-    kind: $root
-    related:
-      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
-        kind: manga
-        status:
-          chapter: 247
-          completed: true
-    $reference:
-      - id: oshi-no-ko
-    childs:
-      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
-        chronology: 1st Season
-        status:
+    - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+      $id: kaguya-sama-wa-kokurasetai
+      kind: $root
+      related:
+          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+            kind: manga
+            status:
+                chapter: 247
+                completed: true
+      $reference:
+          - id: oshi-no-ko
+      childs:
+          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
+            chronology: 2nd Season
+            status:
+                watched: true
+
+          - name: "Kaguya-sama wa Kokurasetai: Ultra Romantic"
+            chronology: 3th Season
+            status:
+                watched: true
+
+          - name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
+            kind: movie
+            status:
+                watched: true
+                comments: "Movie was divided into episodes"
+
+          - name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
+            kind: ova
+            status:
+                watched: true
+
+    - name: Oshi No Ko
+      $id: oshi-no-ko
+      $reference:
+          - id: kaguya-sama-wa-kokurasetai
+
+    - name: Sousou no Frieren
+      chronology: 1st Season
+      status:
+          watched: true
+      childs:
+          - name: Sousou no Frieren 2nd Season
+            kind: anime
+            chronology: 2nd Season
+
+    - name: Nichijou
+
+    - name: Make Heroine ga Oosugiru!
+
+    - name: Kowloon Generic Romance
+
+    - name: Witch Watch
+
+    - name: Yasei no Last Boss ga Arawareta!
+      status:
           watched: true
 
-      - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
-        chronology: 2nd Season
-        status:
+    - name: Saikyou no Shienshoku "Wajutsushi" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru
+      status:
           watched: true
 
-      - name: "Kaguya-sama wa Kokurasetai: Ultra Romantic"
-        chronology: 3th Season
-        status:
+    - name: Tsue to Tsurugi no Wistoria
+      status:
           watched: true
 
-      - name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
-        kind: movie
-        status:
-          watched: true
-          comments: "Movie was divided into episodes"
-
-      - name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
-        kind: ova
-        status:
+    - name: Loop 7-kaime no Akuyaku Reijou wa
+      status:
           watched: true
 
-  - name: Oshi No Ko
-    $id: oshi-no-ko
-    $reference:
-      - id: kaguya-sama-wa-kokurasetai
+    - name: Solo Leveling
+      kind: $root
+      related:
+          - name: Solo Leveling
+            kind: manhwa
+            status:
+                chapter: 200
+                completed: true
+      childs:
+          - name: Ore dake Level Up na Ken
+            chronology: 1st Season
+            status:
+                watched: true
 
-  - name: Sousou no Frieren
-    chronology: 1st Season
-    status:
-      watched: true
-    childs:
-      - name: Sousou no Frieren 2nd Season
-        kind: anime
-        chronology: 2nd Season
+          - name: "Ore dake Level Up na Ken Season 2: Arise from the Shadow"
+            chronology: 2nd Season
+            status:
+                watched: true
 
-  - name: Nichijou
-
-  - name: Make Heroine ga Oosugiru!
-
-  - name: Kowloon Generic Romance
-
-  - name: Witch Watch
-
-  - name: Yasei no Last Boss ga Arawareta!
-    status:
-      watched: true
-
-  - name: Saikyou no Shienshoku "Wajutsushi" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru
-    status:
-      watched: true
-
-  - name: Tsue to Tsurugi no Wistoria
-    status:
-      watched: true
-
-  - name: Loop 7-kaime no Akuyaku Reijou wa
-    status:
-      watched: true
-
-  - name: Solo Leveling
-    kind: $root
-    related:
-      - name: Solo Leveling
-        kind: manhwa
-        status:
-          chapter: 200
-          completed: true
-
-    childs:
-      - name: Ore dake Level Up na Ken
-        chronology: 1st Season
-        status:
-          watched: true
-
-      - name: "Ore dake Level Up na Ken Season 2: Arise from the Shadow"
-        chronology: 2nd Season
-        status:
-          watched: true
-
-  - name: Yubisaki to Renren
-    status:
-      watched: true
-      favorite: true
-
-  - name: Chiyu Mahou no Machigatta Tsukaikata
-    status:
-      watched: true
-      favorite: true
-
-  - name: Keikenzumi na Kimi to, Keiken Zero na Ore ga, Otsukiai suru Hanashi.
-    status:
-      watched: true
-
-  - name: Ragna Crimson
-    status:
-      watched: true
-
-  - name: Undead Girl Murder Farce
-    status:
-      watched: true
-
-  - name: Kimi wa Houkago Insomnia
-    status:
-      watched: true
-
-  - name: NieR:Automata Ver1.1a
-    status:
-      favorite: true
-
-  - name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
-    status:
-      watched: true
-      favorite: true
-
-  - name: Tomo-chan wa Onnanoko!
-    status:
-      watched: true
-      favorite: true
-
-  - name: Yofukashi no Uta
-    chronology: 1st Season
-    status:
-      watched: true
-      favorite: true
-    childs:
-      - name: Yofukashi no Uta Season 2
-        chronology: 2nd Season
-
-  - name: Kinsou no Vermeil
-    status:
-      watched: true
-      favorite: true
-
-  - name: Yuusha, Yamemasu
-    status:
-      watched: true
-
-  - name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
-    chronology: 1st Season
-    status:
-      watched: true
-    childs:
-      - name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
-        chronology: 2nd Season
-        status:
+    - name: Yubisaki to Renren
+      status:
           watched: true
           favorite: true
 
-  - name: Arifureta Shokugyou de Sekai Saikyou
-    chronology: 1st Season
-    status:
-      watched: true
-    childs:
-      - name: Arifureta Shokugyou de Sekai Saikyou 2nd Season
-        chronology: 2nd Season
-        status:
+    - name: Chiyu Mahou no Machigatta Tsukaikata
+      status:
+          watched: true
+          favorite: true
+
+    - name: Keikenzumi na Kimi to, Keiken Zero na Ore ga, Otsukiai suru Hanashi.
+      status:
           watched: true
 
-      - name: Arifureta Shokugyou de Sekai Saikyou Season 3
-        chronology: 3th Season
-        status:
+    - name: Ragna Crimson
+      status:
           watched: true
+
+    - name: Undead Girl Murder Farce
+      status:
+          watched: true
+
+    - name: Kimi wa Houkago Insomnia
+      status:
+          watched: true
+
+    - name: NieR:Automata Ver1.1a
+      status:
+          favorite: true
+
+    - name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
+      status:
+          watched: true
+          favorite: true
+
+    - name: Tomo-chan wa Onnanoko!
+      status:
+          watched: true
+          favorite: true
+
+    - name: Yofukashi no Uta
+      chronology: 1st Season
+      status:
+          watched: true
+          favorite: true
+      childs:
+          - name: Yofukashi no Uta Season 2
+            chronology: 2nd Season
+
+    - name: Kinsou no Vermeil
+      status:
+          watched: true
+          favorite: true
+
+    - name: Yuusha, Yamemasu
+      status:
+          watched: true
+
+    - name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
+      chronology: 1st Season
+      status:
+          watched: true
+      childs:
+          - name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
+            chronology: 2nd Season
+            status:
+                watched: true
+                favorite: true
+
+    - name: Arifureta Shokugyou de Sekai Saikyou
+      chronology: 1st Season
+      status:
+          watched: true
+      childs:
+          - name: Arifureta Shokugyou de Sekai Saikyou 2nd Season
+            chronology: 2nd Season
+            status:
+                watched: true
+
+          - name: Arifureta Shokugyou de Sekai Saikyou Season 3
+            chronology: 3th Season
+            status:
+                watched: true
+
+    - name: Jigokuraku
+      chronology: 1st Season
+      status:
+          watched: true
+      childs:
+          - name: Jigokuraku 2nd Season
+            kind: anime
+            chronology: 2nd Season
