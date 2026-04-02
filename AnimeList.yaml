@@ -185,10 +185,20 @@ entries:
                 watched: true
 
     - name: Jigokuraku
-      chronology: 1st Season
-      status:
-          watched: true
+      kind: $root
+      related:
+          - name: Jigokuraku
+            kind: manga
+            status:
+                comments: |
+                    - Adapted CAP 90
       childs:
+          - name: Jigokuraku
+            kind: anime
+            chronology: 1st Season
+            status:
+                watched: true
+
           - name: Jigokuraku 2nd Season
             kind: anime
             chronology: 2nd Season
@@ -198,4 +208,3 @@ entries:
                     - Che pero como me vas a dejar en ese clifhanger boludo
                     - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     - Buscare el manga
-                  
