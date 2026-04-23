@@ -1,0 +1,12 @@
+preferSymlinkedExecutables: true
+shellEmulator: true
+
+trustPolicy: no-downgrade
+
+linkWorkspacePackages: true
+injectWorkspacePackages: true
+
+packages:
+    - apps/**/*
+    - packages/**/*
+    - tools/**/*

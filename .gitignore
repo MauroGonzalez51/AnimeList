@@ -4,3 +4,4 @@
 .moon/docker
 
 target
+node_modules

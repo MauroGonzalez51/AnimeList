@@ -1,0 +1,23 @@
+{
+    "name": "@anime-list/animeflv",
+    "version": "1.0.0",
+    "packageManager": "pnpm@10.28.0",
+    "scripts": {
+        "build": "tsup"
+    },
+    "dependencies": {
+        "consola": "^3.4.2",
+        "neverthrow": "^8.2.0",
+        "puppeteer": "^24.42.0",
+        "uuid": "^14.0.0",
+        "yargs": "^18.0.0"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^8.2.0",
+        "@types/node": "^25.6.0",
+        "@types/yargs": "^17.0.35",
+        "esbuild-plugin-tsconfig-paths": "^1.0.2",
+        "eslint": "^10.2.1",
+        "tsup": "^8.5.1"
+    }
+}

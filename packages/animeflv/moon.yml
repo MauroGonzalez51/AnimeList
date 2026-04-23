@@ -1,0 +1,26 @@
+project:
+    title: AnimeFLV
+    description: AnimeFLV utilities
+
+tasks:
+    pnpm:
+        command: pnpm
+        args:
+            - --filter
+            - "@anime-list/animeflv"
+        options:
+            runFromWorkspaceRoot: true
+            cache: false
+
+    build:
+        command: pnpm
+        args:
+            - exec
+            - tsup
+
+    run:
+        command: node
+        args:
+            - dist/index.js
+        deps:
+            - animeflv:build

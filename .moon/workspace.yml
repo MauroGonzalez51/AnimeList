@@ -1,10 +1,6 @@
 # https://moonrepo.dev/docs/config/workspace
-$schema: "./cache/schemas/workspace.json"
+$schema: ./cache/schemas/workspace.json
 
 projects:
-  - "apps/**/moon.yml"
-  - "packages/**/moon.yml"
-
-vcs:
-  manager: "git"
-  defaultBranch: "main"
+    - "apps/**/moon.yml"
+    - "packages/**/moon.yml"
