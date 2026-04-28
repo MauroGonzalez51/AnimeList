@@ -5,6 +5,9 @@
     "scripts": {
         "build": "tsup"
     },
+    "bin": {
+        "animeflv": "./dist/index.js"
+    },
     "dependencies": {
         "consola": "^3.4.2",
         "neverthrow": "^8.2.0",

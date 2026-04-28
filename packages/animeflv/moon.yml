@@ -17,6 +17,11 @@ tasks:
         args:
             - exec
             - tsup
+        inputs:
+            - src/**/*.ts
+            - types/**/*.d.ts
+            - tsup.config.ts
+            - tsconfig.json
 
     run:
         command: node
