@@ -13,6 +13,13 @@ declare global {
                     browser?: string;
                 }
             }
+
+            namespace Scrape {
+                interface Parameters {
+                    input: string;
+                    output: string;
+                }
+            }
         }
 
         type ResolveParameters<T extends object> = ArgumentsCamelCase<

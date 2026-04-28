@@ -14,18 +14,18 @@ export async function exportHandler(
 ) {
     const logger = Logger.getInstance();
 
-    const browser = await Puppeteer.launch(args.browser);
+    const puppeteer = await Puppeteer.new(args.browser);
     logger.info(`Instance created`);
 
     try {
-        const page = await Puppeteer.newPage(browser);
+        const page = await puppeteer.createPage();
         await page.goto("https://www4.animeflv.net/");
 
         const confirmed = await logger.prompt("Proceed?", { type: "confirm" });
 
         if (!confirmed) {
             logger.warn("Canceled by user");
-            await browser.close();
+            await puppeteer.terminate();
             return;
         }
 
@@ -39,7 +39,7 @@ export async function exportHandler(
 
         if (!username) {
             logger.error("Username could not be detected. Cancelling");
-            await browser.close();
+            await puppeteer.terminate();
             return;
         }
 
@@ -119,7 +119,7 @@ export async function exportHandler(
             encoding: "utf-8",
         });
     } finally {
-        await browser.close();
+        await puppeteer.terminate();
     }
 
     logger.info(`List saved to ${args.output}`);

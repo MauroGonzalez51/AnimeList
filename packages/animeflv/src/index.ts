@@ -1,7 +1,7 @@
 import process from "node:process";
 import yars from "yargs";
 import { hideBin } from "yargs/helpers";
-import { exportHandler } from "@/commands/export";
+import { exportHandler, scrapeHandler } from "@/commands";
 import { Logger } from "@/utils/logger";
 
 yars(hideBin(process.argv))
@@ -11,18 +11,37 @@ yars(hideBin(process.argv))
         "export saved animes to format",
         (yargs) =>
             yargs
-                .option("output", {
-                    alias: "o",
-                    type: "string",
-                    describe: "Export file path",
-                    default: ".output/list.json",
-                })
                 .option("browser", {
                     alias: "b",
                     type: "string",
-                    describe: "Executable path to browser",
+                    describe: "browser executable path to use",
+                })
+                .option("output", {
+                    alias: "o",
+                    type: "string",
+                    describe: "exported file path",
+                    default: ".output/list.json",
                 }),
         exportHandler,
+    )
+    .command<CLI.Commands.Scrape.Parameters>(
+        "scrape",
+        "scrape animeflv based on saved list",
+        (yargs) =>
+            yargs
+                .option("input", {
+                    alias: "i",
+                    type: "string",
+                    describe: "generated list",
+                    demandOption: true,
+                })
+                .option("output", {
+                    alias: "o",
+                    type: "string",
+                    describe: "exported file path",
+                    default: ".output/scraped.json",
+                }),
+        scrapeHandler,
     )
     .option("verbose", {
         alias: "v",

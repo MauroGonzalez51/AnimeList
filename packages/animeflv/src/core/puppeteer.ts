@@ -1,6 +1,6 @@
-import type { Browser, LaunchOptions } from "puppeteer";
+import type { Browser, LaunchOptions, Page } from "puppeteer";
 import puppeteer from "puppeteer";
-import { Result, ok, err } from "neverthrow";
+import { ok, err } from "neverthrow";
 import { BrowserNotFound } from "@/core/errors";
 import { Logger } from "@/utils/logger";
 
@@ -17,10 +17,14 @@ const DEFAULT_LAUNCH_CONFIG: LaunchOptions = {
     ],
 };
 
-export const Puppeteer = {
-    async makeInstance(
-        executablePath?: string,
-    ): Promise<Result<Browser, BrowserNotFound>> {
+export class Puppeteer {
+    #instance: Browser;
+
+    private constructor(instance: Browser) {
+        this.#instance = instance;
+    }
+
+    static #makeInstance(executablePath?: string) {
         if (executablePath) {
             return puppeteer
                 .launch({ executablePath, ...DEFAULT_LAUNCH_CONFIG })
@@ -32,12 +36,12 @@ export const Puppeteer = {
             .launch({ channel: "chrome" })
             .then((instance) => ok(instance))
             .catch(() => err(new BrowserNotFound()));
-    },
+    }
 
-    async launch(executablePath?: string): Promise<Browser> {
+    public static async new(executablePath?: string): Promise<Puppeteer> {
         const logger = Logger.getInstance();
 
-        const browser = (await Puppeteer.makeInstance(executablePath)).match(
+        const instance = (await this.#makeInstance(executablePath)).match(
             (instance) => instance,
             (err) => {
                 logger.error(err);
@@ -45,7 +49,7 @@ export const Puppeteer = {
             },
         );
 
-        const page = await browser.newPage();
+        const page = await instance.newPage();
 
         await page.setUserAgent(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
@@ -70,14 +74,13 @@ export const Puppeteer = {
 
         await page.close();
 
-        return browser;
-    },
+        return new Puppeteer(instance);
+    }
 
-    async newPage(browser: Browser) {
-        const page = await browser.newPage();
+    async createPage(setup?: (page: Page) => void) {
+        const page = await this.#instance.newPage();
 
         await page.setRequestInterception(true);
-
         page.on("request", (request) => {
             const blockedDomains = [
                 "googlesyndication.com",
@@ -98,6 +101,14 @@ export const Puppeteer = {
             request.continue();
         });
 
+        if (setup) {
+            setup(page);
+        }
+
         return page;
-    },
-};
+    }
+
+    async terminate() {
+        this.#instance.close()
+    }
+}
