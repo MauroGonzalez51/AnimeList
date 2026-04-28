@@ -1,6 +1,6 @@
 project:
-    title: AnimeFLV
-    description: AnimeFLV utilities
+    name: AnimeFLV
+    description: AnimeFLV CLI
 
 tasks:
     pnpm:
@@ -24,3 +24,7 @@ tasks:
             - dist/index.js
         deps:
             - animeflv:build
+        options:
+            outputStyle: stream
+            cache: false
+            interactive: true

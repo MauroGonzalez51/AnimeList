@@ -10,12 +10,18 @@ yars(hideBin(process.argv))
         "export",
         "export saved animes to format",
         (yargs) =>
-            yargs.option("output", {
-                alias: "o",
-                type: "string",
-                describe: "Export file path",
-                default: ".output/list.json",
-            }),
+            yargs
+                .option("output", {
+                    alias: "o",
+                    type: "string",
+                    describe: "Export file path",
+                    default: ".output/list.json",
+                })
+                .option("browser", {
+                    alias: "b",
+                    type: "string",
+                    describe: "Executable path to browser",
+                }),
         exportHandler,
     )
     .option("verbose", {

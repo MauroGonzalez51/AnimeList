@@ -3,13 +3,14 @@ import type { ArgumentsCamelCase } from "yargs";
 declare global {
     namespace CLI {
         interface GlobalParameters {
-            verbose: boolean;
+            verbose?: boolean;
         }
 
         namespace Commands {
             namespace Export {
                 interface Parameters {
                     output: string;
+                    browser?: string;
                 }
             }
         }

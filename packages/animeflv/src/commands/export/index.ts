@@ -1,23 +1,12 @@
-import { writeFile } from "node:fs/promises";
-import { stdin, stdout } from "node:process";
-import { createInterface } from "node:readline/promises";
+import { writeFile, mkdir } from "node:fs/promises";
 import { Puppeteer } from "@/core/puppeteer";
 import { SELECTORS } from "@/core/selectors";
 import { Logger } from "@/utils/logger";
+import { dirname } from "node:path";
 
 interface AnimeCard {
     label: string;
     to: string;
-}
-
-async function confirm() {
-    const rl = createInterface({ input: stdin, output: stdout });
-    try {
-        const answer = await rl.question("Continue? [y/N] ");
-        return answer.trim().toLowerCase() === "y";
-    } finally {
-        rl.close();
-    }
 }
 
 export async function exportHandler(
@@ -25,14 +14,14 @@ export async function exportHandler(
 ) {
     const logger = Logger.getInstance();
 
-    const browser = await Puppeteer.launch();
+    const browser = await Puppeteer.launch(args.browser);
     logger.info(`Instance created`);
 
     try {
         const page = await Puppeteer.newPage(browser);
         await page.goto("https://www4.animeflv.net/");
 
-        const confirmed = await confirm();
+        const confirmed = await logger.prompt("Proceed?", { type: "confirm" });
 
         if (!confirmed) {
             logger.warn("Canceled by user");
@@ -125,7 +114,10 @@ export async function exportHandler(
             ]);
         }
 
-        await writeFile(args.output, JSON.stringify(cards, null, 2));
+        await mkdir(dirname(args.output), { recursive: true });
+        await writeFile(args.output, JSON.stringify(cards, null, 2), {
+            encoding: "utf-8",
+        });
     } finally {
         await browser.close();
     }
