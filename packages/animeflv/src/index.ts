@@ -29,6 +29,11 @@ yars(hideBin(process.argv))
         "scrape animeflv based on saved list",
         (yargs) =>
             yargs
+                .option("browser", {
+                    alias: "b",
+                    type: "string",
+                    describe: "browser executable path to use",
+                })
                 .option("input", {
                     alias: "i",
                     type: "string",

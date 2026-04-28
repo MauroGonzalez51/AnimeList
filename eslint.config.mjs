@@ -7,6 +7,6 @@ export default antfu({
         quotes: "double",
     },
     rules: {
-        "yaml/indent": false,
+        "yaml/indent": ['off'],
     },
 });

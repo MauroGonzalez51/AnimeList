@@ -15,8 +15,7 @@ tasks:
     build:
         command: pnpm
         args:
-            - exec
-            - tsup
+            - build
         inputs:
             - src/**/*.ts
             - types/**/*.d.ts
@@ -26,10 +25,11 @@ tasks:
     run:
         command: node
         args:
-            - dist/index.js
+            - packages/animeflv/dist/index.js
         deps:
             - animeflv:build
         options:
-            outputStyle: stream
             cache: false
             interactive: true
+            outputStyle: stream
+            runFromWorkspaceRoot: true

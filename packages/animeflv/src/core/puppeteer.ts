@@ -1,6 +1,7 @@
-import type { Browser, LaunchOptions, Page } from "puppeteer";
+import type { Browser, BrowserContext, LaunchOptions, Page } from "puppeteer";
+import process from "node:process";
+import { err, ok } from "neverthrow";
 import puppeteer from "puppeteer";
-import { ok, err } from "neverthrow";
 import { BrowserNotFound } from "@/core/errors";
 import { Logger } from "@/utils/logger";
 
@@ -19,9 +20,11 @@ const DEFAULT_LAUNCH_CONFIG: LaunchOptions = {
 
 export class Puppeteer {
     #instance: Browser;
+    #context: BrowserContext;
 
-    private constructor(instance: Browser) {
+    private constructor(instance: Browser, context: BrowserContext) {
         this.#instance = instance;
+        this.#context = context;
     }
 
     static #makeInstance(executablePath?: string) {
@@ -49,7 +52,9 @@ export class Puppeteer {
             },
         );
 
-        const page = await instance.newPage();
+        const context = await instance.createBrowserContext();
+
+        const page = await context.newPage();
 
         await page.setUserAgent(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
@@ -74,10 +79,10 @@ export class Puppeteer {
 
         await page.close();
 
-        return new Puppeteer(instance);
+        return new Puppeteer(instance, context);
     }
 
-    async createPage(setup?: (page: Page) => void) {
+    async createPage(setup?: (page: Page) => void | Promise<void>) {
         const page = await this.#instance.newPage();
 
         await page.setRequestInterception(true);
@@ -102,13 +107,14 @@ export class Puppeteer {
         });
 
         if (setup) {
-            setup(page);
+            await setup(page);
         }
 
         return page;
     }
 
     async terminate() {
-        this.#instance.close()
+        await this.#context.close();
+        await this.#instance.close();
     }
 }

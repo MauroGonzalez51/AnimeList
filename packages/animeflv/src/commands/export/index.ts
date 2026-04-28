@@ -1,8 +1,10 @@
-import { writeFile, mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+import { password, text } from "@clack/prompts";
+import { z } from "zod";
 import { Puppeteer } from "@/core/puppeteer";
 import { SELECTORS } from "@/core/selectors";
 import { Logger } from "@/utils/logger";
-import { dirname } from "node:path";
 
 interface AnimeCard {
     label: string;
@@ -15,19 +17,40 @@ export async function exportHandler(
     const logger = Logger.getInstance();
 
     const puppeteer = await Puppeteer.new(args.browser);
-    logger.info(`Instance created`);
+    logger.info(`instance created`);
 
     try {
-        const page = await puppeteer.createPage();
-        await page.goto("https://www4.animeflv.net/");
+        const page = await puppeteer.createPage(async (_) => {
+            await _.goto("https://www4.animeflv.net/");
+            await _.waitForSelector(SELECTORS.AUTH.MODAL, { timeout: 30_000 });
 
-        const confirmed = await logger.prompt("Proceed?", { type: "confirm" });
+            await _.click(SELECTORS.AUTH.MODAL);
 
-        if (!confirmed) {
-            logger.warn("Canceled by user");
-            await puppeteer.terminate();
-            return;
-        }
+            await Promise.all([
+                _.waitForSelector(SELECTORS.AUTH.INPUT_EMAIL),
+                _.waitForSelector(SELECTORS.AUTH.INPUT_PASSWORD),
+                _.waitForSelector(SELECTORS.AUTH.LOGIN_BUTTON),
+            ]);
+            await _.type(
+                SELECTORS.AUTH.INPUT_EMAIL,
+                (
+                    await text({
+                        message: "email",
+                        validate: (value) => {
+                            const parsed = z.email().safeParse(value);
+                            if (!parsed.success) {
+                                throw new Error("invalid email provided");
+                            }
+                        },
+                    })
+                ).toString(),
+            );
+            await _.type(
+                SELECTORS.AUTH.INPUT_PASSWORD,
+                (await password({ message: "password", mask: "*" })).toString(),
+            );
+            await _.click(SELECTORS.AUTH.LOGIN_BUTTON);
+        });
 
         const usernameElement = await page.waitForSelector(
             SELECTORS.USERNAME_ELEMENT,
@@ -122,5 +145,5 @@ export async function exportHandler(
         await puppeteer.terminate();
     }
 
-    logger.info(`List saved to ${args.output}`);
+    logger.info(`list saved to ${args.output}`);
 }

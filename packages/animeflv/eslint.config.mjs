@@ -9,6 +9,6 @@ export default antfu({
         semi: true,
     },
     rules: {
-        'yaml/indent': false
+        'yaml/indent': ['off']
     }
 })

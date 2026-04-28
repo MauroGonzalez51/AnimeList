@@ -36,7 +36,7 @@ entries:
             kind: movie
             status:
                 watched: true
-                comments: "Movie was divided into episodes"
+                comments: Movie was divided into episodes
 
           - name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
             kind: ova

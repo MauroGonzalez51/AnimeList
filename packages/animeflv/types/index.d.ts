@@ -18,6 +18,7 @@ declare global {
                 interface Parameters {
                     input: string;
                     output: string;
+                    browser?: string;
                 }
             }
         }

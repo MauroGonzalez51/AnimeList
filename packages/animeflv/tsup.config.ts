@@ -22,13 +22,13 @@ export default defineConfig([
         plugins: [tsconfigPathsPlugin()],
         ...SHARED_OPTIONS,
     },
-    {
-        name: "standalone",
-        entry: ["src/index.ts"],
-        format: ["cjs"],
-        noExternal: [/.*/],
-        outDir: "dist/standalone",
-        plugins: [tsconfigPathsPlugin()],
-        ...SHARED_OPTIONS,
-    },
+    // {
+    //     name: "standalone",
+    //     entry: ["src/index.ts"],
+    //     format: ["cjs"],
+    //     noExternal: [/.*/],
+    //     outDir: "dist/standalone",
+    //     plugins: [tsconfigPathsPlugin()],
+    //     ...SHARED_OPTIONS,
+    // },
 ]);
