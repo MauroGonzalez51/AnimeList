@@ -45,12 +45,14 @@ impl Logger {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub fn set_level(&self, level: LogLevel) {
         if let Ok(mut current_level) = self.level.write() {
             *current_level = level;
         }
     }
 
+    #[allow(dead_code)]
     fn rotate_file(&self, mutex: &std::sync::Mutex<std::fs::File>, path: &std::path::PathBuf) {
         if let Ok(meta) = mutex.lock().unwrap().metadata()
             && meta.len() <= LOG_ROTATE_BYTES
@@ -90,6 +92,7 @@ impl Logger {
         }
     }
 
+    #[allow(dead_code)]
     fn write_file<T>(&self, line: T)
     where
         T: std::fmt::Display,
@@ -101,6 +104,7 @@ impl Logger {
     }
 }
 
+#[allow(dead_code)]
 pub fn logger() -> &'static Logger {
     static LOGGER: std::sync::OnceLock<Logger> = std::sync::OnceLock::new();
     LOGGER.get_or_init(Logger::default)

@@ -1,11 +1,11 @@
 $schema: https://moonrepo.dev/schemas/project.json
 
 project:
-  name: CLI
-  description: CLI App to handle transactions with AnimeList.yaml
+    name: CLI
+    description: CLI App to handle transactions with AnimeList.yaml
 
 tasks:
-  cargo:
-    command: cargo
-    options:
-      runFromWorkspaceRoot: false
+    cargo:
+        command: cargo
+        options:
+            runFromWorkspaceRoot: false
