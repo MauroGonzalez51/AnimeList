@@ -24,6 +24,6 @@ export const SELECTORS = {
         EPISODES_CONTAINER: "#episodeList",
         EPISODE_ITEM: "#episodeList > li",
         EPISODE_INDEX: "a > p",
-        EPISODE_STATUS: "label > span",
+        EPISODE_STATUS: 'input[type="checkbox"]',
     },
 };

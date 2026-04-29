@@ -2,8 +2,8 @@ import type { Browser, BrowserContext, LaunchOptions, Page } from "puppeteer";
 import process from "node:process";
 import { err, ok } from "neverthrow";
 import puppeteer from "puppeteer";
-import { BrowserNotFound } from "@/core/errors";
-import { Logger } from "@/utils/logger";
+import { BrowserNotFound } from "@/core";
+import { Logger } from "@/utils";
 
 const DEFAULT_LAUNCH_CONFIG: LaunchOptions = {
     headless: false,
@@ -27,24 +27,27 @@ export class Puppeteer {
         this.#context = context;
     }
 
-    static #makeInstance(executablePath?: string) {
-        if (executablePath) {
+    static #makeInstance(options: LaunchOptions) {
+        if (options.executablePath) {
             return puppeteer
-                .launch({ executablePath, ...DEFAULT_LAUNCH_CONFIG })
+                .launch({
+                    ...DEFAULT_LAUNCH_CONFIG,
+                    ...options,
+                })
                 .then((instance) => ok(instance))
                 .catch(() => err(new BrowserNotFound()));
         }
 
         return puppeteer
-            .launch({ channel: "chrome" })
+            .launch({ ...options, channel: "chrome" })
             .then((instance) => ok(instance))
             .catch(() => err(new BrowserNotFound()));
     }
 
-    public static async new(executablePath?: string): Promise<Puppeteer> {
+    public static async new(options: LaunchOptions): Promise<Puppeteer> {
         const logger = Logger.getInstance();
 
-        const instance = (await this.#makeInstance(executablePath)).match(
+        const instance = (await this.#makeInstance(options)).match(
             (instance) => instance,
             (err) => {
                 logger.error(err);

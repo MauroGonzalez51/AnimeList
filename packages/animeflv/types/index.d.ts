@@ -10,7 +10,6 @@ declare global {
             namespace Export {
                 interface Parameters {
                     output: string;
-                    browser?: string;
                 }
             }
 
@@ -18,8 +17,12 @@ declare global {
                 interface Parameters {
                     input: string;
                     output: string;
-                    browser?: string;
                 }
+            }
+
+            interface BrowserOptions {
+                browser?: string;
+                headless: boolean;
             }
         }
 

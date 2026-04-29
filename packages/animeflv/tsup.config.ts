@@ -3,6 +3,7 @@ import { tsconfigPathsPlugin } from "esbuild-plugin-tsconfig-paths";
 import { defineConfig } from "tsup";
 
 const SHARED_OPTIONS: Options = {
+    target: "es2020",
     clean: true,
     minify: true,
     treeshake: true,
@@ -22,13 +23,13 @@ export default defineConfig([
         plugins: [tsconfigPathsPlugin()],
         ...SHARED_OPTIONS,
     },
-    // {
-    //     name: "standalone",
-    //     entry: ["src/index.ts"],
-    //     format: ["cjs"],
-    //     noExternal: [/.*/],
-    //     outDir: "dist/standalone",
-    //     plugins: [tsconfigPathsPlugin()],
-    //     ...SHARED_OPTIONS,
-    // },
+    {
+        name: "standalone",
+        entry: ["src/index.ts"],
+        format: ["cjs"],
+        noExternal: [/.*/],
+        outDir: "dist/standalone",
+        plugins: [tsconfigPathsPlugin()],
+        ...SHARED_OPTIONS,
+    },
 ]);

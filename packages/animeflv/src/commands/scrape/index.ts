@@ -1,17 +1,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import process from "node:process";
-import { password, text } from "@clack/prompts";
+import { progress } from "@clack/prompts";
+import pLimit from "p-limit";
 import { z } from "zod";
-import { Puppeteer } from "@/core/puppeteer";
-import { SELECTORS } from "@/core/selectors";
-import { Logger } from "@/utils/logger";
-import { delay } from "@/utils/utils";
-
-enum EpisodeStatus {
-    Watched = "VISTO",
-    NotWatched = "NO VISTO",
-}
+import { AnimeFLV, Puppeteer, SELECTORS } from "@/core";
+import { delay, Logger } from "@/utils/";
 
 interface AnimeEpisode {
     index: string;
@@ -29,22 +23,10 @@ const Schema = z.object({
     label: z.string(),
 });
 
-function parseWatched(value: string): boolean {
-    const normalized = value.trim();
-
-    if (normalized === EpisodeStatus.Watched) {
-        return true;
-    }
-
-    if (normalized === EpisodeStatus.NotWatched) {
-        return false;
-    }
-
-    return false;
-}
-
 export async function scrapeHandler(
-    args: CLI.ResolveParameters<CLI.Commands.Scrape.Parameters>,
+    args: CLI.ResolveParameters<
+        CLI.Commands.BrowserOptions & CLI.Commands.Scrape.Parameters
+    >,
 ) {
     const logger = Logger.getInstance();
 
@@ -58,104 +40,142 @@ export async function scrapeHandler(
         process.exit(1);
     }
 
-    const puppeteer = await Puppeteer.new(args.browser);
+    const puppeteer = await Puppeteer.new({
+        executablePath: args.browser ?? "",
+        headless: args.headless,
+    });
 
     try {
-        const page = await puppeteer.createPage(async (_) => {
-            await _.goto("https://www4.animeflv.net/");
-            await _.waitForSelector(SELECTORS.AUTH.MODAL, { timeout: 30_000 });
-
-            await _.click(SELECTORS.AUTH.MODAL);
-
-            await Promise.all([
-                _.waitForSelector(SELECTORS.AUTH.INPUT_EMAIL),
-                _.waitForSelector(SELECTORS.AUTH.INPUT_PASSWORD),
-                _.waitForSelector(SELECTORS.AUTH.LOGIN_BUTTON),
-            ]);
-            await _.type(
-                SELECTORS.AUTH.INPUT_EMAIL,
-                (
-                    await text({
-                        message: "email",
-                        validate: (value) => {
-                            const parsed = z.email().safeParse(value);
-                            if (!parsed.success) {
-                                throw new Error("invalid email provided");
-                            }
-                        },
-                    })
-                ).toString(),
-            );
-            await _.type(
-                SELECTORS.AUTH.INPUT_PASSWORD,
-                (await password({ message: "password", mask: "*" })).toString(),
-            );
-            await _.click(SELECTORS.AUTH.LOGIN_BUTTON);
-        });
+        (await AnimeFLV.login(puppeteer)).match(
+            () => {
+                logger.info("login succesfull");
+            },
+            (err) => {
+                logger.error(err);
+                process.exit(1);
+            },
+        );
 
         await delay(1000);
 
-        const report: AnimeReport[] = [];
+        async function processSingle(
+            entry: z.infer<typeof Schema>,
+        ): Promise<AnimeReport> {
+            const page = await puppeteer.createPage();
+            try {
+                await page.goto(entry.to);
 
-        for (const entry of parsed.data) {
-            await page.goto(entry.to);
-
-            await page.waitForSelector(SELECTORS.ANIME_PAGE.EPISODES_CONTAINER);
-
-            await page.evaluate(async (selector) => {
-                const element = document.querySelector(selector);
-                if (!(element instanceof HTMLElement)) {
-                    return;
-                }
-
-                let previousHeight = 0;
-                while (element.scrollHeight !== previousHeight) {
-                    previousHeight = element.scrollHeight;
-                    element.scrollTop = element.scrollHeight;
-                    await new Promise((resolve) => setTimeout(resolve, 300));
-                }
-            }, SELECTORS.ANIME_PAGE.EPISODES_CONTAINER);
-
-            const episodes: AnimeEpisode[] = [];
-
-            const animeEpisodes = await page.$$(
-                SELECTORS.ANIME_PAGE.EPISODE_ITEM,
-            );
-            for (const episode of animeEpisodes) {
-                const index = await episode.$(
-                    SELECTORS.ANIME_PAGE.EPISODE_INDEX,
-                );
-                const status = await episode.$(
-                    SELECTORS.ANIME_PAGE.EPISODE_STATUS,
+                await page.waitForSelector(
+                    SELECTORS.ANIME_PAGE.EPISODES_CONTAINER,
                 );
 
-                if (!index || !status) {
-                    continue;
-                }
+                await page.evaluate(async (selector) => {
+                    const element = document.querySelector(selector);
+                    if (!(element instanceof HTMLElement)) {
+                        return;
+                    }
 
-                const episodeIndex = await index.evaluate((element) =>
-                    element.textContent.trim(),
+                    let previousHeight = 0;
+                    while (element.scrollHeight !== previousHeight) {
+                        previousHeight = element.scrollHeight;
+                        element.scrollTop = element.scrollHeight;
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 300),
+                        );
+                    }
+                }, SELECTORS.ANIME_PAGE.EPISODES_CONTAINER);
+
+                const episodes: AnimeEpisode[] = [];
+
+                const animeEpisodes = await page.$$(
+                    SELECTORS.ANIME_PAGE.EPISODE_ITEM,
                 );
-                const watched = parseWatched(
-                    await status.evaluate((element) =>
+                for (const episode of animeEpisodes) {
+                    const index = await episode.$(
+                        SELECTORS.ANIME_PAGE.EPISODE_INDEX,
+                    );
+                    const status = await episode.$(
+                        SELECTORS.ANIME_PAGE.EPISODE_STATUS,
+                    );
+
+                    if (!index || !status) {
+                        continue;
+                    }
+
+                    const episodeIndex = await index.evaluate((element) =>
                         element.textContent.trim(),
-                    ),
-                );
+                    );
 
-                episodes.push({ index: episodeIndex, watched });
+                    const watched = await status.evaluate((input) => {
+                        if (!(input instanceof HTMLInputElement)) {
+                            return false;
+                        }
+
+                        return input.checked;
+                    });
+
+                    episodes.push({ index: episodeIndex, watched });
+                }
+
+                return { label: entry.label, url: entry.to, episodes };
+            } finally {
+                await page.close();
             }
-
-            report.push({ label: entry.label, url: entry.to, episodes });
-
-            await delay(1000);
         }
+
+        const limit = pLimit({ concurrency: 1 });
+
+        const bar = progress({ max: parsed.data.length, style: "heavy" });
+        bar.start("Starting");
+        const results = await Promise.all(
+            parsed.data.map((entry) =>
+                limit(async () => {
+                    try {
+                        const data = await processSingle(entry);
+                        bar.advance(1, `Done: ${entry.label}`);
+
+                        return { entry, data, error: undefined };
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            logger.warn(
+                                `failed to scrape: ${entry.label} - ${error.message}`,
+                            );
+                        }
+
+                        bar.advance(1, `Failed: ${entry.label}`);
+                        return { entry, data: null, error };
+                    }
+                }),
+            ),
+        );
+        bar.stop("Done");
+
+        const report = results
+            .filter((r) => r.data !== null)
+            .map((r) => r.data);
+
+        const failed = results
+            .filter((r) => r.data === null)
+            .map((r) => ({
+                label: r.entry.label,
+                url: r.entry.to,
+                error: r.error,
+            }));
 
         await mkdir(dirname(args.output), { recursive: true });
         await writeFile(args.output, JSON.stringify(report, null, 2), {
             encoding: "utf-8",
         });
+
+        if (failed.length > 0) {
+            const path = resolve(dirname(args.output), "failed.json");
+            await writeFile(path, JSON.stringify(failed, null, 2), {
+                encoding: "utf-8",
+            });
+            logger.info(`${failed.length} failed entries saved to ${path}`);
+        }
     } finally {
-        puppeteer.terminate();
+        await puppeteer.terminate();
     }
 
     logger.info(`list saved to ${args.output}`);

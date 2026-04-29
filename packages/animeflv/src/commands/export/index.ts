@@ -1,9 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { password, text } from "@clack/prompts";
-import { z } from "zod";
-import { Puppeteer } from "@/core/puppeteer";
-import { SELECTORS } from "@/core/selectors";
+import process from "node:process";
+import { AnimeFLV, Puppeteer, SELECTORS } from "@/core";
 import { Logger } from "@/utils/logger";
 
 interface AnimeCard {
@@ -12,45 +10,29 @@ interface AnimeCard {
 }
 
 export async function exportHandler(
-    args: CLI.ResolveParameters<CLI.Commands.Export.Parameters>,
+    args: CLI.ResolveParameters<
+        CLI.Commands.BrowserOptions & CLI.Commands.Export.Parameters
+    >,
 ) {
     const logger = Logger.getInstance();
 
-    const puppeteer = await Puppeteer.new(args.browser);
+    const puppeteer = await Puppeteer.new({
+        executablePath: args.browser ?? "",
+        headless: args.headless,
+    });
     logger.info(`instance created`);
 
     try {
-        const page = await puppeteer.createPage(async (_) => {
-            await _.goto("https://www4.animeflv.net/");
-            await _.waitForSelector(SELECTORS.AUTH.MODAL, { timeout: 30_000 });
-
-            await _.click(SELECTORS.AUTH.MODAL);
-
-            await Promise.all([
-                _.waitForSelector(SELECTORS.AUTH.INPUT_EMAIL),
-                _.waitForSelector(SELECTORS.AUTH.INPUT_PASSWORD),
-                _.waitForSelector(SELECTORS.AUTH.LOGIN_BUTTON),
-            ]);
-            await _.type(
-                SELECTORS.AUTH.INPUT_EMAIL,
-                (
-                    await text({
-                        message: "email",
-                        validate: (value) => {
-                            const parsed = z.email().safeParse(value);
-                            if (!parsed.success) {
-                                throw new Error("invalid email provided");
-                            }
-                        },
-                    })
-                ).toString(),
-            );
-            await _.type(
-                SELECTORS.AUTH.INPUT_PASSWORD,
-                (await password({ message: "password", mask: "*" })).toString(),
-            );
-            await _.click(SELECTORS.AUTH.LOGIN_BUTTON);
-        });
+        const page = (await AnimeFLV.login(puppeteer)).match(
+            (_) => {
+                logger.info("login succesfull");
+                return _;
+            },
+            (err) => {
+                logger.error(err);
+                process.exit(1);
+            },
+        );
 
         const usernameElement = await page.waitForSelector(
             SELECTORS.USERNAME_ELEMENT,
