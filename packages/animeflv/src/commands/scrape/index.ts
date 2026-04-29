@@ -123,7 +123,7 @@ export async function scrapeHandler(
             }
         }
 
-        const limit = pLimit({ concurrency: 1 });
+        const limit = pLimit({ concurrency: 3 });
 
         const bar = progress({ max: parsed.data.length, style: "heavy" });
         bar.start("Starting");

@@ -22,12 +22,24 @@ tasks:
             - tsup.config.ts
             - tsconfig.json
 
+    build-default:
+        command: pnpm
+        args:
+            - build
+        inputs:
+            - src/**/*.ts
+            - types/**/*.d.ts
+            - tsup.config.ts
+            - tsconfig.json
+        env:
+            ANIMEFLV_BUILD_TARGET: default
+
     run:
         command: node
         args:
             - packages/animeflv/dist/index.js
         deps:
-            - animeflv:build
+            - animeflv:build-default
         options:
             cache: false
             interactive: true
