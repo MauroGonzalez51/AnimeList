@@ -1,4 +1,5 @@
 import type { ArgumentsCamelCase } from "yargs";
+import type { OutputFormat } from "@/core/constants";
 
 declare global {
     namespace CLI {
@@ -23,6 +24,11 @@ declare global {
             interface BrowserOptions {
                 browser?: string;
                 headless: boolean;
+            }
+
+            interface OutputOptions {
+                output: string;
+                format: OutputFormat;
             }
         }
 

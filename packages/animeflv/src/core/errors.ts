@@ -11,3 +11,9 @@ export class AnimeFLVLoginError extends Error {
         );
     }
 }
+
+export class ParseFileError extends Error {
+    constructor(path: string) {
+        super(`could not parse ${path} as a valid format`);
+    }
+}

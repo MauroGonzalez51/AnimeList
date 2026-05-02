@@ -1,11 +1,10 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import process from "node:process";
 import { progress } from "@clack/prompts";
 import pLimit from "p-limit";
 import { z } from "zod";
-import { AnimeFLV, Puppeteer, SELECTORS } from "@/core";
-import { delay, Logger } from "@/utils/";
+import { AnimeFLV, OutputFormat, Puppeteer, SELECTORS } from "@/core";
+import { delay, Logger, readFrom, writeTo } from "@/utils/";
 
 interface AnimeEpisode {
     index: string;
@@ -25,14 +24,23 @@ const Schema = z.object({
 
 export async function scrapeHandler(
     args: CLI.ResolveParameters<
-        CLI.Commands.BrowserOptions & CLI.Commands.Scrape.Parameters
+        CLI.Commands.BrowserOptions &
+            CLI.Commands.OutputOptions &
+            CLI.Commands.Scrape.Parameters
     >,
 ) {
     const logger = Logger.getInstance();
 
     logger.info("parsing input file");
-    const input = await readFile(resolve(args.input), "utf-8");
-    const parsed = z.array(Schema).safeParse(JSON.parse(input));
+
+    const input = (await readFrom(args.input)).match(
+        (_) => _,
+        (err) => {
+            logger.error(err);
+            process.exit(1);
+        },
+    );
+    const parsed = z.array(Schema).safeParse(input);
 
     if (!parsed.success) {
         logger.error("invalid input format");
@@ -162,16 +170,11 @@ export async function scrapeHandler(
                 error: r.error,
             }));
 
-        await mkdir(dirname(args.output), { recursive: true });
-        await writeFile(args.output, JSON.stringify(report, null, 2), {
-            encoding: "utf-8",
-        });
+        await writeTo(args.output, report, { format: args.format });
 
         if (failed.length > 0) {
             const path = resolve(dirname(args.output), "failed.json");
-            await writeFile(path, JSON.stringify(failed, null, 2), {
-                encoding: "utf-8",
-            });
+            await writeTo(path, failed, { format: OutputFormat.JSON });
             logger.info(`${failed.length} failed entries saved to ${path}`);
         }
     } finally {

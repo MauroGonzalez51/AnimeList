@@ -1,8 +1,6 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
 import process from "node:process";
 import { AnimeFLV, Puppeteer, SELECTORS } from "@/core";
-import { Logger } from "@/utils/logger";
+import { Logger, writeTo } from "@/utils";
 
 interface AnimeCard {
     label: string;
@@ -11,7 +9,9 @@ interface AnimeCard {
 
 export async function exportHandler(
     args: CLI.ResolveParameters<
-        CLI.Commands.BrowserOptions & CLI.Commands.Export.Parameters
+        CLI.Commands.BrowserOptions &
+            CLI.Commands.OutputOptions &
+            CLI.Commands.Export.Parameters
     >,
 ) {
     const logger = Logger.getInstance();
@@ -119,10 +119,7 @@ export async function exportHandler(
             ]);
         }
 
-        await mkdir(dirname(args.output), { recursive: true });
-        await writeFile(args.output, JSON.stringify(cards, null, 2), {
-            encoding: "utf-8",
-        });
+        await writeTo(args.output, cards, { format: args.format });
     } finally {
         await puppeteer.terminate();
     }
