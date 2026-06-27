@@ -1,6 +1,7 @@
 import process from "node:process";
 import { AnimeFLV, Puppeteer, SELECTORS } from "@/core";
 import { Logger, writeTo } from "@/utils";
+import { Page } from "puppeteer";
 
 interface AnimeCard {
     label: string;
@@ -24,10 +25,7 @@ export async function exportHandler(
 
     try {
         const page = (await AnimeFLV.login(puppeteer)).match(
-            (_) => {
-                logger.info("login succesfull");
-                return _;
-            },
+            (_) => _,
             (err) => {
                 logger.error(err);
                 process.exit(1);
@@ -48,76 +46,90 @@ export async function exportHandler(
             return;
         }
 
-        await page.goto(
-            `https://www4.animeflv.net/perfil/${username}/siguiendo`,
-        );
+        async function extract(page: Page, url: string): Promise<AnimeCard[]> {
+            await page.goto(url);
 
-        const cards: AnimeCard[] = [];
+            const cards: AnimeCard[] = [];
 
-        while (true) {
-            const pageCards = await page.$$eval(
-                SELECTORS.CARDS.ANIME.ALL,
-                (cards, anchorSelector) => {
-                    return cards
-                        .map<AnimeCard | null>((element) => {
-                            const anchor =
-                                element.querySelector(anchorSelector);
-                            if (!(anchor instanceof HTMLAnchorElement)) {
-                                return null;
-                            }
+            while (true) {
+                const pageCards = await page.$$eval(
+                    SELECTORS.CARDS.ANIME.ALL,
+                    (cards, anchorSelector) => {
+                        return cards
+                            .map<AnimeCard | null>((element) => {
+                                const anchor =
+                                    element.querySelector(anchorSelector);
+                                if (!(anchor instanceof HTMLAnchorElement)) {
+                                    return null;
+                                }
 
-                            return {
-                                to: anchor.href,
-                                label: anchor.textContent,
-                            };
-                        })
-                        .filter((card): card is AnimeCard => card !== null);
-                },
-                SELECTORS.CARDS.ANIME.ANCHOR,
-            );
+                                return {
+                                    to: anchor.href,
+                                    label: anchor.textContent,
+                                };
+                            })
+                            .filter((card): card is AnimeCard => card !== null);
+                    },
+                    SELECTORS.CARDS.ANIME.ANCHOR,
+                );
 
-            if (!pageCards.length) {
-                break;
+                if (!pageCards.length) {
+                    break;
+                }
+
+                cards.push(...pageCards);
+
+                const canGoNext = await page.$eval(
+                    SELECTORS.PAGINATION.BUTTON_NEXT,
+                    (nextAnchor) => {
+                        const li = nextAnchor.closest("li");
+                        const classes =
+                            `${nextAnchor.className} ${li?.className ?? ""}`.toLowerCase();
+                        const ariaDisabled =
+                            nextAnchor.getAttribute("aria-disabled") ===
+                                "true" ||
+                            li?.getAttribute("aria-disabled") === "true";
+                        const href =
+                            (nextAnchor instanceof HTMLAnchorElement
+                                ? nextAnchor.getAttribute("href")
+                                : "") ?? "";
+
+                        const looksDisabled =
+                            classes.includes("disabled") ||
+                            ariaDisabled ||
+                            href === "#" ||
+                            href.toLowerCase().startsWith("javascript");
+
+                        return !looksDisabled;
+                    },
+                );
+
+                if (!canGoNext) {
+                    break;
+                }
+
+                await Promise.all([
+                    page.waitForNavigation({
+                        waitUntil: "domcontentloaded",
+                        timeout: 5000,
+                    }),
+                    page.click(SELECTORS.PAGINATION.BUTTON_NEXT),
+                ]);
             }
 
-            cards.push(...pageCards);
-
-            const canGoNext = await page.$eval(
-                SELECTORS.PAGINATION.BUTTON_NEXT,
-                (nextAnchor) => {
-                    const li = nextAnchor.closest("li");
-                    const classes =
-                        `${nextAnchor.className} ${li?.className ?? ""}`.toLowerCase();
-                    const ariaDisabled =
-                        nextAnchor.getAttribute("aria-disabled") === "true" ||
-                        li?.getAttribute("aria-disabled") === "true";
-                    const href =
-                        (nextAnchor instanceof HTMLAnchorElement
-                            ? nextAnchor.getAttribute("href")
-                            : "") ?? "";
-
-                    const looksDisabled =
-                        classes.includes("disabled") ||
-                        ariaDisabled ||
-                        href === "#" ||
-                        href.toLowerCase().startsWith("javascript");
-
-                    return !looksDisabled;
-                },
-            );
-
-            if (!canGoNext) {
-                break;
-            }
-
-            await Promise.all([
-                page.waitForNavigation({
-                    waitUntil: "domcontentloaded",
-                    timeout: 5000,
-                }),
-                page.click(SELECTORS.PAGINATION.BUTTON_NEXT),
-            ]);
+            return cards;
         }
+
+        const cards: AnimeCard[] = [
+            ...(await extract(
+                page,
+                `https://www4.animeflv.net/perfil/${username}/siguiendo`,
+            )),
+            ...(await extract(
+                page,
+                `https://www4.animeflv.net/perfil/${username}/lista_espera`,
+            )),
+        ];
 
         await writeTo(args.output, cards, { format: args.format });
     } finally {

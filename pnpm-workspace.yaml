@@ -2,6 +2,8 @@ preferSymlinkedExecutables: true
 shellEmulator: true
 
 trustPolicy: no-downgrade
+trustPolicyExclude:
+    - chokidar@4.0.3
 
 linkWorkspacePackages: true
 injectWorkspacePackages: true
@@ -10,3 +12,7 @@ packages:
     - apps/**/*
     - packages/**/*
     - tools/**/*
+
+allowBuilds:
+    esbuild: true
+    puppeteer: true

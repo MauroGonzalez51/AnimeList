@@ -6,16 +6,17 @@ import { z } from "zod";
 import { AnimeFLV, OutputFormat, Puppeteer, SELECTORS } from "@/core";
 import { delay, Logger, readFrom, writeTo } from "@/utils/";
 
-interface AnimeEpisode {
-    index: string;
+interface EpisodeMetadata {
     watched: boolean;
 }
 
 interface AnimeReport {
     label: string;
     url: string;
-    episodes: AnimeEpisode[];
+    episodes: Record<string, EpisodeMetadata>;
 }
+
+const EXTRACT_INDEX_REGEX = new RegExp(/\d+/);
 
 const Schema = z.object({
     to: z.url(),
@@ -55,9 +56,7 @@ export async function scrapeHandler(
 
     try {
         (await AnimeFLV.login(puppeteer)).match(
-            () => {
-                logger.info("login succesfull");
-            },
+            () => {},
             (err) => {
                 logger.error(err);
                 process.exit(1);
@@ -93,7 +92,7 @@ export async function scrapeHandler(
                     }
                 }, SELECTORS.ANIME_PAGE.EPISODES_CONTAINER);
 
-                const episodes: AnimeEpisode[] = [];
+                const episodes: Record<string, EpisodeMetadata> = {};
 
                 const animeEpisodes = await page.$$(
                     SELECTORS.ANIME_PAGE.EPISODE_ITEM,
@@ -110,9 +109,16 @@ export async function scrapeHandler(
                         continue;
                     }
 
-                    const episodeIndex = await index.evaluate((element) =>
+                    const episodeText = await index.evaluate((element) =>
                         element.textContent.trim(),
                     );
+
+                    const match = episodeText.match(EXTRACT_INDEX_REGEX);
+                    if (!match) {
+                        continue;
+                    }
+
+                    const [episodeNumber] = match;
 
                     const watched = await status.evaluate((input) => {
                         if (!(input instanceof HTMLInputElement)) {
@@ -122,7 +128,7 @@ export async function scrapeHandler(
                         return input.checked;
                     });
 
-                    episodes.push({ index: episodeIndex, watched });
+                    episodes[episodeNumber] = { watched };
                 }
 
                 return { label: entry.label, url: entry.to, episodes };
@@ -160,7 +166,22 @@ export async function scrapeHandler(
 
         const report = results
             .filter((r) => r.data !== null)
-            .map((r) => r.data);
+            .map((r) => {
+                const data = r.data;
+
+                const sorted = Object.keys(data.episodes)
+                    .map(Number)
+                    .sort((a, b) => b - a)
+                    .reduce<Record<string, EpisodeMetadata>>((acc, key) => {
+                        acc[key] = data.episodes[key]!;
+                        return acc;
+                    }, {});
+
+                return {
+                    ...data,
+                    episodes: sorted,
+                };
+            });
 
         const failed = results
             .filter((r) => r.data === null)

@@ -1,9 +1,15 @@
-import type { Browser, BrowserContext, LaunchOptions, Page } from "puppeteer";
+import type {
+    Browser,
+    BrowserContext,
+    LaunchOptions,
+    Page,
+    Target,
+} from "puppeteer";
 import process from "node:process";
 import { err, ok } from "neverthrow";
-import puppeteer from "puppeteer";
+import puppeteer, { TargetType } from "puppeteer";
 import { BrowserNotFound } from "@/core";
-import { Logger } from "@/utils";
+import { delay, Logger } from "@/utils";
 
 const DEFAULT_LAUNCH_CONFIG: LaunchOptions = {
     headless: false,
@@ -15,6 +21,7 @@ const DEFAULT_LAUNCH_CONFIG: LaunchOptions = {
         "--disable-infobars",
         "--window-size=1920,1080",
         "--lang=es-419,es",
+        "--no-activate",
     ],
 };
 
@@ -116,8 +123,72 @@ export class Puppeteer {
         return page;
     }
 
+    static async clickWithRetry(
+        browser: Browser,
+        page: Page,
+        selector: string,
+        maxRetries: number = 5,
+    ) {
+        const logger = Logger.getInstance();
+
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            let popupDetected = false;
+
+            async function popupHandler(target: Target) {
+                if (target.type() !== TargetType.PAGE) {
+                    return;
+                }
+
+                const popupPage = await target.page();
+                if (popupPage) {
+                    if (page.url() !== popupPage.url()) {
+                        popupDetected = true;
+                        await popupPage.close().catch(() => {});
+                    }
+                }
+            }
+
+            browser.on("targetcreated", popupHandler);
+
+            try {
+                await page.focus(selector).catch(() => {});
+                await page.click(selector);
+                await delay(500);
+            } catch {
+                await this.click(page, selector).catch(() => {});
+            } finally {
+                browser.off("targetcreated", popupHandler);
+            }
+
+            if (popupDetected) {
+                logger.warn(
+                    `[click] (${attempt}/${maxRetries}). pop-up detected`,
+                );
+
+                await page.bringToFront().catch(() => {});
+                await delay(300);
+                continue;
+            }
+
+            return;
+        }
+    }
+
+    static async click(page: Page, selector: string) {
+        await page.evaluate((selector) => {
+            const element = document.querySelector(selector);
+            if (element instanceof HTMLElement) {
+                element.click();
+            }
+        }, selector);
+    }
+
     async terminate() {
         await this.#context.close();
         await this.#instance.close();
+    }
+
+    getBrowser() {
+        return this.#instance;
     }
 }
