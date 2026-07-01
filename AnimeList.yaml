@@ -16,6 +16,10 @@ entries:
                 completed: true
       $reference:
           - $id: oshi-no-ko
+            relation:
+                - universe
+                - sequel
+                - author
       childs:
           - kind: anime
             name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
@@ -51,6 +55,10 @@ entries:
       $id: oshi-no-ko
       $reference:
           - $id: kaguya-sama-wa-kokurasetai
+            relation:
+                - universe
+                - prequel
+                - author
 
     - name: Sousou no Frieren
       kind: anime
@@ -252,9 +260,10 @@ entries:
       $related:
           - name: Sono Bisque Doll wa Koi wo Suru
             kind: manga
+            adapted_until:
+                chapter: 84
             status:
-                comments: |
-                    - Adapted CAP 83
+                chapter: 88
       childs:
           - kind: anime
             name: Sono Bisque Doll wa Koi wo Suru

@@ -12,7 +12,26 @@ export const MESSAGES = {
         COMPLETED: "Wether the current entry has been fully completed or not",
         CHAPTER: "Last readed chapter of the current entry",
     },
-    ENTRY_REFERENCE: "Lightweight reference to another Anime entry.",
+    ENTRY_RELATION: {
+        PREQUEL: "The referenced entry is a prequel to the current entry",
+        SEQUEL: "The referenced entry is a sequel to the current entry",
+        UNIVERSE:
+            "The current entry shares the same fictional universe as the referenced entry",
+        AUTHOR: "The current entry shares the same author as the referenced entry",
+        UNKNOWN:
+            "The relationship is known to exist but has not been classified",
+    },
+    ENTRY_REFERENCE: {
+        ID: "Stable identifier used for referencing this entry across the dataset",
+        RELATION: "Describe the relation between entries",
+    },
+    ADAPTATION: {
+        CHAPTER: "The last source chapter covered by the adaptation",
+        VOLUME: "The last source volume covered by the adaptation",
+        EPISODE:
+            "The corresponding episode where the adaptation currently ends",
+        ARC: "The last story arc covered by the adaptation",
+    },
     ENTRY: {
         ID: "Stable identifier used for referencing this entry across the dataset",
         REFERENCE:
@@ -21,6 +40,8 @@ export const MESSAGES = {
         RELATED:
             "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
         STATUS: "Tracking information such as watch progress, reading progress, and personal notes",
+        ADAPTED_UNTIL:
+            "Shows how far this entry has been adapted into another medium",
         KIND: {
             JP: "Japanese",
             CH: "Chinese",

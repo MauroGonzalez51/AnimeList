@@ -6,11 +6,10 @@
             "type": "object",
             "properties": {
                 "name": {
-                    "type": "string"
+                    "$ref": "#/$defs/__schema0"
                 },
                 "github": {
-                    "type": "string",
-                    "format": "uri"
+                    "$ref": "#/$defs/__schema1"
                 }
             },
             "required": [
@@ -22,10 +21,7 @@
         },
         "entries": {
             "description": "A node representing a media entry within the universe tree. It can be a root node, a series, a movie, or any related media.",
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema0"
-            }
+            "$ref": "#/$defs/__schema2"
         }
     },
     "required": [
@@ -34,33 +30,31 @@
     "additionalProperties": false,
     "$defs": {
         "__schema0": {
+            "type": "string"
+        },
+        "__schema1": {
+            "type": "string",
+            "format": "uri"
+        },
+        "__schema2": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema3": {
             "oneOf": [
                 {
                     "type": "object",
                     "properties": {
                         "$id": {
-                            "description": "Stable identifier used for referencing this entry across the dataset",
-                            "type": "string"
+                            "$ref": "#/$defs/__schema4"
                         },
                         "$reference": {
-                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "$id": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "$id"
-                                ],
-                                "additionalProperties": false,
-                                "description": "Lightweight reference to another Anime entry."
-                            }
+                            "$ref": "#/$defs/__schema6"
                         },
                         "name": {
-                            "type": "string"
+                            "$ref": "#/$defs/__schema9"
                         },
                         "kind": {
                             "type": "string",
@@ -68,17 +62,11 @@
                         },
                         "childs": {
                             "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema10"
                         },
                         "$related": {
                             "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema11"
                         }
                     },
                     "required": [
@@ -91,119 +79,32 @@
                     "type": "object",
                     "properties": {
                         "$id": {
-                            "description": "Stable identifier used for referencing this entry across the dataset",
-                            "type": "string"
+                            "$ref": "#/$defs/__schema4"
                         },
                         "$reference": {
-                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "$id": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "$id"
-                                ],
-                                "additionalProperties": false,
-                                "description": "Lightweight reference to another Anime entry."
-                            }
+                            "$ref": "#/$defs/__schema6"
                         },
                         "name": {
-                            "type": "string"
+                            "$ref": "#/$defs/__schema9"
                         },
                         "kind": {
                             "default": "anime",
-                            "anyOf": [
-                                {
-                                    "type": "string",
-                                    "const": "anime",
-                                    "description": "Japanese"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "donghua",
-                                    "description": "Chinese"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "aeni",
-                                    "description": "Korean"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "ova"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "movie"
-                                }
-                            ]
+                            "$ref": "#/$defs/__schema12"
                         },
                         "chronology": {
                             "type": "string"
                         },
                         "status": {
                             "description": "Tracking information such as watch progress, reading progress, and personal notes",
-                            "type": "object",
-                            "properties": {
-                                "watched": {
-                                    "description": "Indicates whether this entry has been watched",
-                                    "type": "boolean"
-                                },
-                                "favorite": {
-                                    "description": "Marks this entry as a personal favorite",
-                                    "type": "boolean"
-                                },
-                                "rating": {
-                                    "description": "Personal rating for the current entry",
-                                    "type": "number",
-                                    "exclusiveMinimum": 0
-                                },
-                                "comments": {
-                                    "description": "Optional free-form notes or comments",
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "episode": {
-                                    "description": "Last watched episode of the current entry",
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "number",
-                                            "exclusiveMinimum": 0
-                                        }
-                                    ]
-                                }
-                            },
-                            "additionalProperties": false
+                            "$ref": "#/$defs/__schema13"
                         },
                         "childs": {
                             "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema23"
                         },
                         "$related": {
                             "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema24"
                         }
                     },
                     "required": [
@@ -216,28 +117,13 @@
                     "type": "object",
                     "properties": {
                         "$id": {
-                            "description": "Stable identifier used for referencing this entry across the dataset",
-                            "type": "string"
+                            "$ref": "#/$defs/__schema4"
                         },
                         "$reference": {
-                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "$id": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "$id"
-                                ],
-                                "additionalProperties": false,
-                                "description": "Lightweight reference to another Anime entry."
-                            }
+                            "$ref": "#/$defs/__schema6"
                         },
                         "name": {
-                            "type": "string"
+                            "$ref": "#/$defs/__schema9"
                         },
                         "kind": {
                             "anyOf": [
@@ -272,67 +158,19 @@
                         },
                         "status": {
                             "description": "Tracking information such as watch progress, reading progress, and personal notes",
-                            "type": "object",
-                            "properties": {
-                                "watched": {
-                                    "description": "Indicates whether this entry has been watched",
-                                    "type": "boolean"
-                                },
-                                "favorite": {
-                                    "description": "Marks this entry as a personal favorite",
-                                    "type": "boolean"
-                                },
-                                "rating": {
-                                    "description": "Personal rating for the current entry",
-                                    "type": "number",
-                                    "exclusiveMinimum": 0
-                                },
-                                "comments": {
-                                    "description": "Optional free-form notes or comments",
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "completed": {
-                                    "description": "Wether the current entry has been fully completed or not",
-                                    "type": "boolean"
-                                },
-                                "chapter": {
-                                    "description": "Last readed chapter of the current entry",
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "number",
-                                            "exclusiveMinimum": 0
-                                        }
-                                    ]
-                                }
-                            },
-                            "additionalProperties": false
+                            "$ref": "#/$defs/__schema25"
+                        },
+                        "adapted_until": {
+                            "description": "Shows how far this entry has been adapted into another medium",
+                            "$ref": "#/$defs/__schema28"
                         },
                         "childs": {
                             "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema33"
                         },
                         "$related": {
                             "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema0"
-                            }
+                            "$ref": "#/$defs/__schema34"
                         }
                     },
                     "required": [
@@ -342,6 +180,308 @@
                     "additionalProperties": false
                 }
             ]
+        },
+        "__schema4": {
+            "description": "Stable identifier used for referencing this entry across the dataset",
+            "$ref": "#/$defs/__schema5"
+        },
+        "__schema5": {
+            "type": "string"
+        },
+        "__schema6": {
+            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
+            "$ref": "#/$defs/__schema7"
+        },
+        "__schema7": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "$id": {
+                        "type": "string",
+                        "description": "Stable identifier used for referencing this entry across the dataset"
+                    },
+                    "relation": {
+                        "description": "Describe the relation between entries",
+                        "$ref": "#/$defs/__schema8"
+                    }
+                },
+                "required": [
+                    "$id"
+                ],
+                "additionalProperties": false
+            }
+        },
+        "__schema8": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "const": "prequel",
+                        "description": "The referenced entry is a prequel to the current entry"
+                    },
+                    {
+                        "type": "string",
+                        "const": "sequel",
+                        "description": "The referenced entry is a sequel to the current entry"
+                    },
+                    {
+                        "type": "string",
+                        "const": "universe",
+                        "description": "The current entry shares the same fictional universe as the referenced entry"
+                    },
+                    {
+                        "type": "string",
+                        "const": "author",
+                        "description": "The current entry shares the same author as the referenced entry"
+                    },
+                    {
+                        "type": "string",
+                        "const": "unknown",
+                        "description": "The relationship is known to exist but has not been classified"
+                    }
+                ]
+            }
+        },
+        "__schema9": {
+            "type": "string"
+        },
+        "__schema10": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema11": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema12": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "const": "anime",
+                    "description": "Japanese"
+                },
+                {
+                    "type": "string",
+                    "const": "donghua",
+                    "description": "Chinese"
+                },
+                {
+                    "type": "string",
+                    "const": "aeni",
+                    "description": "Korean"
+                },
+                {
+                    "type": "string",
+                    "const": "ova"
+                },
+                {
+                    "type": "string",
+                    "const": "movie"
+                }
+            ]
+        },
+        "__schema13": {
+            "type": "object",
+            "properties": {
+                "watched": {
+                    "$ref": "#/$defs/__schema14"
+                },
+                "favorite": {
+                    "$ref": "#/$defs/__schema16"
+                },
+                "rating": {
+                    "$ref": "#/$defs/__schema18"
+                },
+                "comments": {
+                    "$ref": "#/$defs/__schema20"
+                },
+                "episode": {
+                    "description": "Last watched episode of the current entry",
+                    "$ref": "#/$defs/__schema22"
+                }
+            },
+            "additionalProperties": false
+        },
+        "__schema14": {
+            "description": "Indicates whether this entry has been watched",
+            "$ref": "#/$defs/__schema15"
+        },
+        "__schema15": {
+            "type": "boolean"
+        },
+        "__schema16": {
+            "description": "Marks this entry as a personal favorite",
+            "$ref": "#/$defs/__schema17"
+        },
+        "__schema17": {
+            "type": "boolean"
+        },
+        "__schema18": {
+            "description": "Personal rating for the current entry",
+            "$ref": "#/$defs/__schema19"
+        },
+        "__schema19": {
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "__schema20": {
+            "description": "Optional free-form notes or comments",
+            "$ref": "#/$defs/__schema21"
+        },
+        "__schema21": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "__schema22": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            ]
+        },
+        "__schema23": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema24": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema25": {
+            "type": "object",
+            "properties": {
+                "watched": {
+                    "$ref": "#/$defs/__schema14"
+                },
+                "favorite": {
+                    "$ref": "#/$defs/__schema16"
+                },
+                "rating": {
+                    "$ref": "#/$defs/__schema18"
+                },
+                "comments": {
+                    "$ref": "#/$defs/__schema20"
+                },
+                "completed": {
+                    "description": "Wether the current entry has been fully completed or not",
+                    "$ref": "#/$defs/__schema26"
+                },
+                "chapter": {
+                    "description": "Last readed chapter of the current entry",
+                    "$ref": "#/$defs/__schema27"
+                }
+            },
+            "additionalProperties": false
+        },
+        "__schema26": {
+            "type": "boolean"
+        },
+        "__schema27": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            ]
+        },
+        "__schema28": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "$ref": "#/$defs/__schema12"
+                },
+                "chapter": {
+                    "description": "The last source chapter covered by the adaptation",
+                    "$ref": "#/$defs/__schema29"
+                },
+                "volume": {
+                    "description": "The last source volume covered by the adaptation",
+                    "$ref": "#/$defs/__schema30"
+                },
+                "episode": {
+                    "description": "The corresponding episode where the adaptation currently ends",
+                    "$ref": "#/$defs/__schema31"
+                },
+                "arc": {
+                    "description": "The last story arc covered by the adaptation",
+                    "$ref": "#/$defs/__schema32"
+                }
+            },
+            "additionalProperties": false
+        },
+        "__schema29": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            ]
+        },
+        "__schema30": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            ]
+        },
+        "__schema31": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                }
+            ]
+        },
+        "__schema32": {
+            "type": "string"
+        },
+        "__schema33": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
+        },
+        "__schema34": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema3"
+            }
         }
     }
 }

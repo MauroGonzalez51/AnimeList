@@ -1,9 +1,12 @@
 /* eslint-disable style/operator-linebreak */
 import type { z } from "zod";
 import type {
+    AdaptedUntilSchema,
     BaseEntrySchema,
     BaseEntryStatusSchema,
+    ReadableEntryKindSchema,
     ReadableEntrySchema,
+    WatchableEntryKindSchema,
     WatchableEntrySchema,
 } from "@/schema";
 
@@ -11,6 +14,8 @@ declare global {
     namespace Schema {
         type BaseEntry = z.infer<typeof BaseEntrySchema>;
         type BaseEntryStatus = z.infer<typeof BaseEntryStatusSchema>;
+
+        type AdaptedUntil = z.infer<typeof AdaptedUntilSchema>;
 
         namespace Status {
             type Watchable = z.infer<typeof WatchableEntrySchema>;
@@ -29,22 +34,19 @@ declare global {
                 $related?: Schema.Kind.Entry[] | undefined;
             };
 
+            type WatchableEntryKind = z.infer<typeof WatchableEntryKindSchema>;
             type Watchable = Schema.BaseEntry & {
-                kind: "anime" | "donghua" | "aeni" | "ova" | "movie";
+                kind: Schema.Kind.WatchableEntryKind;
                 chronology?: string | undefined;
                 status?: Schema.Status.Watchable | undefined;
+                adapted_until?: Schema.AdaptedUntil | undefined;
                 childs?: Schema.Kind.Entry[] | undefined;
                 $related?: Schema.Kind.Entry[] | undefined;
             };
 
+            type ReadableEntryKind = z.infer<typeof ReadableEntryKindSchema>;
             type Readable = Schema.BaseEntry & {
-                kind:
-                    | "manga"
-                    | "manhua"
-                    | "manhwa"
-                    | "light-novel"
-                    | "web-novel"
-                    | "other";
+                kind: Schema.Kind.ReadableEntryKind;
                 status?: Schema.Status.Readable | undefined;
                 childs?: Schema.Kind.Entry[] | undefined;
                 $related?: Schema.Kind.Entry[] | undefined;
