@@ -1,0 +1,35 @@
+project:
+    name: Schema
+    description: JSON Schema Generator based on Zod Schemas
+
+tasks:
+    pnpm:
+        command: pnpm
+        args:
+            - --filter
+            - "@anime-list/schema"
+        options:
+            runFromWorkspaceRoot: true
+            cache: false
+
+    build:
+        command: pnpm
+        args:
+            - build
+        inputs:
+            - src/**/*.ts
+            - types/**/*.d.ts
+            - tsup.config.ts
+            - tsconfig.json
+
+    run:
+        command: node
+        args:
+            - packages/schema/dist/index.js
+        deps:
+            - schema:build
+        options:
+            cache: false
+            interactive: true
+            outputStyle: stream
+            runFromWorkspaceRoot: true

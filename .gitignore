@@ -1,8 +1,6 @@
-
 # moon
 .moon/cache
 .moon/docker
 
 target
 node_modules
-.output

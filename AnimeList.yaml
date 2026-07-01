@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=./assets/schema.json
+# yaml-language-server: $schema=./packages/schema/.output/schema.json
 
 meta:
     name: Mauro Gonzalez
@@ -6,49 +6,54 @@ meta:
 
 entries:
     - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
-      $id: kaguya-sama-wa-kokurasetai
       kind: $root
-      related:
+      $id: kaguya-sama-wa-kokurasetai
+      $related:
           - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
             kind: manga
             status:
                 chapter: 247
                 completed: true
       $reference:
-          - id: oshi-no-ko
+          - $id: oshi-no-ko
       childs:
-          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+          - kind: anime
+            name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
             chronology: 1st Season
             status:
                 watched: true
 
-          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
+          - kind: anime
+            name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
             chronology: 2nd Season
             status:
                 watched: true
 
-          - name: "Kaguya-sama wa Kokurasetai: Ultra Romantic"
-            chronology: 3th Season
+          - kind: anime
+            name: "Kaguya-sama wa Kokurasetai: Ultra Romantic"
+            chronology: 3th Seaso1n
             status:
                 watched: true
 
-          - name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
-            kind: movie
+          - kind: anime
+            name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
             status:
                 watched: true
                 comments: Movie was divided into episodes
 
-          - name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
-            kind: ova
+          - kind: ova
+            name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
             status:
                 watched: true
 
     - name: Oshi No Ko
+      kind: anime
       $id: oshi-no-ko
       $reference:
-          - id: kaguya-sama-wa-kokurasetai
+          - $id: kaguya-sama-wa-kokurasetai
 
     - name: Sousou no Frieren
+      kind: anime
       chronology: 1st Season
       status:
           watched: true
@@ -58,149 +63,177 @@ entries:
             chronology: 2nd Season
 
     - name: Nichijou
+      kind: anime
 
     - name: Make Heroine ga Oosugiru!
+      kind: anime
 
     - name: Kowloon Generic Romance
+      kind: anime
 
     - name: Witch Watch
+      kind: anime
 
     - name: Yasei no Last Boss ga Arawareta!
+      kind: anime
       status:
           watched: true
 
     - name: Saikyou no Shienshoku "Wajutsushi" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru
+      kind: anime
       status:
           watched: true
 
     - name: Tsue to Tsurugi no Wistoria
+      kind: anime
       status:
           watched: true
 
     - name: Loop 7-kaime no Akuyaku Reijou wa
+      kind: anime
       status:
           watched: true
 
     - name: Solo Leveling
       kind: $root
-      related:
+      $related:
           - name: Solo Leveling
             kind: manhwa
             status:
                 chapter: 200
                 completed: true
       childs:
-          - name: Ore dake Level Up na Ken
+          - kind: anime
+            name: Ore dake Level Up na Ken
             chronology: 1st Season
             status:
                 watched: true
 
-          - name: "Ore dake Level Up na Ken Season 2: Arise from the Shadow"
+          - kind: anime
+            name: "Ore dake Level Up na Ken Season 2: Arise from the Shadow"
             chronology: 2nd Season
             status:
                 watched: true
 
     - name: Yubisaki to Renren
+      kind: anime
       status:
           watched: true
           favorite: true
 
     - name: Chiyu Mahou no Machigatta Tsukaikata
+      kind: anime
       status:
           watched: true
           favorite: true
 
     - name: Keikenzumi na Kimi to, Keiken Zero na Ore ga, Otsukiai suru Hanashi.
+      kind: anime
       status:
           watched: true
 
     - name: Ragna Crimson
+      kind: anime
       status:
           watched: true
 
     - name: Undead Girl Murder Farce
+      kind: anime
       status:
           watched: true
 
     - name: Kimi wa Houkago Insomnia
+      kind: anime
       status:
           watched: true
 
     - name: NieR:Automata Ver1.1a
+      kind: anime
       status:
           favorite: true
 
     - name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
+      kind: anime
       status:
           watched: true
           favorite: true
 
     - name: Tomo-chan wa Onnanoko!
+      kind: anime
       status:
           watched: true
           favorite: true
 
     - name: Yofukashi no Uta
+      kind: anime
       chronology: 1st Season
       status:
           watched: true
           favorite: true
       childs:
-          - name: Yofukashi no Uta Season 2
+          - kind: anime
+            name: Yofukashi no Uta Season 2
             chronology: 2nd Season
 
     - name: Kinsou no Vermeil
+      kind: anime
       status:
           watched: true
           favorite: true
 
     - name: Yuusha, Yamemasu
+      kind: anime
       status:
           watched: true
 
     - name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
+      kind: anime
       chronology: 1st Season
       status:
           watched: true
       childs:
-          - name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
+          - kind: anime
+            name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
             chronology: 2nd Season
             status:
                 watched: true
                 favorite: true
 
     - name: Arifureta Shokugyou de Sekai Saikyou
+      kind: anime
       chronology: 1st Season
       status:
           watched: true
       childs:
-          - name: Arifureta Shokugyou de Sekai Saikyou 2nd Season
+          - kind: anime
+            name: Arifureta Shokugyou de Sekai Saikyou 2nd Season
             chronology: 2nd Season
             status:
                 watched: true
 
-          - name: Arifureta Shokugyou de Sekai Saikyou Season 3
+          - kind: anime
+            name: Arifureta Shokugyou de Sekai Saikyou Season 3
             chronology: 3th Season
             status:
                 watched: true
 
     - name: Jigokuraku
       kind: $root
-      related:
+      $related:
           - name: Jigokuraku
             kind: manga
             status:
                 comments: |
                     - Adapted CAP 90
       childs:
-          - name: Jigokuraku
-            kind: anime
+          - kind: anime
+            name: Jigokuraku
             chronology: 1st Season
             status:
                 watched: true
 
-          - name: Jigokuraku 2nd Season
-            kind: anime
+          - kind: anime
+            name: Jigokuraku 2nd Season
             chronology: 2nd Season
             status:
                 watched: true
@@ -208,3 +241,29 @@ entries:
                     - Che pero como me vas a dejar en ese clifhanger boludo
                     - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     - Buscare el manga
+
+    - name: Make Heroine ga Oosugiru!
+      kind: anime
+      status:
+          watched: true
+
+    - name: Sono Bisque Doll wa Koi wo Suru
+      kind: $root
+      $related:
+          - name: Sono Bisque Doll wa Koi wo Suru
+            kind: manga
+            status:
+                comments: |
+                    - Adapted CAP 83
+      childs:
+          - kind: anime
+            name: Sono Bisque Doll wa Koi wo Suru
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Sono Bisque Doll wa Koi wo Suru 2nd Season
+            chronology: 2nd Season
+            status:
+                watched: true

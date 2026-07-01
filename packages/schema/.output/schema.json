@@ -1,0 +1,335 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "github": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [
+                "name",
+                "github"
+            ],
+            "additionalProperties": false,
+            "description": "Metadata about this file, such as its name and repository source"
+        },
+        "entries": {
+            "description": "A node representing a media entry within the universe tree. It can be a root node, a series, a movie, or any related media.",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/__schema0"
+            }
+        }
+    },
+    "required": [
+        "meta"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+        "__schema0": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "$id": {
+                            "description": "Stable identifier used for referencing this entry across the dataset",
+                            "type": "string"
+                        },
+                        "$reference": {
+                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "$id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "$id"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Lightweight reference to another Anime entry."
+                            }
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "kind": {
+                            "type": "string",
+                            "const": "$root"
+                        },
+                        "childs": {
+                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        },
+                        "$related": {
+                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "kind"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "$id": {
+                            "description": "Stable identifier used for referencing this entry across the dataset",
+                            "type": "string"
+                        },
+                        "$reference": {
+                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "$id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "$id"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Lightweight reference to another Anime entry."
+                            }
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "kind": {
+                            "default": "anime",
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "const": "anime",
+                                    "description": "Japanese"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "donghua",
+                                    "description": "Chinese"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "aeni",
+                                    "description": "Korean"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "ova"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "movie"
+                                }
+                            ]
+                        },
+                        "chronology": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "description": "Tracking information such as watch progress, reading progress, and personal notes",
+                            "type": "object",
+                            "properties": {
+                                "watched": {
+                                    "description": "Indicates whether this entry has been watched",
+                                    "type": "boolean"
+                                },
+                                "favorite": {
+                                    "description": "Marks this entry as a personal favorite",
+                                    "type": "boolean"
+                                },
+                                "rating": {
+                                    "description": "Personal rating for the current entry",
+                                    "type": "number",
+                                    "exclusiveMinimum": 0
+                                },
+                                "comments": {
+                                    "description": "Optional free-form notes or comments",
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "childs": {
+                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        },
+                        "$related": {
+                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "kind"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "$id": {
+                            "description": "Stable identifier used for referencing this entry across the dataset",
+                            "type": "string"
+                        },
+                        "$reference": {
+                            "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "$id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "$id"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Lightweight reference to another Anime entry."
+                            }
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "kind": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "const": "manga",
+                                    "description": "Japanese"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "manhua",
+                                    "description": "Chinese"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "manhwa",
+                                    "description": "Korean"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "light-novel"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "web-novel"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "other"
+                                }
+                            ]
+                        },
+                        "status": {
+                            "description": "Tracking information such as watch progress, reading progress, and personal notes",
+                            "type": "object",
+                            "properties": {
+                                "watched": {
+                                    "description": "Indicates whether this entry has been watched",
+                                    "type": "boolean"
+                                },
+                                "favorite": {
+                                    "description": "Marks this entry as a personal favorite",
+                                    "type": "boolean"
+                                },
+                                "rating": {
+                                    "description": "Personal rating for the current entry",
+                                    "type": "number",
+                                    "exclusiveMinimum": 0
+                                },
+                                "comments": {
+                                    "description": "Optional free-form notes or comments",
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "completed": {
+                                    "description": "Wether the current entry has been fully completed or not",
+                                    "type": "boolean"
+                                },
+                                "chapter": {
+                                    "description": "Last readed chapter of the current entry",
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0
+                                        }
+                                    ]
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "childs": {
+                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        },
+                        "$related": {
+                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema0"
+                            }
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "kind"
+                    ],
+                    "additionalProperties": false
+                }
+            ]
+        }
+    }
+}

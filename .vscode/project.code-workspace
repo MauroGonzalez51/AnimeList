@@ -1,0 +1,29 @@
+{
+    "folders": [
+        {
+            "path": "../",
+            "name": "ROOT",
+        },
+        {
+            "path": "../apps/cli",
+            "name": "CLI",
+        },
+        {
+            "path": "../packages/animeflv",
+            "name": "AnimeFLV",
+        },
+        {
+            "path": "../packages/schema",
+            "name": "Schema Generator",
+        },
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.DS_Store": true,
+            "**/.git": true,
+            "**/.hg": true,
+            "**/.svn": true,
+            "**/Thumbs.db": true,
+        },
+    },
+}

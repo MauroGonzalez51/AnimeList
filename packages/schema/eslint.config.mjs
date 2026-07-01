@@ -10,5 +10,7 @@ export default antfu({
     },
     rules: {
         "yaml/indent": ["off"],
+        "style/arrow-parens": ["off"],
+        "antfu/consistent-list-newline": ["off"],
     },
 });
