@@ -38,7 +38,12 @@ export const BaseEntryStatusSchema = z.object({
         .describe(MESSAGES.BASE_ENTRY_STATUS.COMMENTS),
 });
 
-export const WatchableEntrySchema = BaseEntryStatusSchema;
+export const WatchableEntrySchema = BaseEntryStatusSchema.safeExtend({
+    episode: z
+        .union([z.string(), z.number().positive()])
+        .optional()
+        .describe(MESSAGES.WATCHABLE_ENTRY.EPISODE),
+});
 
 export const ReadableEntrySchema = BaseEntryStatusSchema.safeExtend({
     completed: z

@@ -175,6 +175,18 @@
                                             }
                                         }
                                     ]
+                                },
+                                "episode": {
+                                    "description": "Last watched episode of the current entry",
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number",
+                                            "exclusiveMinimum": 0
+                                        }
+                                    ]
                                 }
                             },
                             "additionalProperties": false

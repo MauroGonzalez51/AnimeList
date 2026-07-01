@@ -5,6 +5,9 @@ export const MESSAGES = {
         RATING: "Personal rating for the current entry",
         COMMENTS: "Optional free-form notes or comments",
     },
+    WATCHABLE_ENTRY: {
+        EPISODE: "Last watched episode of the current entry",
+    },
     READABLE_ENTRY: {
         COMPLETED: "Wether the current entry has been fully completed or not",
         CHAPTER: "Last readed chapter of the current entry",
