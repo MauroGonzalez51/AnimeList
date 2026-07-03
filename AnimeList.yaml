@@ -100,9 +100,12 @@ entries:
       childs:
           - kind: anime
             name: Tsue to Tsurugi no Wistoria 2nd Season
+            chronology: 2nd Season
             status:
                 favorite: true
-                episode: 3
+                watched: true
+      comments: |
+          - 3th Season Announced :O
 
     - name: Loop 7-kaime no Akuyaku Reijou wa
       kind: anime

@@ -3,6 +3,14 @@ import { dirname } from "node:path";
 import { z } from "zod";
 import { MESSAGES } from "@/messages";
 
+const ValueLike = z.union([
+    z.string(),
+    z.record(z.string(), z.unknown()),
+    z.array(z.union([z.string(), z.record(z.string(), z.unknown())])),
+]);
+
+const PositiveNumberLike = z.union([z.string(), z.number().positive()]);
+
 const EntryRelation = z.union([
     z.literal("prequel").describe(MESSAGES.ENTRY_RELATION.PREQUEL),
     z.literal("sequel").describe(MESSAGES.ENTRY_RELATION.SEQUEL),
@@ -26,6 +34,9 @@ export const BaseEntrySchema = z.object({
         .optional()
         .describe(MESSAGES.ENTRY.REFERENCE),
     name: z.string(),
+    comments: ValueLike.optional().describe(
+        MESSAGES.BASE_ENTRY_STATUS.COMMENTS,
+    ),
 });
 
 export const BaseEntryStatusSchema = z.object({
@@ -42,14 +53,9 @@ export const BaseEntryStatusSchema = z.object({
         .positive()
         .optional()
         .describe(MESSAGES.BASE_ENTRY_STATUS.RATING),
-    comments: z
-        .union([
-            z.string(),
-            z.record(z.string(), z.unknown()),
-            z.array(z.union([z.string(), z.record(z.string(), z.unknown())])),
-        ])
-        .optional()
-        .describe(MESSAGES.BASE_ENTRY_STATUS.COMMENTS),
+    comments: ValueLike.optional().describe(
+        MESSAGES.BASE_ENTRY_STATUS.COMMENTS,
+    ),
 });
 
 export const WatchableEntryKindSchema = z.union([
@@ -61,10 +67,9 @@ export const WatchableEntryKindSchema = z.union([
 ]);
 
 export const WatchableEntrySchema = BaseEntryStatusSchema.safeExtend({
-    episode: z
-        .union([z.string(), z.number().positive()])
-        .optional()
-        .describe(MESSAGES.WATCHABLE_ENTRY.EPISODE),
+    episode: PositiveNumberLike.optional().describe(
+        MESSAGES.WATCHABLE_ENTRY.EPISODE,
+    ),
 });
 
 export const ReadableEntryKindSchema = z.union([
@@ -81,26 +86,20 @@ export const ReadableEntrySchema = BaseEntryStatusSchema.safeExtend({
         .boolean()
         .optional()
         .describe(MESSAGES.READABLE_ENTRY.COMPLETED),
-    chapter: z
-        .union([z.string(), z.number().positive()])
-        .optional()
-        .describe(MESSAGES.READABLE_ENTRY.CHAPTER),
+    chapter: PositiveNumberLike.optional().describe(
+        MESSAGES.READABLE_ENTRY.CHAPTER,
+    ),
 });
 
 export const AdaptedUntilSchema = z.object({
     kind: WatchableEntryKindSchema.optional(),
-    chapter: z
-        .union([z.string(), z.number().positive()])
-        .optional()
-        .describe(MESSAGES.ADAPTATION.CHAPTER),
-    volume: z
-        .union([z.string(), z.number().positive()])
-        .optional()
-        .describe(MESSAGES.ADAPTATION.VOLUME),
-    episode: z
-        .union([z.string(), z.number().positive()])
-        .optional()
-        .describe(MESSAGES.ADAPTATION.EPISODE),
+    chapter: PositiveNumberLike.optional().describe(
+        MESSAGES.ADAPTATION.CHAPTER,
+    ),
+    volume: PositiveNumberLike.optional().describe(MESSAGES.ADAPTATION.VOLUME),
+    episode: PositiveNumberLike.optional().describe(
+        MESSAGES.ADAPTATION.EPISODE,
+    ),
     arc: z.string().optional().describe(MESSAGES.ADAPTATION.ARC),
 });
 
