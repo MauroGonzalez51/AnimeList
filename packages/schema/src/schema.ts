@@ -43,7 +43,11 @@ export const BaseEntryStatusSchema = z.object({
         .optional()
         .describe(MESSAGES.BASE_ENTRY_STATUS.RATING),
     comments: z
-        .union([z.string(), z.array(z.string())])
+        .union([
+            z.string(),
+            z.record(z.string(), z.unknown()),
+            z.array(z.union([z.string(), z.record(z.string(), z.unknown())])),
+        ])
         .optional()
         .describe(MESSAGES.BASE_ENTRY_STATUS.COMMENTS),
 });
