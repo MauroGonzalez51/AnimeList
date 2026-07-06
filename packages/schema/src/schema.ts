@@ -64,6 +64,9 @@ export const WatchableEntryKindSchema = z.union([
     z.literal("aeni").describe(MESSAGES.ENTRY.KIND.KR),
     z.literal("ova"),
     z.literal("movie"),
+    z.literal("jdrama").describe(MESSAGES.ENTRY.KIND.JP),
+    z.literal("cdrama").describe(MESSAGES.ENTRY.KIND.CH),
+    z.literal("kdrama").describe(MESSAGES.ENTRY.KIND.KR),
 ]);
 
 export const WatchableEntrySchema = BaseEntryStatusSchema.safeExtend({
@@ -101,6 +104,7 @@ export const AdaptedUntilSchema = z.object({
         MESSAGES.ADAPTATION.EPISODE,
     ),
     arc: z.string().optional().describe(MESSAGES.ADAPTATION.ARC),
+    notes: ValueLike.optional().describe(MESSAGES.ADAPTATION.NOTES),
 });
 
 export const Entry: z.ZodType<Schema.Kind.Entry> = z.discriminatedUnion(

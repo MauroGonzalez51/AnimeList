@@ -30,6 +30,7 @@ export const MESSAGES = {
         VOLUME: "The last source volume covered by the adaptation",
         EPISODE:
             "The corresponding episode where the adaptation currently ends",
+        NOTES: "Optional notes about the current status of the adaptation",
         ARC: "The last story arc covered by the adaptation",
     },
     ENTRY: {

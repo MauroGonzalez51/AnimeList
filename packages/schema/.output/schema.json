@@ -12,10 +12,7 @@
                     "$ref": "#/$defs/__schema1"
                 }
             },
-            "required": [
-                "name",
-                "github"
-            ],
+            "required": ["name", "github"],
             "additionalProperties": false,
             "description": "Metadata about this file, such as its name and repository source"
         },
@@ -24,9 +21,7 @@
             "$ref": "#/$defs/__schema2"
         }
     },
-    "required": [
-        "meta"
-    ],
+    "required": ["meta"],
     "additionalProperties": false,
     "$defs": {
         "__schema0": {
@@ -72,10 +67,7 @@
                             "$ref": "#/$defs/__schema13"
                         }
                     },
-                    "required": [
-                        "name",
-                        "kind"
-                    ],
+                    "required": ["name", "kind"],
                     "additionalProperties": false
                 },
                 {
@@ -113,10 +105,7 @@
                             "$ref": "#/$defs/__schema25"
                         }
                     },
-                    "required": [
-                        "name",
-                        "kind"
-                    ],
+                    "required": ["name", "kind"],
                     "additionalProperties": false
                 },
                 {
@@ -182,10 +171,7 @@
                             "$ref": "#/$defs/__schema31"
                         }
                     },
-                    "required": [
-                        "name",
-                        "kind"
-                    ],
+                    "required": ["name", "kind"],
                     "additionalProperties": false
                 }
             ]
@@ -215,9 +201,7 @@
                         "$ref": "#/$defs/__schema8"
                     }
                 },
-                "required": [
-                    "$id"
-                ],
+                "required": ["$id"],
                 "additionalProperties": false
             }
         },
@@ -327,6 +311,21 @@
                 {
                     "type": "string",
                     "const": "movie"
+                },
+                {
+                    "type": "string",
+                    "const": "jdrama",
+                    "description": "Japanese"
+                },
+                {
+                    "type": "string",
+                    "const": "cdrama",
+                    "description": "Chinese"
+                },
+                {
+                    "type": "string",
+                    "const": "kdrama",
+                    "description": "Korean"
                 }
             ]
         },
@@ -451,6 +450,10 @@
                 "arc": {
                     "description": "The last story arc covered by the adaptation",
                     "$ref": "#/$defs/__schema29"
+                },
+                "notes": {
+                    "description": "Optional notes about the current status of the adaptation",
+                    "$ref": "#/$defs/__schema11"
                 }
             },
             "additionalProperties": false
