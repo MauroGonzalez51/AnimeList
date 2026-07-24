@@ -314,3 +314,59 @@ entries:
       kind: anime
       status:
           watched: true
+
+    - name: Dr. Stone
+      kind: $root
+      childs:
+          - kind: anime
+            name: Dr. Stone
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: "Dr. Stone: Stone Wars"
+            chronology: 2nd Season
+            status:
+                watched: true
+
+          - kind: ova
+            name: "Dr. Stone: Ryuusui"
+            status:
+                watched: true
+
+          - kind: anime
+            name: "Dr. Stone: New World"
+            chronology: 3th Season
+            childs:
+                - kind: anime
+                  name: "Dr. Stone: New World"
+                  chronology: 1st Part
+                  status:
+                      watched: true
+
+                - kind: anime
+                  name: "Dr. Stone: New World"
+                  chronology: 2nd Part
+                  status:
+                      watched: true
+
+          - kind: anime
+            name: "Dr. Stone: Science Future"
+            chronology: 4th Season
+            childs:
+                - kind: anime
+                  name: "Dr. Stone: Science Future"
+                  chronology: 1st Part
+                  status:
+                      watched: true
+
+                - kind: anime
+                  name: "Dr. Stone: Science Future"
+                  chronology: 2nd Part
+                  status:
+                      watched: true
+
+                - kind: anime
+                  name: "Dr. Stone: Science Future"
+                  chronology: 3th Part
