@@ -317,6 +317,14 @@ entries:
 
     - name: Dr. Stone
       kind: $root
+      $related:
+          - kind: manga
+            name: Dr. Stone
+            adapted_until:
+                chapter: 232
+            comments: |
+                - El anime adapto todo el contenido del manga
+                - Ya quedan son escenas extras que ojala salgan como OVA's
       childs:
           - kind: anime
             name: Dr. Stone
@@ -370,3 +378,5 @@ entries:
                 - kind: anime
                   name: "Dr. Stone: Science Future"
                   chronology: 3th Part
+                  status:
+                      watched: true
