@@ -380,3 +380,29 @@ entries:
                   chronology: 3th Part
                   status:
                       watched: true
+
+    - kind: $root
+      name: Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai
+      childs:
+          - kind: anime
+            name: Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: movie
+            name: Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai
+            status:
+                watched: true
+
+          - kind: movie
+            name: Seishun Buta Yarou wa Odekake Sister no Yume wo Minai
+
+          - kind: movie
+            name: Seishun Buta Yarou wa Randoseru Girl no Yume wo Minai
+
+          - kind: anime
+            name: Seishun Buta Yarou wa Santa Claus no Yume wo Minai
+            chronology: 2nd Season
+            status:
+                watched: true
