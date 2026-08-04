@@ -406,3 +406,9 @@ entries:
             chronology: 2nd Season
             status:
                 watched: true
+
+    - kind: anime
+      name: "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku"
+      status:
+          watched: true
+          favorite: true
