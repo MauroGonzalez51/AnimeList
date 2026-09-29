@@ -1,7 +1,7 @@
 {
     "name": "@anime-list/animeflv",
     "version": "1.0.0",
-    "packageManager": "pnpm@10.28.0",
+    "packageManager": "pnpm@10.34.6",
     "bin": {
         "animeflv": "./dist/index.js"
     },
@@ -9,23 +9,23 @@
         "build": "tsup"
     },
     "dependencies": {
-        "@clack/prompts": "^1.2.0",
+        "@clack/prompts": "^1.8.1",
         "consola": "^3.4.2",
-        "effect": "^3.21.2",
+        "effect": "^3.22.2",
         "neverthrow": "^8.2.0",
-        "p-limit": "^7.3.0",
-        "puppeteer": "^24.42.0",
-        "smol-toml": "^1.6.1",
-        "yaml": "^2.8.3",
-        "yargs": "^18.0.0",
-        "zod": "^4.3.6"
+        "p-limit": "^7.3.3",
+        "puppeteer": "^24.43.1",
+        "smol-toml": "^1.9.0",
+        "yaml": "^2.9.1",
+        "yargs": "^18.2.0",
+        "zod": "^4.6.5"
     },
     "devDependencies": {
-        "@antfu/eslint-config": "^8.2.0",
-        "@types/node": "^25.6.0",
+        "@antfu/eslint-config": "^8.3.0",
+        "@types/node": "^25.9.8",
         "@types/yargs": "^17.0.35",
         "esbuild-plugin-tsconfig-paths": "^1.0.2",
-        "eslint": "^10.2.1",
+        "eslint": "^10.11.0",
         "tsup": "^8.5.1",
         "typescript": "^6.0.3"
     }
