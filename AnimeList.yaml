@@ -417,3 +417,40 @@ entries:
       name: Übel Blatt
       status:
           watched: true
+
+    - kind: $root
+      name: Tensei shitara Slime Datta Ken
+      childs:
+          - kind: anime
+            name: Tensei shitara Slime Datta Ken
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Tensei shitara Slime Datta Ken 2nd Season
+            chronology: 2nd Season
+            childs:
+                - kind: anime
+                  name: Tensei shitara Slime Datta Ken 2nd Season Part 1
+                  chronology: 1st Part
+                  status:
+                      watched: true
+
+                - kind: anime
+                  name: Tensei shitara Slime Datta Ken 2nd Season Part 2
+                  chronology: 2nd Part
+                  status:
+                      watched: true
+
+          - kind: anime
+            name: Tensei shitara Slime Datta Ken 3rd Season
+            chronology: 3th Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Tensei shitara Slime Datta Ken 4th Season
+            chronology: 4th Season
+            status:
+                episode: 24
