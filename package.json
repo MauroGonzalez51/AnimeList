@@ -1,10 +1,8 @@
 {
     "name": "@animelist/root",
-    "dependencies": {
-        "@antfu/eslint-config": "^8.3.0",
-        "eslint": "^10.11.0"
-    },
     "devDependencies": {
+        "@antfu/eslint-config": "^8.3.0",
+        "eslint": "^10.11.0",
         "taze": "^21.2.0"
     }
 }

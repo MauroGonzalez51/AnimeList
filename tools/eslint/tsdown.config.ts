@@ -1,4 +1,4 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsdown";
 
 export default defineConfig({
     entry: ["src/index.ts"],
@@ -7,7 +7,7 @@ export default defineConfig({
     dts: true,
     clean: true,
     sourcemap: true,
-    outExtension({ format }) {
+    outExtensions({ format }) {
         if (format === "esm") {
             return {
                 js: ".mjs",
@@ -27,4 +27,5 @@ export default defineConfig({
             dts: ".d.ts",
         };
     },
+  target: false,
 });

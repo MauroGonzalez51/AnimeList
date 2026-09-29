@@ -38,7 +38,7 @@ tasks:
         command: pnpm
         args:
             - exec
-            - tsup
+            - tsdown
         toolchains: node
         options:
             cache: false
