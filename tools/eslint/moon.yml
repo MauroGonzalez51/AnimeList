@@ -1,0 +1,44 @@
+project:
+    name: eslint
+    description: shared eslint configuration
+
+layer: tool
+
+language: typescript
+
+toolchains:
+    default: node
+
+workspace:
+    inheritedTasks:
+        include:
+            - pnpm
+            - lint
+
+fileGroups:
+    sources:
+        - src/**/*
+        - package.json
+        - tsup.config.ts
+        - tsconfig.json
+
+tasks:
+    pnpm:
+        args:
+            - --filter
+            - "@animelist/tools-eslint"
+
+    lint:
+        inputs:
+            - "@group(sources)"
+        outputs:
+            - "@group(sources)"
+
+    build:
+        command: pnpm
+        args:
+            - exec
+            - tsup
+        toolchains: node
+        options:
+            cache: false

@@ -5,16 +5,24 @@
             "name": "ROOT",
         },
         {
-            "path": "../apps/cli",
-            "name": "CLI",
-        },
-        {
             "path": "../packages/animeflv",
-            "name": "AnimeFLV",
+            "name": "+ AnimeFLV",
         },
         {
             "path": "../packages/schema",
-            "name": "Schema Generator",
+            "name": "+ Schema Generator",
+        },
+        {
+            "name": "@ Moon Config",
+            "path": "../.moon",
+        },
+        {
+            "name": "@ Eslint",
+            "path": "../tools/eslint",
+        },
+        {
+            "name": "@ TSConfig",
+            "path": "../tools/tsconfig",
         },
     ],
     "settings": {
