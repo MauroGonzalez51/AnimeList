@@ -28,6 +28,10 @@
             "name": "@ TSConfig",
             "path": "../tools/tsconfig",
         },
+        {
+            "name": "~ Cargo Artifacts",
+            "path": "../target"
+        }
     ],
     "settings": {
         "files.exclude": {

@@ -23,6 +23,15 @@ tasks:
             - --filter
             - "@animelist/apps-studio"
 
+    cargo:
+        command: scripts/change-directory.sh
+        args:
+            - apps/studio/src-tauri
+            - cargo
+        options:
+            cache: false
+            runFromWorkspaceRoot: true
+
     tauri:
         extends: pnpm
         args:
