@@ -5,6 +5,10 @@
             "name": "ROOT",
         },
         {
+            "path": "../apps/studio",
+            "name": "# Studio"
+        },
+        {
             "path": "../packages/animeflv",
             "name": "+ AnimeFLV",
         },

@@ -1,0 +1,24 @@
+project:
+    title: studio
+    description: interface to manage your list
+
+layer: tool
+
+language: typescript
+
+toolchains:
+    default: node
+
+workspace:
+    inheritedTasks:
+        include:
+            - pnpm
+            - lint
+            - nuxt
+            - build
+
+tasks:
+    pnpm:
+        args:
+            - --filter
+            - "@animelist/apps-studio"

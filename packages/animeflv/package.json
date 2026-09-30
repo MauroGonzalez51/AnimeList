@@ -1,5 +1,5 @@
 {
-    "name": "@animelist/animeflv",
+    "name": "@animelist/packages-animeflv",
     "version": "1.0.0",
     "packageManager": "pnpm@10.34.6",
     "bin": {
