@@ -7,7 +7,7 @@ tasks:
         command: pnpm
         args:
             - --filter
-            - "@anime-list/animeflv"
+            - "@animelist/animeflv"
         options:
             runFromWorkspaceRoot: true
             cache: false

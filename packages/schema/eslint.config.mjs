@@ -1,16 +1,3 @@
-import { antfu } from "@antfu/eslint-config";
+import { withConfig } from "@animelist/tools-eslint";
 
-export default antfu({
-    type: "app",
-    typescript: true,
-    stylistic: {
-        indent: 4,
-        quotes: "double",
-        semi: true,
-    },
-    rules: {
-        "yaml/indent": ["off"],
-        "style/arrow-parens": ["off"],
-        "antfu/consistent-list-newline": ["off"],
-    },
-});
+export default withConfig({ type: "lib", typescript: true });

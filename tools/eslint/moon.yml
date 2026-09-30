@@ -40,5 +40,7 @@ tasks:
             - exec
             - tsdown
         toolchains: node
-        options:
-            cache: false
+        inputs:
+            - "@group(sources)"
+        outputs:
+            - dist/**

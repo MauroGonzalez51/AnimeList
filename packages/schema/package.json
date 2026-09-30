@@ -1,18 +1,41 @@
 {
-    "name": "@anime-list/schema",
+    "name": "@animelist/schema",
+    "type": "module",
     "version": "1.0.0",
-    "packageManager": "pnpm@10.34.6",
+    "exports": {
+        ".": {
+            "types": {
+                "import": "./dist/index.d.mts",
+                "require": "./dist/index.d.cts"
+            },
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "bin": {
+        "generate-schema": "./dist/cli.mjs"
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
-        "build": "tsup"
+        "build": "tsdown",
+        "prepare": "pnpm build"
+    },
+    "dependencies": {
+        "yargs": "^18.2.0",
+        "zod": "^4.6.5"
     },
     "devDependencies": {
-        "@antfu/eslint-config": "^8.3.0",
+        "@animelist/tools-eslint": "workspace:*",
+        "@animelist/tools-tsconfig": "workspace:*",
         "@types/node": "^25.9.8",
         "@types/yargs": "^17.0.35",
         "eslint": "^10.11.0",
-        "tsup": "^8.5.1",
-        "typescript": "^6.0.3",
-        "yargs": "^18.2.0",
-        "zod": "^4.6.5"
+        "tsdown": "0.22.14",
+        "typescript": "npm:@typescript/typescript6@^6.0.2"
     }
 }

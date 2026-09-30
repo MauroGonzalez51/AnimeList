@@ -2,30 +2,53 @@ project:
     name: Schema
     description: JSON Schema Generator based on Zod Schemas
 
+layer: library
+
+language: typescript
+
+toolchains:
+    default: node
+
+workspace:
+    inheritedTasks:
+        include:
+            - pnpm
+            - lint
+
+fileGroups:
+    sources:
+        - src/**/*
+        - types/**/*.d.ts
+        - package.json
+        - tsdown.config.ts
+        - tsconfig.json
+
 tasks:
     pnpm:
-        command: pnpm
         args:
             - --filter
-            - "@anime-list/schema"
-        options:
-            runFromWorkspaceRoot: true
-            cache: false
+            - "@animelist/schema"
+
+    lint:
+        inputs:
+            - "@group(sources)"
+        outputs:
+            - "@group(sources)"
 
     build:
         command: pnpm
         args:
-            - build
+            - exec
+            - tsdown
         inputs:
-            - src/**/*.ts
-            - types/**/*.d.ts
-            - tsup.config.ts
-            - tsconfig.json
+            - "@group(sources)"
+        outputs: 
+            - dist/**
 
     run:
         command: node
         args:
-            - packages/schema/dist/index.js
+            - packages/schema/dist/cli.cjs
         deps:
             - schema:build
         options:
