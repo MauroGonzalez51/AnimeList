@@ -11,9 +11,19 @@
     },
     "dependencies": {
         "@animelist/packages-schema": "workspace:*",
+        "@lucide/vue": "^1.48.0",
+        "@nuxt/eslint": "1.17.0",
+        "@nuxtjs/color-mode": "4.0.1",
+        "@vueuse/core": "^15.0.0",
+        "@vueuse/nuxt": "15.0.0",
         "nuxt": "^4.5.2",
+        "nuxt-lucide-icons": "^2.1.0",
         "vue": "^3.5.43",
         "vue-router": "^5.3.1",
         "zod": "^4.6.5"
+    },
+    "devDependencies": {
+        "@animelist/tools-eslint": "workspace:*",
+        "@tauri-apps/cli": "^2.12.0"
     }
 }

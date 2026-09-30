@@ -22,3 +22,11 @@ tasks:
         args:
             - --filter
             - "@animelist/apps-studio"
+
+    tauri:
+        extends: pnpm
+        args:
+            - exec
+            - tauri
+        options:
+            cache: false
