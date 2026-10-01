@@ -1,4 +1,14 @@
 // app/composables/useStore.ts
+import { invoke } from "@tauri-apps/api/core";
+
+function getStoreStatus() {
+    return invoke<string | null>("get_store_status");
+}
+
+function setStorePath(path: string) {
+    return invoke<string>("set_store_path", { path });
+}
+
 export function useStore() {
     const storePath = useState<string | null>("store-path", () => null);
     const ready = computed(() => storePath.value !== null);
