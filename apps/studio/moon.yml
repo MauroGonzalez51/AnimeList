@@ -39,3 +39,11 @@ tasks:
             - tauri
         options:
             cache: false
+
+    shadcn:
+        extends: pnpm
+        args:
+            - exec
+            - shadcn-vue
+        options:
+            cache: false

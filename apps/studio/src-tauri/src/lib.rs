@@ -12,7 +12,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_cli::init())
         .plugin(tauri_plugin_dialog::init())
-        .manage(AppState::default())
+        .manage(AppState::new())
         .invoke_handler(tauri::generate_handler![
             commands::store::status::get_store_status,
             commands::store::set::set_store_path,
@@ -39,20 +39,27 @@ pub fn run() {
                         std::process::exit(0);
                     }
 
-                    // Resolve order: --store / env -> persisted choice -> None.
-                    // None is not fatal: the frontend shows a picker and calls
-                    // `set_store_path` to establish it at runtime.
-                    let resolved = utils::resolve_store::resolve_store_path(&matches)
-                        .or_else(utils::config::load_saved_store_path);
+                    let state = app.state::<AppState>();
 
-                    if let Some(path) = resolved {
-                        // Ensure the file exists when it came from CLI/env/config.
-                        if let Err(err) = utils::store::ensure_store_file(&path) {
+                    let cli_store_path = match utils::resolve_store::resolve_store_path(&matches)
+                    {
+                        Ok(path) => path,
+                        Err(err) => {
                             eprintln!("{}", err);
                             std::process::exit(1);
                         }
-                        let state = app.state::<AppState>();
+                    };
+
+                    if let Some(path) = cli_store_path {
                         *state.store_path.lock().unwrap() = Some(path);
+                    }
+
+                    let current = state.store_path.lock().unwrap().clone();
+                    if let Some(path) = current
+                        && let Err(err) = utils::store::ensure_store_file(&path)
+                    {
+                        eprintln!("{}", err);
+                        std::process::exit(1);
                     }
                 }
                 Err(err) => {

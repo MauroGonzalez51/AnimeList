@@ -1,3 +1,5 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
@@ -10,6 +12,7 @@ export default defineNuxtConfig({
     ///////////////////////////////////////////////////////
     // VITE
     ///////////////////////////////////////////////////////
+    css: ["~/assets/css/tailwind.css"],
     vite: {
         clearScreen: false,
         envPrefix: ["VITE_", "TAURI_"],
@@ -19,6 +22,7 @@ export default defineNuxtConfig({
                 overlay: false,
             },
         },
+        plugins: [tailwindcss()],
     },
 
     ignore: ["**/src-tauri/**"],
@@ -38,6 +42,7 @@ export default defineNuxtConfig({
         "@nuxtjs/color-mode",
         "nuxt-lucide-icons",
         "@vueuse/nuxt",
+        "shadcn-nuxt",
     ],
 
     ///////////////////////////////////////////////////////
@@ -50,5 +55,8 @@ export default defineNuxtConfig({
     },
     colorMode: {
         classSuffix: "",
+    },
+    shadcn: {
+        prefix: "",
     },
 });

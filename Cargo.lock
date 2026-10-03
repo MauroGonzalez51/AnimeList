@@ -72,6 +72,7 @@ dependencies = [
  "tauri-plugin-cli",
  "tauri-plugin-dialog",
  "tauri-plugin-log",
+ "toml 1.1.6+spec-1.1.0",
 ]
 
 [[package]]

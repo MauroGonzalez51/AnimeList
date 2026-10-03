@@ -1,34 +1,36 @@
-// app/composables/useStore.ts
-import { invoke } from "@tauri-apps/api/core";
+import type { OpenDialogOptions } from "@tauri-apps/plugin-dialog";
+import { tauri } from "@/lib/tauri/commands";
 
-function getStoreStatus() {
-    return invoke<string | null>("get_store_status");
-}
-
-function setStorePath(path: string) {
-    return invoke<string>("set_store_path", { path });
-}
+const FILE_OPTIONS: OpenDialogOptions = {
+    multiple: false,
+    filters: [{ name: "YAML", extensions: ["yaml", "yml"] }],
+    pickerMode: "document",
+};
 
 export function useStore() {
-    const storePath = useState<string | null>("store-path", () => null);
-    const ready = computed(() => storePath.value !== null);
-    const initialized = useState("store-initialized", () => false);
+    const { $logger } = useNuxtApp();
+    const storePath = useState<string | null>(
+        NuxtKeys.Composables.UseStore.StorePath,
+        () => null,
+    );
 
-    async function init() {
-        if (initialized.value) return;
-        storePath.value = await getStoreStatus();
-        initialized.value = true;
+    async function sync() {
+        storePath.value = await tauri.call("get_store_status");
     }
 
     async function pick() {
         const { open } = await import("@tauri-apps/plugin-dialog");
-        const selected = await open({
-            multiple: false,
-            filters: [{ name: "YAML", extensions: ["yaml", "yml"] }],
+
+        const selected = await open(FILE_OPTIONS);
+        if (!selected) {
+            return;
+        }
+
+        $logger.info(selected);
+        storePath.value = await tauri.call("set_store_path", {
+            path: selected,
         });
-        if (typeof selected !== "string") return;
-        storePath.value = await setStorePath(selected);
     }
 
-    return { storePath, ready, init, pick };
+    return { storePath, dispatch: { sync, pick } };
 }
