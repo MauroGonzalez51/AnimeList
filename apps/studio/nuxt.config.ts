@@ -32,8 +32,8 @@ export default defineNuxtConfig({
     ///////////////////////////////////////////////////////
     imports: {
         dirs: [
-            "app/composables/**/!(*test|*.spec).{ts,js,mjs,mts}",
-            "app/utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
+            "composables/**/!(*test|*.spec).{ts,js,mjs,mts}",
+            "utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
             "shared/utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
         ],
     },
@@ -43,6 +43,7 @@ export default defineNuxtConfig({
         "nuxt-lucide-icons",
         "@vueuse/nuxt",
         "shadcn-nuxt",
+        "@nuxtjs/i18n",
     ],
 
     ///////////////////////////////////////////////////////
@@ -58,5 +59,26 @@ export default defineNuxtConfig({
     },
     shadcn: {
         prefix: "",
+    },
+    i18n: {
+        skipSettingLocaleOnNavigate: true,
+        detectBrowserLanguage: {
+            useCookie: true,
+            redirectOn: "no prefix",
+            fallbackLocale: "en",
+            alwaysRedirect: true,
+        },
+        customRoutes: "meta",
+        defaultLocale: "en",
+        strategy: "prefix",
+        locales: [
+            {
+                code: "en",
+                language: "en-US",
+                file: "en.json",
+                name: "English",
+            },
+        ],
+        autoDeclare: true,
     },
 });
