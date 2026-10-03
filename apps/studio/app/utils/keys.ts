@@ -36,6 +36,11 @@ export const NuxtKeys = {
             StorePath: "composables:use-store:store-path",
         },
     },
+    Sidebar: {
+        OpenCollapsible: (group: Components.Sidebar.GroupCollapsibleKind) =>
+            `sidebar:${group.kind}:${group.label}`,
+        Cookie: "sidebar_state",
+    },
 } as const;
 
 export const ModalKeys = {} as const;

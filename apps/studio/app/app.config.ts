@@ -4,4 +4,9 @@ export default defineAppConfig({
             CALLBACK_QUERY: "callbackUrl",
         },
     },
+    composables: {
+        useModal: {
+            MAX_STORAGE_LENGTH: 3,
+        },
+    },
 });

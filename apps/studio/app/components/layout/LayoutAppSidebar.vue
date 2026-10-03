@@ -38,9 +38,59 @@
     const filteredGroups = computed(() =>
         filterSidebarGroups(sidebarContent.value),
     );
+
+    const { define: DefineActionKind, reuse: ReuseActionKind } =
+        createReusableTemplate<{
+            group: Components.Sidebar.GroupActionButtonKind;
+        }>();
+
+    const { define: DefineItemKind, reuse: ReuseItemKind } =
+        createReusableTemplate<{ group: Components.Sidebar.GroupItemKind }>();
 </script>
 
 <template>
+    <DefineActionKind v-slot="{ group }">
+        <DropdownSidebarMenuRoot
+            :items="group.dropdownItems"
+            :content-props="{
+                side: dropdownSide,
+                align: dropdownAlign,
+                class: 'min-w-56 rounded-lg',
+            }"
+        >
+            <template #trigger>
+                <SidebarMenuButton
+                    class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    @click="group.menuAction"
+                >
+                    <component :is="group.icon" v-if="group.icon" />
+                    <span>{{ group.label }}</span>
+                    <LucideMoreHorizontal class="ml-auto" />
+                </SidebarMenuButton>
+            </template>
+        </DropdownSidebarMenuRoot>
+    </DefineActionKind>
+
+    <DefineItemKind v-slot="{ group }">
+        <SidebarMenuItem class="cursor-pointer">
+            <template v-if="group.actionKind === 'navigation'">
+                <SidebarMenuButton as-child>
+                    <NuxtLink :to="group.to()">
+                        <component :is="group.icon" v-if="group.icon" />
+                        <span>{{ $t(group.label) }}</span>
+                    </NuxtLink>
+                </SidebarMenuButton>
+            </template>
+
+            <template v-if="group.actionKind === 'function'">
+                <SidebarMenuButton @click="group.action">
+                    <component :is="group.icon" v-if="group.icon" />
+                    <span>{{ $t(group.label) }}</span>
+                </SidebarMenuButton>
+            </template>
+        </SidebarMenuItem>
+    </DefineItemKind>
+
     <Sidebar v-bind="props">
         <SidebarHeader>
             <SidebarMenu>
@@ -48,17 +98,19 @@
                     <SidebarMenuButton size="lg" as-child>
                         <NuxtLink :to="$localeRoute({ name: 'index' })">
                             <div
-                                class="aspect-square size-8 p-1 rounded-lg bg-muted dark:bg-gray-300"
+                                class="aspect-square size-8 rounded-lg bg-muted dark:bg-gray-300"
                             >
-                                <NuxtImg src="/pwa-512x512.png" />
+                                <NuxtImg
+                                    src="/sidebar.webp"
+                                    class="object-cover min-w-full min-h-full rounded-lg"
+                                />
                             </div>
                             <div
                                 class="grid flex-1 text-left text-sm leading-tight"
                             >
                                 <span class="truncate font-medium">
-                                    {{ $t("common.app_title") }}
+                                    {{ $t("meta.app.title") }}
                                 </span>
-                                <span class="truncate text-xs">Cotecmar</span>
                             </div>
                         </NuxtLink>
                     </SidebarMenuButton>
@@ -93,74 +145,11 @@
                                 <template
                                     v-if="groupItem.kind === 'action-button'"
                                 >
-                                    <DropdownSidebarMenuRoot
-                                        :items="groupItem.dropdownItems"
-                                        :content-props="{
-                                            side: dropdownSide,
-                                            align: dropdownAlign,
-                                            class: 'min-w-56 rounded-lg',
-                                        }"
-                                    >
-                                        <template #trigger>
-                                            <SidebarMenuButton
-                                                class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                                                @click="groupItem.menuAction"
-                                            >
-                                                <component
-                                                    :is="groupItem.icon"
-                                                    v-if="groupItem.icon"
-                                                />
-                                                <span>{{
-                                                    groupItem.label
-                                                }}</span>
-                                                <LucideMoreHorizontal
-                                                    class="ml-auto"
-                                                />
-                                            </SidebarMenuButton>
-                                        </template>
-                                    </DropdownSidebarMenuRoot>
+                                    <ReuseActionKind :group="groupItem" />
                                 </template>
 
                                 <template v-if="groupItem.kind === 'item'">
-                                    <SidebarMenuItem class="cursor-pointer">
-                                        <template
-                                            v-if="
-                                                groupItem.actionKind ===
-                                                    'navigation'
-                                            "
-                                        >
-                                            <SidebarMenuButton as-child>
-                                                <NuxtLink :to="groupItem.to()">
-                                                    <component
-                                                        :is="groupItem.icon"
-                                                        v-if="groupItem.icon"
-                                                    />
-                                                    <span>{{
-                                                        $t(groupItem.label)
-                                                    }}</span>
-                                                </NuxtLink>
-                                            </SidebarMenuButton>
-                                        </template>
-
-                                        <template
-                                            v-if="
-                                                groupItem.actionKind ===
-                                                    'function'
-                                            "
-                                        >
-                                            <SidebarMenuButton
-                                                @click="groupItem.action"
-                                            >
-                                                <component
-                                                    :is="groupItem.icon"
-                                                    v-if="groupItem.icon"
-                                                />
-                                                <span>{{
-                                                    $t(groupItem.label)
-                                                }}</span>
-                                            </SidebarMenuButton>
-                                        </template>
-                                    </SidebarMenuItem>
+                                    <ReuseItemKind :group="groupItem" />
                                 </template>
                             </template>
                         </SidebarMenu>

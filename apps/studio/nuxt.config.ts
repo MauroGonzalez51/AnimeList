@@ -32,18 +32,27 @@ export default defineNuxtConfig({
     ///////////////////////////////////////////////////////
     imports: {
         dirs: [
-            "composables/**/!(*test|*.spec).{ts,js,mjs,mts}",
-            "utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
-            "shared/utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
+            "~/composables/**/!(*test|*.spec).{ts,js,mjs,mts}",
+            "~/utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
+            "~~/shared/utils/**/!(*test|*.spec).{ts,js,mjs,mts}",
         ],
     },
+    components: [
+        { path: "~/components/", extensions: [".vue"] },
+        {
+            path: "~/components/shared",
+            pathPrefix: false,
+            extensions: [".vue"],
+        },
+    ],
     modules: [
-        "@nuxt/eslint",
-        "@nuxtjs/color-mode",
-        "nuxt-lucide-icons",
-        "@vueuse/nuxt",
-        "shadcn-nuxt",
-        "@nuxtjs/i18n",
+      "@nuxt/eslint",
+      "@nuxtjs/color-mode",
+      "nuxt-lucide-icons",
+      "@vueuse/nuxt",
+      "shadcn-nuxt",
+      "@nuxtjs/i18n",
+      "@nuxt/image",
     ],
 
     ///////////////////////////////////////////////////////
