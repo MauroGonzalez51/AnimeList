@@ -15,7 +15,6 @@
         "@nuxt/eslint": "1.17.0",
         "@nuxtjs/color-mode": "4.0.1",
         "@tauri-apps/api": "^2.12.1",
-        "@tauri-apps/plugin-cli": "~2.5.0",
         "@tauri-apps/plugin-dialog": "^2.8.1",
         "@vueuse/core": "^15.0.0",
         "@vueuse/nuxt": "15.0.0",

@@ -2,32 +2,17 @@
 
 Desktop GUI for managing your AnimeList data store. Built with Tauri (Rust) and Nuxt.
 
-## API
-
-```
-animelist-studio --store <path>
-```
-
-- `--store, -s <path>` (required): Path to the YAML data store file. Also accepted via the `ANIMELIST_STORE_PATH` environment variable.
-
 ## Commands
 
 This app is orchestrated with [moon](https://moonrepo.dev/). Run the tasks from the workspace root.
 
 ### Develop
 
-Runs the Nuxt dev server (with HMR) and launches the native window pointing at it. Arguments after the double `--` are passed through to the binary.
+Runs the Nuxt dev server (with HMR) and launches the native window pointing at it.
 
 ```
-moon run studio:tauri -- dev -- -- --store AnimeList.yaml
+moon run studio:tauri -- dev
 ```
-
-The chain of `--` separators works as follows:
-
-- `moon run studio:tauri --` forwards everything else to `pnpm exec tauri`.
-- `dev` is the Tauri subcommand.
-- The first `--` ends the Tauri arguments; the rest goes to `cargo run`.
-- The second `--` ends the Cargo arguments; the rest goes to the binary.
 
 ### Build
 
@@ -37,21 +22,7 @@ Produces the release binary. `tauri build` runs `pnpm generate` first, so the fr
 moon run studio:tauri -- build
 ```
 
-The binary is written to `target/release/animelist-studio` at the monorepo root. Distribution installers (deb/rpm/AppImage) are disabled in `tauri.conf.json` (`bundle.active: false`), since the app is launched directly by path.
-
-### Install
-
-The app is not packaged as a distro installer. It requires a `--store` argument on every launch, which does not fit a desktop menu entry, so it is used as a terminal binary. Put it on your `PATH` with a symlink so it tracks rebuilds:
-
-```
-ln -sf "$(pwd)/target/release/animelist-studio" ~/.local/bin/animelist-studio
-```
-
-Then launch it from anywhere:
-
-```
-animelist-studio --store AnimeList.yaml
-```
+The binary is written to `target/release/animelist-studio` at the monorepo root.
 
 ### Type-check the Rust crate
 

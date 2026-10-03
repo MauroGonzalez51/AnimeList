@@ -1,12 +1,13 @@
 use crate::state::AppState;
 use crate::utils::store;
+use std::path::PathBuf;
 use tauri::State;
 
 /// Sets the active store path, creating an empty file if it does not
 /// exist, and persists the choice for future launches.
 #[tauri::command]
 pub fn set_store_path(path: String, state: State<AppState>) -> Result<String, String> {
-    let path = store::resolve_store_path(&path)?;
+    let path = PathBuf::from(path);
 
     store::ensure_store_file(&path)?;
 

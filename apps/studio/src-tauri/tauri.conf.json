@@ -24,8 +24,8 @@
         }
     },
     "bundle": {
-        "active": false,
-        "targets": "all",
+        "active": true,
+        "targets": ["deb", "rpm"],
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
@@ -35,21 +35,6 @@
         ],
         "android": {
             "debugApplicationIdSuffix": ".debug"
-        }
-    },
-    "plugins": {
-        "cli": {
-            "description": "AnimeList CLI & Studio Engine",
-            "args": [
-                {
-                    "name": "store",
-                    "short": "s",
-                    "description": "Path to the YAML data store file",
-                    "takesValue": true,
-                    "multiple": false,
-                    "global": true
-                }
-            ]
         }
     }
 }

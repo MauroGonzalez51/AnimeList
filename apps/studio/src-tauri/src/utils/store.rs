@@ -1,20 +1,5 @@
 use std::path::Path;
 
-pub fn resolve_store_path(path: &str) -> Result<std::path::PathBuf, String> {
-    let expanded = shellexpand::full(path)
-        .map(|path| path.into_owned())
-        .unwrap_or_else(|_| path.to_string());
-    let path = std::path::PathBuf::from(expanded);
-
-    if path.is_absolute() {
-        return Ok(path);
-    }
-
-    std::env::current_dir()
-        .map(|current| current.join(path))
-        .map_err(|error| format!("could not resolve current directory: {error}"))
-}
-
 /// Ensures the store file exists, creating an empty one if missing.
 /// Returns an error if the path exists but is not a regular file,
 /// or if the file could not be created.
