@@ -33,10 +33,23 @@ declare global {
             collapsibleItems: Components.Sidebar.GroupCollapsibleKindItem[];
         }
 
-        type GroupCollapsibleKindItem = Prettify<
-            BaseItem &
-                OneOf<[{ to: () => RouteLocationRaw }, { action: () => void }]>
-        >;
+        type GroupCollapsibleKindItem =
+            | (BaseItem & {
+                  kind: "checkbox";
+                  key: string;
+                  checked: () => boolean;
+                  action: () => unknown;
+              })
+            | (BaseItem & {
+                  to: () => RouteLocationRaw;
+                  action?: never;
+                  kind?: never;
+              })
+            | (BaseItem & {
+                  action: () => unknown;
+                  to?: never;
+                  kind?: never;
+              });
 
         interface GroupActionButtonKind extends Components.Sidebar.BaseItem {
             kind: "action-button";

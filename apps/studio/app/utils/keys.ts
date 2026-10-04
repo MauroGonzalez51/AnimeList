@@ -35,6 +35,9 @@ export const NuxtKeys = {
         UseStore: {
             StorePath: "composables:use-store:store-path",
         },
+        UseSearchFilters: {
+            Active: "composables:use-search-filters:active",
+        },
     },
     Sidebar: {
         OpenCollapsible: (group: Components.Sidebar.GroupCollapsibleKind) =>

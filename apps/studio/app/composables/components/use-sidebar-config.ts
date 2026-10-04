@@ -1,21 +1,7 @@
-import {
-    BaseEntryStatusSchema,
-    ReadableEntryKindSchema,
-    ReadableEntrySchema,
-    WatchableEntryKindSchema,
-} from "@animelist/packages-schema";
+import { KINDS, STATUSES } from "@/composables/use-search-filters";
 
 export function useSidebarConfig() {
-    // const { insertCallback } = useCallbackUrl();
-
-    const kinds = [ReadableEntryKindSchema, WatchableEntryKindSchema].flatMap(
-        (kind) => [...kind.options.values()],
-    );
-
-    const statuses = [
-        BaseEntryStatusSchema.pick({ watched: true, favorite: true }),
-        ReadableEntrySchema.pick({ completed: true }),
-    ].flatMap((schema) => Object.keys(schema.shape));
+    const filters = useSearchFilters();
 
     const SIDEBAR_CONFIG: Components.Sidebar.Group[] = [
         {
@@ -25,13 +11,20 @@ export function useSidebarConfig() {
                     kind: "collapsible",
                     label: "search.filter.by_type.label",
                     collapsibleItems:
-                        kinds.map<Components.Sidebar.GroupCollapsibleKindItem>(
+                        KINDS.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (kind) => {
                                 const key = kind.value.replaceAll(/-/g, "_");
 
                                 return {
+                                    kind: "checkbox",
+                                    key: kind.value,
                                     label: `search.filter.by_type.options.${key}`,
-                                    action() {},
+                                    checked() {
+                                        return filters.active.value[kind.value];
+                                    },
+                                    action() {
+                                        filters.dispatch.toggle(kind.value);
+                                    },
                                 };
                             },
                         ),
@@ -40,11 +33,18 @@ export function useSidebarConfig() {
                     kind: "collapsible",
                     label: "search.filter.by_status.label",
                     collapsibleItems:
-                        statuses.map<Components.Sidebar.GroupCollapsibleKindItem>(
+                        STATUSES.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (status) => {
                                 return {
+                                    kind: "checkbox",
+                                    key: status,
                                     label: `search.filter.by_status.options.${status}`,
-                                    action() {},
+                                    checked() {
+                                        return filters.active.value[status];
+                                    },
+                                    action() {
+                                        filters.dispatch.toggle(status);
+                                    },
                                 };
                             },
                         ),
