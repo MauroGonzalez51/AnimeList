@@ -3,6 +3,9 @@ export default defineAppConfig({
         query: {
             CALLBACK_QUERY: "callbackUrl",
         },
+        pagination: {
+            MAX_ITEMS: 7,
+        },
     },
     composables: {
         useModal: {
