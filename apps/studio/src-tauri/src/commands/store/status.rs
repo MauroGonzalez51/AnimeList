@@ -1,6 +1,5 @@
-use tauri::State;
-
 use crate::state::AppState;
+use tauri::State;
 
 /// Returns the active store path as a string, or `None` if no store
 /// is set yet. The frontend uses this on startup to decide whether to

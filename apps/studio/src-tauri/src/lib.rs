@@ -1,4 +1,5 @@
 mod commands;
+mod schema;
 mod state;
 mod utils;
 
@@ -6,11 +7,13 @@ use crate::state::AppState;
 use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+pub fn run() -> anyhow::Result<()> {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
-        .manage(AppState::new())
+        .manage(AppState::new()?)
         .invoke_handler(tauri::generate_handler![
+            commands::schema::query::query_schema,
+            commands::schema::save::save_schema,
             commands::store::status::get_store_status,
             commands::store::set::set_store_path,
         ])
@@ -34,6 +37,7 @@ pub fn run() {
 
             Ok(())
         })
-        .run(tauri::generate_context!())
-        .expect("error while building tauri application");
+        .run(tauri::generate_context!())?;
+
+    Ok(())
 }

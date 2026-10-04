@@ -180,7 +180,7 @@ export const JSONSchema = z.object({
     entries: z.array(Entry).optional().describe(MESSAGES.SCHEMA.ENTRIES),
 });
 
-export async function saveSchema(path: string) {
+export async function saveSchema(path: string): Promise<void> {
     await mkdir(dirname(path), { recursive: true });
 
     const schema = JSONSchema.toJSONSchema({ reused: "ref" });
