@@ -1,4 +1,5 @@
 import type { CommandMap } from "@/lib/tauri/command-builder";
+import { JSONSchema } from "@animelist/packages-schema";
 import { z } from "zod";
 import { defineCommands } from "@/lib/tauri/command-builder";
 
@@ -10,8 +11,11 @@ export const tauri = defineCommands({
         input: z.object({ path: z.string().min(1) }),
         result: z.string(),
     },
+    clear_store_path: {
+        result: z.null(),
+    },
     query_schema: {
-        result: z.unknown(),
+        result: JSONSchema,
     },
     save_schema: {
         input: z.object({ schema: z.unknown() }),

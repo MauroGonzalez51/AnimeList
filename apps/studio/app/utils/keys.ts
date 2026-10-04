@@ -34,6 +34,7 @@ export const NuxtKeys = {
     Composables: {
         UseStore: {
             StorePath: "composables:use-store:store-path",
+            Store: "composables:use-store:store",
         },
         UseSearchFilters: {
             Active: "composables:use-search-filters:active",

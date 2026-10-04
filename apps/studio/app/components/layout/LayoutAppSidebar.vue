@@ -158,6 +158,10 @@
             </ScrollArea>
         </SidebarContent>
 
+        <SidebarFooter>
+            <LayoutAppSidebarFooter />
+        </SidebarFooter>
+
         <SidebarRail />
     </Sidebar>
 </template>

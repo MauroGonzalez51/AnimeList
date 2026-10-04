@@ -1,3 +1,4 @@
+import { LucideCircleDot, LucideListFilter } from "@lucide/vue";
 import { KINDS, STATUSES } from "@/composables/use-search-filters";
 
 export function useSidebarConfig() {
@@ -10,6 +11,8 @@ export function useSidebarConfig() {
                 {
                     kind: "collapsible",
                     label: "search.filter.by_type.label",
+                    icon: LucideListFilter,
+                    defaultActive: true,
                     collapsibleItems:
                         KINDS.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (kind) => {
@@ -32,6 +35,8 @@ export function useSidebarConfig() {
                 {
                     kind: "collapsible",
                     label: "search.filter.by_status.label",
+                    icon: LucideCircleDot,
+                    defaultActive: true,
                     collapsibleItems:
                         STATUSES.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (status) => {

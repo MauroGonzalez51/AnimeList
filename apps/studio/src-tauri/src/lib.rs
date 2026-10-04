@@ -14,6 +14,7 @@ pub fn run() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             commands::schema::query::query_schema,
             commands::schema::save::save_schema,
+            commands::store::clear::clear_store_path,
             commands::store::status::get_store_status,
             commands::store::set::set_store_path,
         ])

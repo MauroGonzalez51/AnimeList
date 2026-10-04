@@ -11,5 +11,6 @@
     <NuxtLayout>
         <NuxtPage :transition="{ onBeforeEnter }" />
         <NuxtRouteAnnouncer />
+        <Toaster />
     </NuxtLayout>
 </template>

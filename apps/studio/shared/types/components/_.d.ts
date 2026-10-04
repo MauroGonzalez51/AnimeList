@@ -6,5 +6,11 @@ declare global {
         type LucideIconComponent =
             | LucideIcon
             | FunctionalComponent<LucideProps>;
+
+        interface ColorModeOption {
+            value: "light" | "dark" | "system";
+            icon: LucideIconComponent;
+            label: string;
+        }
     }
 }

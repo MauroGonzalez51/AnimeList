@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import type { CollapsibleContentProps } from "reka-ui";
     import type { HTMLAttributes } from "vue";
+    import { cn } from "@/lib/utils";
 
     interface Props {
         item: MaybeRefOrGetter<Components.Sidebar.GroupCollapsibleKind>;
@@ -75,6 +76,39 @@
                                 }`"
                             >
                                 <SidebarMenuSubButton
+                                    v-if="subItem.kind === 'checkbox'"
+                                    class="cursor-pointer select-none"
+                                    :aria-pressed="subItem.checked()"
+                                    :data-checked="subItem.checked()"
+                                    @click="subItem.action"
+                                >
+                                    <span
+                                        aria-hidden="true"
+                                        class="mr-2 flex size-4 items-center justify-center rounded-sm border transition-colors"
+                                        :class="
+                                            cn(
+                                                'border-sidebar-border bg-transparent',
+                                                subItem.checked() &&
+                                                    'border-primary bg-primary text-primary-foreground shadow-sm ring-2 ring-primary/30',
+                                            )
+                                        "
+                                    >
+                                        <LucideCheck
+                                            v-if="subItem.checked()"
+                                            class="size-3"
+                                        />
+                                    </span>
+                                    <component
+                                        :is="subItem.icon"
+                                        v-if="subItem.icon"
+                                        class="mr-2 size-4"
+                                    />
+                                    <TranslatedMessage
+                                        :keypath="subItem.label"
+                                    />
+                                </SidebarMenuSubButton>
+                                <SidebarMenuSubButton
+                                    v-else
                                     :as-child="!!subItem.to"
                                     class="cursor-pointer select-none"
                                     @click="subItem.action"
