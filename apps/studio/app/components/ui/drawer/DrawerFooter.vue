@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
     import type { HTMLAttributes } from "vue";
     import { cn } from "@/lib/utils";
 
@@ -8,10 +8,10 @@
 </script>
 
 <template>
-    <span
-        data-slot="dropdown-menu-shortcut"
-        :class="cn('text-muted-foreground ml-auto text-xs tracking-widest', props.class)"
+    <div
+        data-slot="drawer-footer"
+        :class="cn('mt-auto flex flex-col gap-2 p-4', props.class)"
     >
         <slot />
-    </span>
+    </div>
 </template>

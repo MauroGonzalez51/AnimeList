@@ -8,10 +8,10 @@
 </script>
 
 <template>
-    <span
-        data-slot="dropdown-menu-shortcut"
-        :class="cn('text-muted-foreground ml-auto text-xs tracking-widest', props.class)"
+    <div
+        data-slot="alert-dialog-header"
+        :class="cn('flex flex-col gap-2 text-center sm:text-left', props.class)"
     >
         <slot />
-    </span>
+    </div>
 </template>

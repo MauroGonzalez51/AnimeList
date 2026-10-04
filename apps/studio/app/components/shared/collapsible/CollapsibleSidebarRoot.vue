@@ -4,14 +4,18 @@
 
     interface Props {
         item: MaybeRefOrGetter<Components.Sidebar.GroupCollapsibleKind>;
-        contentProps?: CollapsibleContentProps & { class?: HTMLAttributes["class"] };
+        contentProps?: CollapsibleContentProps & {
+            class?: HTMLAttributes["class"];
+        };
     }
 
     const props = withDefaults(defineProps<Props>(), {
         contentProps: undefined,
     });
 
-    function filterCollapsibleItems(items: Components.Sidebar.GroupCollapsibleKindItem[]) {
+    function filterCollapsibleItems(
+        items: Components.Sidebar.GroupCollapsibleKindItem[],
+    ) {
         return items.filter((item) => !toValue(item.hidden));
     }
 
@@ -38,20 +42,30 @@
 <template>
     <Collapsible v-model:open="open" as-child class="group/collapsible">
         <SidebarMenuItem>
-            <SidebarMenuButton :tooltip="label">
+            <SidebarMenuButton
+                :tooltip="label"
+                class="cursor-pointer"
+                @click.stop="() => (open = !open)"
+            >
                 <component :is="collapsible.icon" v-if="collapsible.icon" />
                 <span>{{ label }}</span>
             </SidebarMenuButton>
 
             <template v-if="collapsible.collapsibleItems.length">
                 <CollapsibleTrigger as-child>
-                    <SidebarMenuAction class="data-[state=open]:rotate-90">
+                    <SidebarMenuAction
+                        class="data-[state=open]:rotate-90 cursor-pointer"
+                    >
                         <LucideChevronRight />
                         <span class="sr-only">Toggle</span>
                     </SidebarMenuAction>
                 </CollapsibleTrigger>
 
-                <Transition :css="false" @enter="animations.onEnter" @leave="animations.onLeave">
+                <Transition
+                    :css="false"
+                    @enter="animations.onEnter"
+                    @leave="animations.onLeave"
+                >
                     <CollapsibleContent v-if="open" force-mount>
                         <SidebarMenuSub>
                             <SidebarMenuSubItem
@@ -67,13 +81,23 @@
                                 >
                                     <template v-if="subItem.to">
                                         <NuxtLink :to="subItem.to()">
-                                            <component :is="subItem.icon" class="mr-2 size-4" />
-                                            <TranslatedMessage :keypath="subItem.label" />
+                                            <component
+                                                :is="subItem.icon"
+                                                class="mr-2 size-4"
+                                            />
+                                            <TranslatedMessage
+                                                :keypath="subItem.label"
+                                            />
                                         </NuxtLink>
                                     </template>
                                     <template v-else>
-                                        <component :is="subItem.icon" class="mr-2 size-4" />
-                                        <TranslatedMessage :keypath="subItem.label" />
+                                        <component
+                                            :is="subItem.icon"
+                                            class="mr-2 size-4"
+                                        />
+                                        <TranslatedMessage
+                                            :keypath="subItem.label"
+                                        />
                                     </template>
                                 </SidebarMenuSubButton>
                             </SidebarMenuSubItem>

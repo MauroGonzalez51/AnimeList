@@ -46,13 +46,13 @@ export default defineNuxtConfig({
         },
     ],
     modules: [
-      "@nuxt/eslint",
-      "@nuxtjs/color-mode",
-      "nuxt-lucide-icons",
-      "@vueuse/nuxt",
-      "shadcn-nuxt",
-      "@nuxtjs/i18n",
-      "@nuxt/image",
+        "@nuxt/eslint",
+        "@nuxtjs/color-mode",
+        "nuxt-lucide-icons",
+        "@vueuse/nuxt",
+        "shadcn-nuxt",
+        "@nuxtjs/i18n",
+        "@nuxt/image",
     ],
 
     ///////////////////////////////////////////////////////

@@ -3,5 +3,37 @@
         "app": {
             "title": "AnimeList Studio"
         }
+    },
+    "search": {
+        "filter": {
+            "label": "Filters",
+            "by_type": {
+                "label": "Entry Kind",
+                "options": {
+                    "anime": "Anime",
+                    "donghua": "Donghua",
+                    "aeni": "Aeni",
+                    "ova": "OVA",
+                    "movie": "Movie",
+                    "jdrama": "J-Drama",
+                    "cdrama": "C-Drama",
+                    "kdrama": "K-Drama",
+                    "manga": "Manga",
+                    "manhua": "Manhua",
+                    "manhwa": "Manhwa",
+                    "light_novel": "Light Novel",
+                    "web_novel": "Web Novel",
+                    "other": "Other"
+                }
+            },
+            "by_status": {
+                "label": "Status",
+                "options": {
+                    "watched": "Watched",
+                    "completed": "Completed",
+                    "favorite": "Favorite"
+                }
+            }
+        }
     }
 }

@@ -82,32 +82,31 @@ pub struct AdaptedUntil {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "kind")]
+#[serde(untagged)]
 pub enum Entry {
-    #[serde(rename = "$root")]
-    Root {
-        #[serde(rename = "$id")]
-        id: String,
-        #[serde(rename = "$reference")]
-        reference: Option<Vec<EntryReference>>,
-        name: String,
-        comments: Option<ValueLike>,
-        childs: Option<Vec<Entry>>,
-        #[serde(rename = "$related")]
-        related: Option<Vec<Entry>>,
-    },
-
-    #[serde(untagged)]
+    Root(RootEntry),
     Watchable(WatchableEntry),
-
-    #[serde(untagged)]
     Readable(ReadableEntry),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct RootEntry {
+    #[serde(rename = "$id")]
+    pub id: Option<String>,
+    pub kind: String,
+    #[serde(rename = "$reference")]
+    pub reference: Option<Vec<EntryReference>>,
+    pub name: String,
+    pub comments: Option<ValueLike>,
+    pub childs: Option<Vec<Entry>>,
+    #[serde(rename = "$related")]
+    pub related: Option<Vec<Entry>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct WatchableEntry {
     #[serde(rename = "$id")]
-    pub id: String,
+    pub id: Option<String>,
     #[serde(rename = "$reference")]
     pub reference: Option<Vec<EntryReference>>,
     pub name: String,
@@ -125,7 +124,7 @@ pub struct WatchableEntry {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ReadableEntry {
     #[serde(rename = "$id")]
-    pub id: String,
+    pub id: Option<String>,
     #[serde(rename = "$reference")]
     pub reference: Option<Vec<EntryReference>>,
     pub name: String,

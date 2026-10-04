@@ -1,5 +1,3 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
 import { z } from "zod";
 import { MESSAGES } from "@/messages";
 
@@ -179,11 +177,3 @@ export const JSONSchema = z.object({
         .describe(MESSAGES.SCHEMA.META),
     entries: z.array(Entry).optional().describe(MESSAGES.SCHEMA.ENTRIES),
 });
-
-export async function saveSchema(path: string): Promise<void> {
-    await mkdir(dirname(path), { recursive: true });
-
-    const schema = JSONSchema.toJSONSchema({ reused: "ref" });
-
-    await writeFile(path, JSON.stringify(schema, null, 4), "utf-8");
-}
