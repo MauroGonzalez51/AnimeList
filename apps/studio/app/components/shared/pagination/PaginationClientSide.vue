@@ -107,7 +107,7 @@
 </script>
 
 <template>
-    <section class="flex flex-col grow">
+    <section class="flex flex-col grow h-full space-y-2">
         <Transition
             mode="out-in"
             :css="false"
@@ -138,10 +138,9 @@
                         @enter="animations.onItemEnter"
                         @leave="animations.onItemLeave"
                     >
-                        <div
+                        <template
                             v-for="(item, itemIndex) in visibleItems"
                             :key="String(item[props.index])"
-                            :data-index="itemIndex"
                         >
                             <slot
                                 name="item"
@@ -151,7 +150,7 @@
                                     $index: itemIndex,
                                 }"
                             />
-                        </div>
+                        </template>
                     </TransitionGroup>
                 </slot>
             </template>
@@ -160,9 +159,11 @@
         <Pagination
             v-if="totalPages > 1"
             :items-per-page="pageSize"
-            class="mt-6"
+            class="mt-auto"
         >
-            <PaginationContent>
+            <PaginationContent
+                class="px-12 py-2 rounded-lg bg-sidebar border-sidebar"
+            >
                 <PaginationPrevious
                     :disabled="!hasPrevious"
                     :class="cn(hasPrevious && 'cursor-pointer')"
