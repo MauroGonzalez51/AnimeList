@@ -1,14 +1,22 @@
-import type { JSONSchema } from "@animelist/packages-schema";
+import type { JSONSchema, KindEntry } from "@animelist/packages-schema";
 import type { OpenDialogOptions } from "@tauri-apps/plugin-dialog";
 import type { z } from "zod";
 import { basename } from "pathe";
+import Queue from "queue";
+import { toRaw } from "vue";
 import { tauri } from "@/lib/tauri/commands";
+import { isReadableEntry, isWatchableEntry } from "@/utils/store";
 
 const FILE_OPTIONS: OpenDialogOptions = {
     multiple: false,
     filters: [{ name: "YAML", extensions: ["yaml", "yml"] }],
     pickerMode: "document",
 };
+
+const writeQueue = new Queue({
+    autostart: true,
+    concurrency: 1,
+});
 
 export function useStore() {
     const { $logger } = useNuxtApp();
@@ -30,7 +38,6 @@ export function useStore() {
         NuxtKeys.Composables.UseStore.Store,
         () => undefined,
     );
-
     async function sync() {
         storePath.value = await tauri.call("get_store_status");
     }
@@ -55,6 +62,71 @@ export function useStore() {
         store.value = undefined;
     }
 
+    function findEntry(
+        entries: KindEntry[] | undefined,
+        target: KindEntry,
+    ): KindEntry | undefined {
+        if (!entries) {
+            return;
+        }
+
+        for (const entry of entries) {
+            if (entry === target) {
+                return entry;
+            }
+
+            const child = findEntry(entry.childs, target);
+            if (child) {
+                return child;
+            }
+
+            const related = findEntry(entry.$related, target);
+            if (related) {
+                return related;
+            }
+        }
+    }
+
+    function toggleFavorite(entry: KindEntry) {
+        if (!store.value?.entries || entry.kind === "$root") {
+            return;
+        }
+
+        const current = findEntry(store.value.entries, entry);
+        if (!current) {
+            return;
+        }
+
+        if (isReadableEntry(current)) {
+            current.status = {
+                ...current.status,
+                favorite: !current.status?.favorite,
+            };
+        }
+
+        if (isWatchableEntry(current)) {
+            current.status = {
+                ...current.status,
+                favorite: !current.status?.favorite,
+            };
+        }
+
+        const snapshot = structuredClone(toRaw(store.value));
+        writeQueue.push(async () => {
+            try {
+                await tauri.call("save_schema", { schema: snapshot });
+                store.value = await tauri.call("query_schema");
+            } catch (error) {
+                $logger.error(error);
+                try {
+                    store.value = await tauri.call("query_schema");
+                } catch (syncError) {
+                    $logger.error(syncError);
+                }
+            }
+        });
+    }
+
     watch(
         storePath,
         async () => {
@@ -65,5 +137,10 @@ export function useStore() {
         { immediate: true },
     );
 
-    return { storePath, storeFileName, store, dispatch: { sync, pick, clear } };
+    return {
+        storePath,
+        storeFileName,
+        store,
+        dispatch: { sync, pick, clear, operation: { toggleFavorite } },
+    };
 }

@@ -112,7 +112,7 @@ pub struct RootEntry {
     #[serde(rename = "$id")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    pub kind: String,
+    pub kind: RootEntryKind,
     #[serde(rename = "$reference")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reference: Option<Vec<EntryReference>>,
@@ -124,6 +124,12 @@ pub struct RootEntry {
     #[serde(rename = "$related")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related: Option<Vec<Entry>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum RootEntryKind {
+    #[serde(rename = "$root")]
+    Root,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -215,5 +221,49 @@ impl Schema {
         let content = std::fs::read_to_string(path)?;
         let schema = serde_saphyr::from_str::<Schema>(&content)?;
         Ok(schema)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Entry, ReadableEntry, Schema};
+
+    #[test]
+    fn parses_readable_entries_without_matching_root_variant() {
+        let yaml = r#"
+meta:
+    name: AnimeList
+    github: https://github.com/MauroGonzalez51/AnimeList
+entries:
+    - name: Circles
+      kind: manhwa
+      status:
+          chapter: 215
+          completed: true
+          comments:
+              - Cloe Park The Goat
+"#;
+
+        let schema = serde_saphyr::from_str::<Schema>(yaml).unwrap();
+        let Some(Entry::Readable(ReadableEntry {
+            name,
+            adapted_until,
+            status: Some(status),
+            ..
+        })) = schema.entries.unwrap().pop()
+        else {
+            panic!("expected readable entry");
+        };
+
+        assert_eq!(name, "Circles");
+        assert!(adapted_until.is_none());
+        assert_eq!(
+            status.chapter,
+            Some(super::PositiveNumberLike::Number(215.0))
+        );
+        assert_eq!(
+            status.comments,
+            Some(serde_json::json!(["Cloe Park The Goat"]))
+        );
     }
 }

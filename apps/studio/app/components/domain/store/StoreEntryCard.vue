@@ -1,15 +1,20 @@
 <script setup lang="ts">
     import type { KindEntry } from "@animelist/packages-schema";
-    import type { EntryKindLabel, StatusPropertyLabel } from "@/utils/store";
     import { isObject } from "@vueuse/core";
+    import { cn } from "@/lib/utils";
     import { getGradient } from "@/utils/gradient";
-    import { isReadable } from "@/utils/store";
+    import {
+        EntryKindLabel,
+        isReadable,
+        StatusPropertyLabel,
+    } from "@/utils/store";
 
     interface Props {
         entry: KindEntry;
     }
 
     const props = defineProps<Props>();
+    const { dispatch } = useStore();
     const status = computed(() => {
         if (props.entry.kind === "$root") {
             return;
@@ -47,6 +52,10 @@
             }
         }
 
+        if (props.entry.status.watched) {
+            return $t(StatusPropertyLabel.watched);
+        }
+
         return undefined;
     });
 
@@ -57,34 +66,83 @@
     );
 
     const comments = computed(() => {
-        if (!props.entry.comments) {
+        const entryComments = extractComments(props.entry.comments);
+        if (entryComments) {
+            return entryComments;
+        }
+
+        return extractComments(status.value?.comments);
+    });
+
+    const adaptedUntil = computed(() => {
+        if (!isReadableEntry(props.entry)) {
             return;
         }
 
-        if (extractComments(props.entry.comments)) {
-            return extractComments(props.entry.comments);
+        const adapted = props.entry.adapted_until;
+        if (!adapted) {
+            return;
         }
 
-        if (isReadableEntry(props.entry) && props.entry.status?.comments) {
-            return extractComments(props.entry.status.comments);
+        const values: string[] = [];
+        if (adapted.chapter) {
+            values.push(
+                $t("domain.store.card.adapted_until.chapter", {
+                    value: adapted.chapter,
+                }),
+            );
         }
 
-        return undefined;
+        if (adapted.volume) {
+            values.push(
+                $t("domain.store.card.adapted_until.volume", {
+                    value: adapted.volume,
+                }),
+            );
+        }
+
+        if (adapted.episode) {
+            values.push(
+                $t("domain.store.card.adapted_until.episode", {
+                    value: adapted.episode,
+                }),
+            );
+        }
+
+        if (adapted.arc) {
+            values.push(adapted.arc);
+        }
+
+        return values.join(" · ");
     });
 
-    function extractComments(comments: unknown) {
-        if (Array.isArray(comments)) {
-            return comments.join("");
+    function extractComments(value: unknown): string | undefined {
+        if (!value) {
+            return;
         }
 
-        if (isObject(comments)) {
-            return Object.entries(comments)
-                .map(([k, v]) => `${k}: ${v}`)
-                .join("|");
+        if (typeof value === "string") {
+            return value;
         }
 
-        if (typeof comments === "string") {
-            return comments;
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => extractComments(item))
+                .filter((item): item is string => Boolean(item))
+                .join(" · ");
+        }
+
+        if (isObject(value)) {
+            return Object.entries(value)
+                .flatMap(([key, item]) => {
+                    const text = extractComments(item);
+                    if (!text) {
+                        return [];
+                    }
+
+                    return [`${key}: ${text}`];
+                })
+                .join(" · ");
         }
     }
 </script>
@@ -116,13 +174,20 @@
                     <TranslatedMessage :keypath="EntryKindLabel[entry.kind]" />
                 </Badge>
 
-                <span
-                    v-if="status?.favorite"
+                <Button
+                    v-if="entry.kind !== '$root'"
+                    variant="ghost"
+                    size="icon"
+                    class="cursor-pointer hover:border-white/20 hover:bg-white/15 backdrop-blur-md hover:text-white"
                     :aria-label="$t(StatusPropertyLabel.favorite)"
-                    class="rounded-full bg-white/15 p-2 backdrop-blur-md"
+                    @click="() => dispatch.operation.toggleFavorite(entry)"
                 >
-                    <LucideHeart class="fill-current" :aria-hidden="true" />
-                </span>
+                    <LucideHeart
+                        :class="
+                            cn('size-5', status?.favorite && 'fill-current')
+                        "
+                    />
+                </Button>
             </div>
         </div>
 
@@ -164,8 +229,9 @@
             </div>
         </CardHeader>
 
-        <CardContent class="px-4 pb-4">
+        <CardContent class="px-4 pb-4 space-y-3">
             <div
+                v-if="entry.kind !== '$root'"
                 class="flex min-h-10 items-center justify-between rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-xs"
             >
                 <span
@@ -173,14 +239,23 @@
                     class="flex items-center gap-2 font-medium"
                 >
                     <LucideCheck v-if="completed" :aria-hidden="true" />
+                    <LucidePlay v-else :aria-hidden="true" />
+                    {{ progress }}
                 </span>
                 <span v-else class="text-muted-foreground">
                     {{ $t("domain.store.card.progress.no_progress") }}
                 </span>
+                <span
+                    v-if="adaptedUntil"
+                    class="text-right text-muted-foreground"
+                >
+                    {{ $t("domain.store.card.adapted_until.label") }}
+                    {{ adaptedUntil }}
+                </span>
             </div>
             <p
                 v-if="comments"
-                class="line-clamp-2 text-sm leading-relaxed text-muted-foreground"
+                class="line-clamp-2 rounded-md border border-dotted border-border px-3 py-2 text-sm leading-relaxed text-muted-foreground"
             >
                 {{ comments }}
             </p>

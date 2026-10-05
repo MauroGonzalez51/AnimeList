@@ -159,7 +159,7 @@
         <Pagination
             v-if="totalPages > 1"
             :items-per-page="pageSize"
-            class="mt-auto"
+            class="mt-auto py-6"
         >
             <PaginationContent
                 class="px-12 py-2 rounded-lg bg-sidebar border-sidebar"

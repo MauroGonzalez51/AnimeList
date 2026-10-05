@@ -19,13 +19,13 @@ export type RootKind = z.infer<typeof RootEntryKindSchema>;
 export const ReadableKinds = ReadableEntryKindSchema.options.map(
     (option) => option.value,
 );
-const _ReadableKindsSet = new Set(...ReadableKinds);
+const _ReadableKindsSet = new Set<AnyEntryKind>(ReadableKinds);
 export type ReadableKind = z.infer<typeof ReadableEntryKindSchema>;
 
 export const WatchableKinds = WatchableEntryKindSchema.options.map(
     (option) => option.value,
 );
-const _WatchableKindsSet = new Set(...WatchableKinds);
+const _WatchableKindsSet = new Set<AnyEntryKind>(WatchableKinds);
 export type WatchableKind = z.infer<typeof WatchableEntryKindSchema>;
 
 export const AllKinds = [_RootKind, ...ReadableKinds, ...WatchableKinds];
