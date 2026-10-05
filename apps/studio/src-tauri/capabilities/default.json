@@ -3,5 +3,13 @@
     "identifier": "default",
     "description": "enables the default permissions",
     "windows": ["main"],
-    "permissions": ["core:default", "dialog:default"]
+    "permissions": [
+        "core:default",
+        "dialog:default",
+        "fs:default",
+        {
+            "identifier": "fs:allow-exists",
+            "allow": [{ "path": "$HOME" }, { "path": "$HOME/**/*" }]
+        }
+    ]
 }
