@@ -2,24 +2,13 @@
     definePageMeta({
         layout: "sidebar",
     });
-
-    const page = useRouteQuery("page", "1", { transform: Number });
-    const store = useStore();
 </script>
 
 <template>
-    <div class="container mx-auto h-full">
-        <PaginationClientSide
-            :items="store.store.value?.entries"
-            index="name"
-            :page="page"
-            :page-size="20"
-            class="grid grid-cols-[repeat(auto-fill,300px)] justify-center gap-4"
-            @change-page="(value) => (page = value)"
-        >
-            <template #item="{ $item }">
-                <StoreEntryCard :entry="$item" />
-            </template>
-        </PaginationClientSide>
+    <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe officia
+        pariatur inventore, sunt ex aperiam eaque. Omnis perferendis repellat ea
+        magnam inventore ipsam, sit asperiores deserunt nisi impedit possimus
+        vitae!
     </div>
 </template>
