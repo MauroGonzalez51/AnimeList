@@ -1,41 +1,42 @@
 import type {
-    KindEntry,
-    KindReadable,
-    KindWatchable,
+    Entry,
+    ReadableEntry,
+    WatchableEntry,
 } from "@animelist/packages-schema";
 import type { z } from "zod";
 import {
-    ReadableEntryKindSchema,
-    ReadableEntrySchema,
-    RootEntryKindSchema,
-    WatchableEntryKindSchema,
-    WatchableEntrySchema,
+    BaseStatusSchema,
+    ReadableKindSchema,
+    ReadableStatusSchema,
+    UniverseKindSchema,
+    WatchableKindSchema,
+    WatchableStatusSchema,
 } from "@animelist/packages-schema";
 import memoize from "memoize";
 
-export const _RootKind = RootEntryKindSchema.value;
-export type RootKind = z.infer<typeof RootEntryKindSchema>;
+export const UniverseKind = UniverseKindSchema.value;
+export type UniverseKind = z.infer<typeof UniverseKindSchema>;
 
-export const ReadableKinds = ReadableEntryKindSchema.options.map(
+export const ReadableKinds = ReadableKindSchema.options.map(
     (option) => option.value,
 );
 const _ReadableKindsSet = new Set<AnyEntryKind>(ReadableKinds);
-export type ReadableKind = z.infer<typeof ReadableEntryKindSchema>;
+export type ReadableKind = z.infer<typeof ReadableKindSchema>;
 
-export const WatchableKinds = WatchableEntryKindSchema.options.map(
+export const WatchableKinds = WatchableKindSchema.options.map(
     (option) => option.value,
 );
 const _WatchableKindsSet = new Set<AnyEntryKind>(WatchableKinds);
-export type WatchableKind = z.infer<typeof WatchableEntryKindSchema>;
+export type WatchableKind = z.infer<typeof WatchableKindSchema>;
 
-export const AllKinds = [_RootKind, ...ReadableKinds, ...WatchableKinds];
-export type AnyEntryKind = RootKind | ReadableKind | WatchableKind;
+export const AllKinds = [UniverseKind, ...ReadableKinds, ...WatchableKinds];
+export type AnyEntryKind = UniverseKind | ReadableKind | WatchableKind;
 
-export const StatusOptions = ReadableEntrySchema.extend(
-    WatchableEntrySchema.shape,
+export const StatusOptions = ReadableStatusSchema.extend(
+    WatchableStatusSchema.shape,
 );
 export const StatusProperties = StatusOptions.keyof().options;
-export type StatusProperty = keyof z.infer<typeof StatusOptions>;
+export type StatusProperty = keyof z.infer<typeof BaseStatusSchema>;
 
 export const EntryKindLabel: Record<AnyEntryKind, string> = {
     anime: "domain.store.card.kinds.anime",
@@ -52,7 +53,7 @@ export const EntryKindLabel: Record<AnyEntryKind, string> = {
     "light-novel": "domain.store.card.kinds.light_novel",
     "web-novel": "domain.store.card.kinds.web_novel",
     other: "domain.store.card.kinds.other",
-    $root: "domain.store.card.kinds.$root",
+    universe: "domain.store.card.kinds.universe",
 };
 
 export const StatusPropertyLabel: Record<StatusProperty, string> = {
@@ -74,13 +75,13 @@ export const isWatchable = memoize((kind: AnyEntryKind) => {
 });
 
 export const isReadableEntry = memoize(
-    (entry: KindEntry): entry is KindReadable => {
+    (entry: Entry): entry is ReadableEntry => {
         return _ReadableKindsSet.has(entry.kind);
     },
 );
 
 export const isWatchableEntry = memoize(
-    (entry: KindEntry): entry is KindWatchable => {
+    (entry: Entry): entry is WatchableEntry => {
         return _WatchableKindsSet.has(entry.kind);
     },
 );

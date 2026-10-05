@@ -68,7 +68,7 @@
                     "light_novel": "Light Novel",
                     "web_novel": "Web Novel",
                     "other": "Other",
-                    "$root": "Collection"
+                    "universe": "Collection"
                 },
                 "status": {
                     "properties": {

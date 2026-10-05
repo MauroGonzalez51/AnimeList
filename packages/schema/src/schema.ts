@@ -1,4 +1,4 @@
-import type { KindEntry } from "@/types";
+import type { Entry } from "@/types";
 import { z } from "zod";
 import { MESSAGES } from "@/messages";
 
@@ -19,7 +19,7 @@ const EntryRelation = z.union([
 ]);
 
 export const EntryReference = z.object({
-    $id: z.string().describe(MESSAGES.ENTRY_REFERENCE.ID),
+    id: z.string().describe(MESSAGES.ENTRY_REFERENCE.ID),
     relation: z
         .array(EntryRelation)
         .optional()
@@ -27,18 +27,19 @@ export const EntryReference = z.object({
 });
 
 export const BaseEntrySchema = z.object({
-    $id: z.string().optional().describe(MESSAGES.ENTRY.ID),
-    $reference: z
+    id: z.string().optional().describe(MESSAGES.ENTRY.ID),
+    references: z
         .array(EntryReference)
         .optional()
         .describe(MESSAGES.ENTRY.REFERENCE),
     name: z.string(),
+    chronology: z.string().optional(),
     comments: ValueLike.optional().describe(
         MESSAGES.BASE_ENTRY_STATUS.COMMENTS,
     ),
 });
 
-export const BaseEntryStatusSchema = z.object({
+export const BaseStatusSchema = z.object({
     watched: z
         .boolean()
         .optional()
@@ -57,7 +58,7 @@ export const BaseEntryStatusSchema = z.object({
     ),
 });
 
-export const WatchableEntryKindSchema = z.union([
+export const WatchableKindSchema = z.union([
     z.literal("anime").describe(MESSAGES.ENTRY.KIND.JP),
     z.literal("donghua").describe(MESSAGES.ENTRY.KIND.CH),
     z.literal("aeni").describe(MESSAGES.ENTRY.KIND.KR),
@@ -68,13 +69,13 @@ export const WatchableEntryKindSchema = z.union([
     z.literal("kdrama").describe(MESSAGES.ENTRY.KIND.KR),
 ]);
 
-export const WatchableEntrySchema = BaseEntryStatusSchema.safeExtend({
+export const WatchableStatusSchema = BaseStatusSchema.safeExtend({
     episode: PositiveNumberLike.optional().describe(
         MESSAGES.WATCHABLE_ENTRY.EPISODE,
     ),
 });
 
-export const ReadableEntryKindSchema = z.union([
+export const ReadableKindSchema = z.union([
     z.literal("manga").describe(MESSAGES.ENTRY.KIND.JP),
     z.literal("manhua").describe(MESSAGES.ENTRY.KIND.CH),
     z.literal("manhwa").describe(MESSAGES.ENTRY.KIND.KR),
@@ -83,7 +84,7 @@ export const ReadableEntryKindSchema = z.union([
     z.literal("other"),
 ]);
 
-export const ReadableEntrySchema = BaseEntryStatusSchema.safeExtend({
+export const ReadableStatusSchema = BaseStatusSchema.safeExtend({
     completed: z
         .boolean()
         .optional()
@@ -94,7 +95,7 @@ export const ReadableEntrySchema = BaseEntryStatusSchema.safeExtend({
 });
 
 export const AdaptedUntilSchema = z.object({
-    kind: WatchableEntryKindSchema.optional(),
+    kind: WatchableKindSchema.optional(),
     chapter: PositiveNumberLike.optional().describe(
         MESSAGES.ADAPTATION.CHAPTER,
     ),
@@ -106,42 +107,41 @@ export const AdaptedUntilSchema = z.object({
     notes: ValueLike.optional().describe(MESSAGES.ADAPTATION.NOTES),
 });
 
-export const RootEntryKindSchema = z.literal("$root");
+export const UniverseKindSchema = z.literal("universe");
 
-export const Entry: z.ZodType<KindEntry> = z.discriminatedUnion("kind", [
+export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
     BaseEntrySchema.safeExtend({
-        kind: RootEntryKindSchema,
-        get childs() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.CHILDS);
+        kind: UniverseKindSchema,
+        get children() {
+            return z.array(EntrySchema).optional();
         },
-        get $related() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.RELATED);
+        get related() {
+            return z.array(EntrySchema).optional();
         },
     }),
 
     BaseEntrySchema.safeExtend({
-        kind: WatchableEntryKindSchema.default("anime"),
-        chronology: z.string().optional(),
-        status: WatchableEntrySchema.optional().describe(MESSAGES.ENTRY.STATUS),
-        get childs() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.CHILDS);
+        kind: WatchableKindSchema.default("anime"),
+        status: WatchableStatusSchema.optional().describe(MESSAGES.ENTRY.STATUS),
+        get children() {
+            return z.array(EntrySchema).optional();
         },
-        get $related() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.RELATED);
+        get related() {
+            return z.array(EntrySchema).optional();
         },
     }),
 
     BaseEntrySchema.safeExtend({
-        kind: ReadableEntryKindSchema,
-        status: ReadableEntrySchema.optional().describe(MESSAGES.ENTRY.STATUS),
-        adapted_until: AdaptedUntilSchema.optional().describe(
+        kind: ReadableKindSchema,
+        status: ReadableStatusSchema.optional().describe(MESSAGES.ENTRY.STATUS),
+        adaptedUntil: AdaptedUntilSchema.optional().describe(
             MESSAGES.ENTRY.ADAPTED_UNTIL,
         ),
-        get childs() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.CHILDS);
+        get children() {
+            return z.array(EntrySchema).optional();
         },
-        get $related() {
-            return z.array(Entry).optional().describe(MESSAGES.ENTRY.RELATED);
+        get related() {
+            return z.array(EntrySchema).optional();
         },
     }),
 ]);
@@ -153,5 +153,5 @@ export const JSONSchema = z.object({
             github: z.url(),
         })
         .describe(MESSAGES.SCHEMA.META),
-    entries: z.array(Entry).optional().describe(MESSAGES.SCHEMA.ENTRIES),
+    entries: z.array(EntrySchema).optional().describe(MESSAGES.SCHEMA.ENTRIES),
 });

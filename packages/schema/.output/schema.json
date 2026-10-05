@@ -42,29 +42,36 @@
                 {
                     "type": "object",
                     "properties": {
-                        "$id": {
+                        "id": {
                             "$ref": "#/$defs/__schema4"
                         },
-                        "$reference": {
+                        "references": {
                             "$ref": "#/$defs/__schema6"
                         },
                         "name": {
                             "$ref": "#/$defs/__schema9"
                         },
-                        "comments": {
+                        "chronology": {
                             "$ref": "#/$defs/__schema10"
+                        },
+                        "comments": {
+                            "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
                             "type": "string",
-                            "const": "$root"
+                            "const": "universe"
                         },
-                        "childs": {
-                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "$ref": "#/$defs/__schema12"
+                        "children": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         },
-                        "$related": {
-                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "$ref": "#/$defs/__schema13"
+                        "related": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         }
                     },
                     "required": ["name", "kind"],
@@ -73,36 +80,40 @@
                 {
                     "type": "object",
                     "properties": {
-                        "$id": {
+                        "id": {
                             "$ref": "#/$defs/__schema4"
                         },
-                        "$reference": {
+                        "references": {
                             "$ref": "#/$defs/__schema6"
                         },
                         "name": {
                             "$ref": "#/$defs/__schema9"
                         },
-                        "comments": {
+                        "chronology": {
                             "$ref": "#/$defs/__schema10"
+                        },
+                        "comments": {
+                            "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
                             "default": "anime",
-                            "$ref": "#/$defs/__schema14"
-                        },
-                        "chronology": {
-                            "type": "string"
+                            "$ref": "#/$defs/__schema13"
                         },
                         "status": {
                             "description": "Tracking information such as watch progress, reading progress, and personal notes",
-                            "$ref": "#/$defs/__schema15"
+                            "$ref": "#/$defs/__schema14"
                         },
-                        "childs": {
-                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "$ref": "#/$defs/__schema24"
+                        "children": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         },
-                        "$related": {
-                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "$ref": "#/$defs/__schema25"
+                        "related": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         }
                     },
                     "required": ["name", "kind"],
@@ -111,17 +122,20 @@
                 {
                     "type": "object",
                     "properties": {
-                        "$id": {
+                        "id": {
                             "$ref": "#/$defs/__schema4"
                         },
-                        "$reference": {
+                        "references": {
                             "$ref": "#/$defs/__schema6"
                         },
                         "name": {
                             "$ref": "#/$defs/__schema9"
                         },
-                        "comments": {
+                        "chronology": {
                             "$ref": "#/$defs/__schema10"
+                        },
+                        "comments": {
+                            "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
                             "anyOf": [
@@ -156,19 +170,23 @@
                         },
                         "status": {
                             "description": "Tracking information such as watch progress, reading progress, and personal notes",
-                            "$ref": "#/$defs/__schema26"
+                            "$ref": "#/$defs/__schema23"
                         },
-                        "adapted_until": {
+                        "adaptedUntil": {
                             "description": "Shows how far this entry has been adapted into another medium",
-                            "$ref": "#/$defs/__schema28"
+                            "$ref": "#/$defs/__schema25"
                         },
-                        "childs": {
-                            "description": "Direct child entries of this node. Entries at the same depth level are interpreted as seasons of the same series. Nested children (children of children) represent spin-offs, side stories, or other extended universe content",
-                            "$ref": "#/$defs/__schema30"
+                        "children": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         },
-                        "$related": {
-                            "description": "Related entries that share the same universe or are connected conceptually, but are not part of the direct hierarchy.",
-                            "$ref": "#/$defs/__schema31"
+                        "related": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/__schema3"
+                            }
                         }
                     },
                     "required": ["name", "kind"],
@@ -192,7 +210,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "$id": {
+                    "id": {
                         "type": "string",
                         "description": "Stable identifier used for referencing this entry across the dataset"
                     },
@@ -201,7 +219,7 @@
                         "$ref": "#/$defs/__schema8"
                     }
                 },
-                "required": ["$id"],
+                "required": ["id"],
                 "additionalProperties": false
             }
         },
@@ -241,10 +259,13 @@
             "type": "string"
         },
         "__schema10": {
-            "description": "Optional free-form notes or comments",
-            "$ref": "#/$defs/__schema11"
+            "type": "string"
         },
         "__schema11": {
+            "description": "Optional free-form notes or comments",
+            "$ref": "#/$defs/__schema12"
+        },
+        "__schema12": {
             "anyOf": [
                 {
                     "type": "string"
@@ -275,19 +296,7 @@
                 }
             ]
         },
-        "__schema12": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
-        },
         "__schema13": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
-        },
-        "__schema14": {
             "anyOf": [
                 {
                     "type": "string",
@@ -329,55 +338,55 @@
                 }
             ]
         },
-        "__schema15": {
+        "__schema14": {
             "type": "object",
             "properties": {
                 "watched": {
-                    "$ref": "#/$defs/__schema16"
+                    "$ref": "#/$defs/__schema15"
                 },
                 "favorite": {
-                    "$ref": "#/$defs/__schema18"
+                    "$ref": "#/$defs/__schema17"
                 },
                 "rating": {
-                    "$ref": "#/$defs/__schema20"
+                    "$ref": "#/$defs/__schema19"
                 },
                 "comments": {
-                    "$ref": "#/$defs/__schema22"
+                    "$ref": "#/$defs/__schema21"
                 },
                 "episode": {
                     "description": "Last watched episode of the current entry",
-                    "$ref": "#/$defs/__schema23"
+                    "$ref": "#/$defs/__schema22"
                 }
             },
             "additionalProperties": false
         },
-        "__schema16": {
+        "__schema15": {
             "description": "Indicates whether this entry has been watched",
-            "$ref": "#/$defs/__schema17"
+            "$ref": "#/$defs/__schema16"
+        },
+        "__schema16": {
+            "type": "boolean"
         },
         "__schema17": {
-            "type": "boolean"
+            "description": "Marks this entry as a personal favorite",
+            "$ref": "#/$defs/__schema18"
         },
         "__schema18": {
-            "description": "Marks this entry as a personal favorite",
-            "$ref": "#/$defs/__schema19"
-        },
-        "__schema19": {
             "type": "boolean"
         },
-        "__schema20": {
+        "__schema19": {
             "description": "Personal rating for the current entry",
-            "$ref": "#/$defs/__schema21"
+            "$ref": "#/$defs/__schema20"
         },
-        "__schema21": {
+        "__schema20": {
             "type": "number",
             "exclusiveMinimum": 0
         },
-        "__schema22": {
+        "__schema21": {
             "description": "Optional free-form notes or comments",
-            "$ref": "#/$defs/__schema11"
+            "$ref": "#/$defs/__schema12"
         },
-        "__schema23": {
+        "__schema22": {
             "anyOf": [
                 {
                     "type": "string"
@@ -388,90 +397,66 @@
                 }
             ]
         },
-        "__schema24": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
-        },
-        "__schema25": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
-        },
-        "__schema26": {
+        "__schema23": {
             "type": "object",
             "properties": {
                 "watched": {
-                    "$ref": "#/$defs/__schema16"
+                    "$ref": "#/$defs/__schema15"
                 },
                 "favorite": {
-                    "$ref": "#/$defs/__schema18"
+                    "$ref": "#/$defs/__schema17"
                 },
                 "rating": {
-                    "$ref": "#/$defs/__schema20"
+                    "$ref": "#/$defs/__schema19"
                 },
                 "comments": {
-                    "$ref": "#/$defs/__schema22"
+                    "$ref": "#/$defs/__schema21"
                 },
                 "completed": {
                     "description": "Wether the current entry has been fully completed or not",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema24"
                 },
                 "chapter": {
                     "description": "Last readed chapter of the current entry",
-                    "$ref": "#/$defs/__schema23"
+                    "$ref": "#/$defs/__schema22"
                 }
             },
             "additionalProperties": false
         },
-        "__schema27": {
+        "__schema24": {
             "type": "boolean"
         },
-        "__schema28": {
+        "__schema25": {
             "type": "object",
             "properties": {
                 "kind": {
-                    "$ref": "#/$defs/__schema14"
+                    "$ref": "#/$defs/__schema13"
                 },
                 "chapter": {
                     "description": "The last source chapter covered by the adaptation",
-                    "$ref": "#/$defs/__schema23"
+                    "$ref": "#/$defs/__schema22"
                 },
                 "volume": {
                     "description": "The last source volume covered by the adaptation",
-                    "$ref": "#/$defs/__schema23"
+                    "$ref": "#/$defs/__schema22"
                 },
                 "episode": {
                     "description": "The corresponding episode where the adaptation currently ends",
-                    "$ref": "#/$defs/__schema23"
+                    "$ref": "#/$defs/__schema22"
                 },
                 "arc": {
                     "description": "The last story arc covered by the adaptation",
-                    "$ref": "#/$defs/__schema29"
+                    "$ref": "#/$defs/__schema26"
                 },
                 "notes": {
                     "description": "Optional notes about the current status of the adaptation",
-                    "$ref": "#/$defs/__schema11"
+                    "$ref": "#/$defs/__schema12"
                 }
             },
             "additionalProperties": false
         },
-        "__schema29": {
+        "__schema26": {
             "type": "string"
-        },
-        "__schema30": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
-        },
-        "__schema31": {
-            "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
         }
     }
 }

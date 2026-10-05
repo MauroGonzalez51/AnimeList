@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import type { KindEntry } from "@animelist/packages-schema";
+    import type { Entry } from "@animelist/packages-schema";
     import { isObject } from "@vueuse/core";
     import { cn } from "@/lib/utils";
     import { getGradient } from "@/utils/gradient";
@@ -10,13 +10,13 @@
     } from "@/utils/store";
 
     interface Props {
-        entry: KindEntry;
+        entry: Entry;
     }
 
     const props = defineProps<Props>();
     const { dispatch } = useStore();
     const status = computed(() => {
-        if (props.entry.kind === "$root") {
+        if (props.entry.kind === "universe") {
             return;
         }
 
@@ -24,7 +24,7 @@
     });
 
     const progress = computed(() => {
-        if (props.entry.kind === "$root") {
+        if (props.entry.kind === "universe") {
             return;
         }
 
@@ -79,7 +79,7 @@
             return;
         }
 
-        const adapted = props.entry.adapted_until;
+        const adapted = props.entry.adaptedUntil;
         if (!adapted) {
             return;
         }
@@ -175,7 +175,7 @@
                 </Badge>
 
                 <Button
-                    v-if="entry.kind !== '$root'"
+                    v-if="entry.kind !== 'universe'"
                     variant="ghost"
                     size="icon"
                     class="cursor-pointer hover:border-white/20 hover:bg-white/15 backdrop-blur-md hover:text-white"
@@ -216,13 +216,13 @@
                     {{ entry.chronology }}
                 </span>
                 <Badge
-                    v-if="entry.$reference?.length"
+                    v-if="entry.references?.length"
                     variant="outline"
                     class="shrink-0 font-normal"
                 >
                     {{
                         $t("domain.store.card.relations", {
-                            count: entry.$reference.length,
+                            count: entry.references.length,
                         })
                     }}
                 </Badge>
@@ -231,7 +231,7 @@
 
         <CardContent class="px-4 pb-4 space-y-3">
             <div
-                v-if="entry.kind !== '$root'"
+                v-if="entry.kind !== 'universe'"
                 class="flex min-h-10 items-center justify-between rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-xs"
             >
                 <span

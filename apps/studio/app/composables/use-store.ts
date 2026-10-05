@@ -1,4 +1,4 @@
-import type { JSONSchema, KindEntry } from "@animelist/packages-schema";
+import type { Entry, JSONSchema } from "@animelist/packages-schema";
 import type { OpenDialogOptions } from "@tauri-apps/plugin-dialog";
 import type { z } from "zod";
 import { basename } from "pathe";
@@ -63,9 +63,9 @@ export function useStore() {
     }
 
     function findEntry(
-        entries: KindEntry[] | undefined,
-        target: KindEntry,
-    ): KindEntry | undefined {
+        entries: Entry[] | undefined,
+        target: Entry,
+    ): Entry | undefined {
         if (!entries) {
             return;
         }
@@ -75,20 +75,20 @@ export function useStore() {
                 return entry;
             }
 
-            const child = findEntry(entry.childs, target);
+            const child = findEntry(entry.children, target);
             if (child) {
                 return child;
             }
 
-            const related = findEntry(entry.$related, target);
+            const related = findEntry(entry.related, target);
             if (related) {
                 return related;
             }
         }
     }
 
-    function toggleFavorite(entry: KindEntry) {
-        if (!store.value?.entries || entry.kind === "$root") {
+    function toggleFavorite(entry: Entry) {
+        if (!store.value?.entries || entry.kind === "universe") {
             return;
         }
 
