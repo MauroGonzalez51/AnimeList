@@ -30,7 +30,6 @@ export type KindWatchable = BaseEntry & {
     kind: KindWatchableEntryKind;
     chronology?: string | undefined;
     status?: StatusWatchable | undefined;
-    adapted_until?: AdaptedUntil | undefined;
     childs?: KindEntry[] | undefined;
     $related?: KindEntry[] | undefined;
 };
@@ -39,6 +38,7 @@ export type KindReadableEntryKind = z.infer<typeof ReadableEntryKindSchema>;
 export type KindReadable = BaseEntry & {
     kind: KindReadableEntryKind;
     status?: StatusReadable | undefined;
+    adapted_until?: AdaptedUntil | undefined;
     childs?: KindEntry[] | undefined;
     $related?: KindEntry[] | undefined;
 };

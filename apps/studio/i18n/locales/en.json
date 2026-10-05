@@ -49,5 +49,47 @@
         "select": "Select File",
         "no_file": "No File Choosen",
         "selected": "Selected File"
+    },
+    "domain": {
+        "store": {
+            "card": {
+                "kinds": {
+                    "anime": "Anime",
+                    "donghua": "Donghua",
+                    "aeni": "Aeni",
+                    "ova": "OVA",
+                    "movie": "Movie",
+                    "jdrama": "J-Drama",
+                    "cdrama": "C-Drama",
+                    "kdrama": "K-Drama",
+                    "manga": "Manga",
+                    "manhua": "Manhua",
+                    "manhwa": "Manhwa",
+                    "light_novel": "Light Novel",
+                    "web_novel": "Web Novel",
+                    "other": "Other",
+                    "$root": "Collection"
+                },
+                "status": {
+                    "properties": {
+                        "watched": "Watched",
+                        "completed": "Completed",
+                        "favorite": "Favorite",
+                        "chapter": "Chapter",
+                        "comments": "Comments",
+                        "episode": "Episode",
+                        "rating": "Rating"
+                    }
+                },
+                "relations": "{count} relation | {count} relations",
+                "progress": {
+                    "episode": "Episode {value}",
+                    "chapter": "Chapter {value}",
+                    "completed": "Completed",
+                    "no_progress": "No progress recorded"
+                },
+                "adapted_until": "Adapted until {value}"
+            }
+        }
     }
 }

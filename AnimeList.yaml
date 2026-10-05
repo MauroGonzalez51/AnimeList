@@ -26,7 +26,6 @@ entries:
             chronology: 1st Season
             status:
                 watched: true
-                
 
           - kind: anime
             name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 2nd Season"
@@ -105,7 +104,7 @@ entries:
             status:
                 favorite: true
                 watched: true
-      comments: |
+      comments:
           - 3th Season Announced :O
 
     - name: Loop 7-kaime no Akuyaku Reijou wa
@@ -249,7 +248,7 @@ entries:
           - name: Jigokuraku
             kind: manga
             status:
-                comments: |
+                comments:
                     - Adapted CAP 90
       childs:
           - kind: anime
@@ -263,7 +262,7 @@ entries:
             chronology: 2nd Season
             status:
                 watched: true
-                comments: |
+                comments:
                     - Che pero como me vas a dejar en ese clifhanger boludo
                     - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     - Buscare el manga
@@ -308,7 +307,7 @@ entries:
       status:
           chapter: 215
           completed: true
-          comments: |
+          comments:
               - Cloe Park The Goat
 
     - name: Naze Boku no Sekai wo Daremo Oboeteinai no ka?
@@ -323,7 +322,7 @@ entries:
             name: Dr. Stone
             adapted_until:
                 chapter: 232
-            comments: |
+            comments:
                 - El anime adapto todo el contenido del manga
                 - Ya quedan son escenas extras que ojala salgan como OVA's
       childs:

@@ -42,7 +42,12 @@ export default defineNuxtConfig({
         {
             path: "~/components/shared",
             pathPrefix: false,
-            extensions: [".vue"],
+            extensions: ["vue"],
+        },
+        {
+            path: "~/components/domain",
+            pathPrefix: false,
+            extensions: ["vue"],
         },
     ],
     modules: [

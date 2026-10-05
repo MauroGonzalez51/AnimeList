@@ -1,5 +1,6 @@
 import { LucideCircleDot, LucideListFilter } from "@lucide/vue";
-import { KINDS, STATUSES } from "@/composables/use-search-filters";
+import { Statuses } from "@/composables/use-search-filters";
+import { AllKinds, EntryKindLabel, StatusPropertyLabel } from "@/utils/store";
 
 export function useSidebarConfig() {
     const filters = useSearchFilters();
@@ -14,19 +15,17 @@ export function useSidebarConfig() {
                     icon: LucideListFilter,
                     defaultActive: true,
                     collapsibleItems:
-                        KINDS.map<Components.Sidebar.GroupCollapsibleKindItem>(
+                        AllKinds.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (kind) => {
-                                const key = kind.value.replaceAll(/-/g, "_");
-
                                 return {
                                     kind: "checkbox",
-                                    key: kind.value,
-                                    label: `search.filter.by_type.options.${key}`,
+                                    key: kind,
+                                    label: EntryKindLabel[kind],
                                     checked() {
-                                        return filters.active.value[kind.value];
+                                        return filters.active.value[kind];
                                     },
                                     action() {
-                                        filters.dispatch.toggle(kind.value);
+                                        filters.dispatch.toggle(kind);
                                     },
                                 };
                             },
@@ -38,12 +37,12 @@ export function useSidebarConfig() {
                     icon: LucideCircleDot,
                     defaultActive: true,
                     collapsibleItems:
-                        STATUSES.map<Components.Sidebar.GroupCollapsibleKindItem>(
+                        Statuses.map<Components.Sidebar.GroupCollapsibleKindItem>(
                             (status) => {
                                 return {
                                     kind: "checkbox",
                                     key: status,
-                                    label: `search.filter.by_status.options.${status}`,
+                                    label: StatusPropertyLabel[status],
                                     checked() {
                                         return filters.active.value[status];
                                     },

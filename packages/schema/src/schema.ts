@@ -106,9 +106,11 @@ export const AdaptedUntilSchema = z.object({
     notes: ValueLike.optional().describe(MESSAGES.ADAPTATION.NOTES),
 });
 
+export const RootEntryKindSchema = z.literal("$root");
+
 export const Entry: z.ZodType<KindEntry> = z.discriminatedUnion("kind", [
     BaseEntrySchema.safeExtend({
-        kind: z.literal("$root"),
+        kind: RootEntryKindSchema,
         get childs() {
             return z.array(Entry).optional().describe(MESSAGES.ENTRY.CHILDS);
         },

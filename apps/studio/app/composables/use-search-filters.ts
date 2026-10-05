@@ -1,28 +1,14 @@
-import {
-    BaseEntryStatusSchema,
-    ReadableEntryKindSchema,
-    ReadableEntrySchema,
-    WatchableEntryKindSchema,
-} from "@animelist/packages-schema";
+import { AllKinds, StatusOptions } from "@/utils/store";
 
-export const KINDS = [
-    ReadableEntryKindSchema,
-    WatchableEntryKindSchema,
-].flatMap((kind) => [...kind.options.values()]);
-
-export const STATUSES = BaseEntryStatusSchema.pick({
+export const Statuses = StatusOptions.pick({
+    completed: true,
     watched: true,
     favorite: true,
-})
-    .extend(ReadableEntrySchema.pick({ completed: true }).shape)
-    // eslint-disable-next-line antfu/consistent-chaining
-    .keyof().options;
+}).keyof().options;
 
-export const ALL_FILTERS = [...KINDS.map((k) => k.value), ...STATUSES] as const;
+export const ALL_FILTERS = [...AllKinds, ...Statuses] as const;
 
-export type FilterKind =
-    | (typeof KINDS)[number]["value"]
-    | (typeof STATUSES)[number];
+export type FilterKind = (typeof ALL_FILTERS)[number];
 
 export default function () {
     const active = useState<Record<FilterKind, boolean>>(

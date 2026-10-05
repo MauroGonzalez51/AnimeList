@@ -1,6 +1,4 @@
 <script setup lang="ts">
-    import { getGradient } from "@/utils/gradient";
-
     definePageMeta({
         layout: "sidebar",
     });
@@ -20,22 +18,7 @@
             @change-page="(value) => (page = value)"
         >
             <template #item="{ $item }">
-                <Card class="pt-0">
-                    <div
-                        class="h-25 rounded-t-lg"
-                        :style="getGradient([$item.name, $item.kind])"
-                    />
-
-                    <CardHeader class="flex justify-between px-4">
-                        <CardTitle class="font-medium text-sm">
-                            {{ $item.name }}
-                        </CardTitle>
-
-                        <div v-if="$item.kind !== '$root'">
-                            {{ $item.status?.rating }}
-                        </div>
-                    </CardHeader>
-                </Card>
+                <StoreEntryCard :entry="$item" />
             </template>
         </PaginationClientSide>
     </div>
