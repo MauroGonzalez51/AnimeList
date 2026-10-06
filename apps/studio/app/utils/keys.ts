@@ -31,15 +31,14 @@ function _$$<A, B>(
 }
 
 export const NuxtKeys = {
-    Composables: {
-        UseStore: {
-            StorePath: "composables:use-store:store-path",
-            Store: "composables:use-store:store",
-        },
-        UseSearchFilters: {
-            Active: "composables:use-search-filters:active",
+    Components: {
+        Pagination: {
+            ClientSide: {
+                Loading: "components:pagination:client-side:loading",
+            },
         },
     },
+    Composables: {},
     Sidebar: {
         OpenCollapsible: (group: Components.Sidebar.GroupCollapsibleKind) =>
             `sidebar:${group.kind}:${group.label}`,

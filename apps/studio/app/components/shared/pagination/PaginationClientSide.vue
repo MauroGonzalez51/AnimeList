@@ -1,7 +1,9 @@
 <script setup lang="ts" generic="TData">
     import type { PrimitiveProps } from "reka-ui";
-    import type { HTMLAttributes } from "vue";
+    import type { HTMLAttributes, VNode } from "vue";
+    import { promiseTimeout } from "@vueuse/core";
     import { Primitive } from "reka-ui";
+    import { Temporal } from "temporal-polyfill";
     import { usePaginationControls } from "@/components/shared/pagination/injection-state";
     import { cn } from "@/lib/utils";
 
@@ -12,6 +14,7 @@
         pageSize: number;
         class?: HTMLAttributes["class"];
         containerAs?: PrimitiveProps["as"];
+        loadingTime?: number;
     }
 
     interface Emits {
@@ -20,15 +23,23 @@
 
     interface Slots {
         empty: () => VNode[];
+        loading: () => VNode[];
+        spinner: () => VNode[];
         item: (props: TData & { $item: TData; $index: number }) => VNode[];
     }
 
     const props = withDefaults(defineProps<Props>(), {
         containerAs: "div",
+        loadingTime: 500,
     });
     const emit = defineEmits<Emits>();
     defineSlots<Slots>();
 
+    const containerRef = useTemplateRef("container");
+    const loading = useState<Temporal.Instant | null>(
+        NuxtKeys.Components.Pagination.ClientSide.Loading,
+        () => null,
+    );
     const { items, page } = usePaginationControls.provide({
         items: props.items,
         index: props.index,
@@ -45,18 +56,49 @@
         return items.value.slice(startIndex, startIndex + props.pageSize);
     });
 
-    function changePage(newPage: number) {
-        if (newPage === page.value) {
+    async function changePage(newPage: number) {
+        if (newPage === page.value || loading.value !== null) {
             return;
         }
 
+        loading.value = Temporal.Now.instant();
+
         emit("changePage", newPage);
+        if (containerRef.value) {
+            containerRef.value.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
+            });
+        }
+
+        const elapsed = Temporal.Now.instant()
+            .since(loading.value)
+            .total("milliseconds");
+
+        const remaining = props.loadingTime - elapsed;
+
+        if (remaining > 0) {
+            await promiseTimeout(remaining);
+        }
+
+        loading.value = null;
     }
 </script>
 
 <template>
-    <section class="flex flex-col grow h-full space-y-2">
-        <template v-if="!items || items.length === 0">
+    <section ref="container" class="flex flex-col grow h-full space-y-2">
+        <template v-if="loading">
+            <slot name="loading">
+                <div class="h-full flex items-center justify-center">
+                    <slot name="spinner">
+                        <Spinner class="size-6" />
+                    </slot>
+                </div>
+            </slot>
+        </template>
+
+        <template v-else-if="!items || items.length === 0">
             <slot name="empty" />
         </template>
 
