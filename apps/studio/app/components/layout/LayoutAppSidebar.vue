@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import type { DropdownMenuContentProps } from "reka-ui";
     import type { SidebarProps } from "@/components/ui/sidebar";
+    import SidebarImage from "@/assets/images/sidebar.webp";
     import { useSidebar } from "@/components/ui/sidebar";
 
     const props = withDefaults(defineProps<SidebarProps>(), {
@@ -101,7 +102,7 @@
                                 class="aspect-square size-8 rounded-lg bg-muted dark:bg-gray-300"
                             >
                                 <NuxtImg
-                                    src="/sidebar.webp"
+                                    :src="SidebarImage"
                                     class="object-cover min-w-full min-h-full rounded-lg"
                                 />
                             </div>

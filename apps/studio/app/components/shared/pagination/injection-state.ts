@@ -7,7 +7,7 @@ interface Args<T> {
 
 type PaginationItem = { type: "item"; page: number } | { type: "ellipsis" };
 
-const [_provide, _use] = createInjectionState(<T>(args: Args<T>) => {
+function _state<T>(args: Args<T>) {
     const config = useAppConfig();
 
     const items = computed(() => toValue(args.items));
@@ -74,7 +74,11 @@ const [_provide, _use] = createInjectionState(<T>(args: Args<T>) => {
         hasPrevious,
         paginationItems,
     };
-});
+}
+
+type _ReturnType<T> = ReturnType<typeof _state<T>>;
+
+const [_provide, _use] = createInjectionState(_state);
 
 function usePaginationControls() {
     const state = _use();
@@ -89,6 +93,6 @@ function usePaginationControls() {
 }
 
 usePaginationControls.provide = <T>(args: Args<T>) =>
-    _provide(args as Args<unknown>);
+    _provide(args as Args<unknown>) as _ReturnType<T>;
 
 export { usePaginationControls };

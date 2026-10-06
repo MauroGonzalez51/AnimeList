@@ -36,7 +36,7 @@
         pageSize: props.pageSize,
     });
 
-    const visibleItems = computed<TData[]>(() => {
+    const visibleItems = computed(() => {
         if (!items.value?.length) {
             return [];
         }

@@ -55,6 +55,11 @@ export default defineNuxtConfig({
         "@nuxt/image",
         "vue-sonner/nuxt",
     ],
+    router: {
+        options: {
+            hashMode: true,
+        },
+    },
 
     ///////////////////////////////////////////////////////
     // MODULES CONFIG
@@ -74,13 +79,12 @@ export default defineNuxtConfig({
         skipSettingLocaleOnNavigate: true,
         detectBrowserLanguage: {
             useCookie: true,
-            redirectOn: "no prefix",
+            alwaysRedirect: false,
             fallbackLocale: "en",
-            alwaysRedirect: true,
         },
         customRoutes: "meta",
         defaultLocale: "en",
-        strategy: "prefix",
+        strategy: "no_prefix",
         locales: [
             {
                 code: "en",
@@ -90,5 +94,8 @@ export default defineNuxtConfig({
             },
         ],
         autoDeclare: true,
+    },
+    image: {
+        provider: "none",
     },
 });
