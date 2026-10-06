@@ -54,7 +54,7 @@
                         "chronology": {
                             "$ref": "#/$defs/__schema10"
                         },
-                        "comments": {
+                        "notes": {
                             "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
@@ -92,7 +92,7 @@
                         "chronology": {
                             "$ref": "#/$defs/__schema10"
                         },
-                        "comments": {
+                        "notes": {
                             "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
@@ -134,7 +134,7 @@
                         "chronology": {
                             "$ref": "#/$defs/__schema10"
                         },
-                        "comments": {
+                        "notes": {
                             "$ref": "#/$defs/__schema11"
                         },
                         "kind": {
@@ -262,7 +262,7 @@
             "type": "string"
         },
         "__schema11": {
-            "description": "Optional free-form notes or comments",
+            "description": "Optional contextual notes, metadata, or external details about the entry",
             "$ref": "#/$defs/__schema12"
         },
         "__schema12": {
@@ -350,7 +350,7 @@
                 "rating": {
                     "$ref": "#/$defs/__schema19"
                 },
-                "comments": {
+                "review": {
                     "$ref": "#/$defs/__schema21"
                 },
                 "episode": {
@@ -383,7 +383,7 @@
             "exclusiveMinimum": 0
         },
         "__schema21": {
-            "description": "Optional free-form notes or comments",
+            "description": "Personal review, feedback, or impressions about consuming this entry",
             "$ref": "#/$defs/__schema12"
         },
         "__schema22": {
@@ -409,7 +409,7 @@
                 "rating": {
                     "$ref": "#/$defs/__schema19"
                 },
-                "comments": {
+                "review": {
                     "$ref": "#/$defs/__schema21"
                 },
                 "completed": {

@@ -3,7 +3,7 @@ export const MESSAGES = {
         WATCHED: "Indicates whether this entry has been watched",
         FAVORITE: "Marks this entry as a personal favorite",
         RATING: "Personal rating for the current entry",
-        COMMENTS: "Optional free-form notes or comments",
+        REVIEW: "Personal review, feedback, or impressions about consuming this entry",
     },
     WATCHABLE_ENTRY: {
         EPISODE: "Last watched episode of the current entry",
@@ -48,6 +48,7 @@ export const MESSAGES = {
             CH: "Chinese",
             KR: "Korean",
         },
+        NOTES: "Optional contextual notes, metadata, or external details about the entry",
     },
     SCHEMA: {
         META: "Metadata about this file, such as its name and repository source",

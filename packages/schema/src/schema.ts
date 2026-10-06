@@ -34,9 +34,7 @@ export const BaseEntrySchema = z.object({
         .describe(MESSAGES.ENTRY.REFERENCE),
     name: z.string(),
     chronology: z.string().optional(),
-    comments: ValueLike.optional().describe(
-        MESSAGES.BASE_ENTRY_STATUS.COMMENTS,
-    ),
+    notes: ValueLike.optional().describe(MESSAGES.ENTRY.NOTES),
 });
 
 export const BaseStatusSchema = z.object({
@@ -53,9 +51,7 @@ export const BaseStatusSchema = z.object({
         .positive()
         .optional()
         .describe(MESSAGES.BASE_ENTRY_STATUS.RATING),
-    comments: ValueLike.optional().describe(
-        MESSAGES.BASE_ENTRY_STATUS.COMMENTS,
-    ),
+    review: ValueLike.optional().describe(MESSAGES.BASE_ENTRY_STATUS.REVIEW),
 });
 
 export const WatchableKindSchema = z.union([
@@ -122,7 +118,9 @@ export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
 
     BaseEntrySchema.safeExtend({
         kind: WatchableKindSchema.default("anime"),
-        status: WatchableStatusSchema.optional().describe(MESSAGES.ENTRY.STATUS),
+        status: WatchableStatusSchema.optional().describe(
+            MESSAGES.ENTRY.STATUS,
+        ),
         get children() {
             return z.array(EntrySchema).optional();
         },

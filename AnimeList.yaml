@@ -43,7 +43,7 @@ entries:
             name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
             status:
                 watched: true
-                comments: Movie was divided into episodes
+            notes: Movie was divided into episodes
 
           - kind: ova
             name: "Kaguya-sama wa Kokurasetai: Otona e no Kaidan"
@@ -104,7 +104,7 @@ entries:
             status:
                 favorite: true
                 watched: true
-      comments:
+      notes:
           - 3th Season Announced :O
 
     - name: Loop 7-kaime no Akuyaku Reijou wa
@@ -247,9 +247,8 @@ entries:
       related:
           - name: Jigokuraku
             kind: manga
-            status:
-                comments:
-                    - Adapted CAP 90
+            notes:
+                - Adapted CAP 90
       children:
           - kind: anime
             name: Jigokuraku
@@ -262,7 +261,7 @@ entries:
             chronology: 2nd Season
             status:
                 watched: true
-                comments:
+                review:
                     - Che pero como me vas a dejar en ese clifhanger boludo
                     - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     - Buscare el manga
@@ -307,7 +306,7 @@ entries:
       status:
           chapter: 215
           completed: true
-          comments:
+          review:
               - Cloe Park The Goat
 
     - name: Naze Boku no Sekai wo Daremo Oboeteinai no ka?
@@ -322,7 +321,7 @@ entries:
             name: Dr. Stone
             adaptedUntil:
                 chapter: 232
-            comments:
+            notes:
                 - El anime adapto todo el contenido del manga
                 - Ya quedan son escenas extras que ojala salgan como OVA's
       children:
@@ -454,3 +453,12 @@ entries:
             chronology: 4th Season
             status:
                 episode: 24
+
+    - kind: anime
+      name: Kill Ao
+      status:
+          watched: true
+          review:
+              - Buenardo la wea
+      notes:
+          - 2da Temporada confirmada
