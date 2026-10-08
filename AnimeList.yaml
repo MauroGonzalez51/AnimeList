@@ -462,3 +462,24 @@ entries:
               - Buenardo la wea
       notes:
           - 2da Temporada confirmada
+
+    - kind: universe
+      name: Grand Blue
+      children:
+          - kind: anime
+            name: Grand Blue
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Grand Blue 2nd Season
+            chronology: 2nd Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Grand Blue 3th Season
+            chronology: 3th Season
+            status:
+                episode: 1
