@@ -37,14 +37,18 @@
 
         <template v-if="content && content.length > 0">
             <PaginationClientSide
+                v-model:page="page"
                 :items="content"
                 index="id"
-                :page="page"
-                :page-size="3"
-                @change-page="(_) => (page = _)"
+                :page-size="20"
+                :loading-time="1_000"
             >
                 <template #item="{ $item }">
-                    <pre class="bg-red-50" v-text="$item" />
+                    <pre v-text="$item" />
+                </template>
+
+                <template #loading>
+                    <Skeleton class="w-full h-10" />
                 </template>
             </PaginationClientSide>
         </template>

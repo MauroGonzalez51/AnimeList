@@ -10,21 +10,15 @@
     interface Props {
         items: MaybeRefOrGetter<TData[] | undefined>;
         index: keyof TData;
-        page: MaybeRefOrGetter<number>;
         pageSize: number;
         class?: HTMLAttributes["class"];
         containerAs?: PrimitiveProps["as"];
         loadingTime?: number;
     }
 
-    interface Emits {
-        changePage: [page: number];
-    }
-
     interface Slots {
         empty: () => VNode[];
         loading: () => VNode[];
-        spinner: () => VNode[];
         item: (props: TData & { $item: TData; $index: number }) => VNode[];
     }
 
@@ -32,18 +26,19 @@
         containerAs: "div",
         loadingTime: 500,
     });
-    const emit = defineEmits<Emits>();
     defineSlots<Slots>();
+
+    const page = defineModel<number>("page", { required: false, default: 1 });
 
     const containerRef = useTemplateRef("container");
     const loading = useState<Temporal.Instant | null>(
         NuxtKeys.Components.Pagination.ClientSide.Loading,
         () => null,
     );
-    const { items, page } = usePaginationControls.provide({
+    const { items } = usePaginationControls.provide({
         items: props.items,
         index: props.index,
-        page: props.page,
+        page,
         pageSize: props.pageSize,
     });
 
@@ -62,15 +57,18 @@
         }
 
         loading.value = Temporal.Now.instant();
+        await nextTick();
+        await new Promise<void>((resolve) => {
+            requestAnimationFrame(() => resolve());
+        });
 
-        emit("changePage", newPage);
-        if (containerRef.value) {
-            containerRef.value.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-                inline: "nearest",
-            });
-        }
+        page.value = newPage;
+        await nextTick();
+        containerRef.value?.scrollIntoView({
+            behavior: "auto",
+            block: "start",
+            inline: "nearest",
+        });
 
         const elapsed = Temporal.Now.instant()
             .since(loading.value)
@@ -87,39 +85,46 @@
 </script>
 
 <template>
-    <section ref="container" class="flex flex-col grow h-full space-y-2">
-        <template v-if="loading">
-            <slot name="loading">
-                <div class="h-full flex items-center justify-center">
-                    <slot name="spinner">
-                        <Spinner class="size-6" />
+    <section
+        ref="container"
+        class="relative flex flex-col grow h-full space-y-2"
+    >
+        <div class="relative min-h-0 grow">
+            <template v-if="!items || items.length === 0">
+                <slot name="empty" />
+            </template>
+
+            <template v-else>
+                <Primitive :as="containerAs" :class="cn('w-full', props.class)">
+                    <template
+                        v-for="(item, itemIndex) in visibleItems"
+                        :key="String(item[props.index])"
+                    >
+                        <slot
+                            name="item"
+                            v-bind="{
+                                ...item,
+                                $item: item,
+                                $index: itemIndex,
+                            }"
+                        />
+                    </template>
+                </Primitive>
+            </template>
+            <div
+                v-if="loading"
+                class="absolute inset-0 z-10 overflow-hidden bg-background"
+            >
+                <template v-for="_ in pageSize" :key="_">
+                    <slot name="loading">
+                        <div class="flex min-h-10 items-center justify-center">
+                            <Spinner class="size-6" />
+                        </div>
                     </slot>
-                </div>
-            </slot>
-        </template>
-
-        <template v-else-if="!items || items.length === 0">
-            <slot name="empty" />
-        </template>
-
-        <template v-else>
-            <Primitive :as="containerAs" :class="cn('w-full', props.class)">
-                <template
-                    v-for="(item, itemIndex) in visibleItems"
-                    :key="String(item[props.index])"
-                >
-                    <slot
-                        name="item"
-                        v-bind="{
-                            ...item,
-                            $item: item,
-                            $index: itemIndex,
-                        }"
-                    />
                 </template>
-            </Primitive>
-        </template>
+            </div>
+        </div>
 
-        <PaginationControls @change-page="(page) => changePage(page)" />
+        <PaginationControls @change-page="changePage" />
     </section>
 </template>
