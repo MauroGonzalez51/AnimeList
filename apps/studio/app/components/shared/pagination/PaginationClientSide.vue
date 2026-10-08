@@ -14,6 +14,7 @@
         class?: HTMLAttributes["class"];
         containerAs?: PrimitiveProps["as"];
         loadingTime?: number;
+        condition?: (item: TData) => boolean | undefined;
     }
 
     interface Slots {
@@ -40,15 +41,7 @@
         index: props.index,
         page,
         pageSize: props.pageSize,
-    });
-
-    const visibleItems = computed(() => {
-        if (!items.value?.length) {
-            return [];
-        }
-
-        const startIndex = (page.value - 1) * props.pageSize;
-        return items.value.slice(startIndex, startIndex + props.pageSize);
+        condition: props.condition,
     });
 
     async function changePage(newPage: number) {
@@ -97,7 +90,7 @@
             <template v-else>
                 <Primitive :as="containerAs" :class="cn('w-full', props.class)">
                     <template
-                        v-for="(item, itemIndex) in visibleItems"
+                        v-for="(item, itemIndex) in items"
                         :key="String(item[props.index])"
                     >
                         <slot

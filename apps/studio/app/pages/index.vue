@@ -42,6 +42,13 @@
                 index="id"
                 :page-size="20"
                 :loading-time="1_000"
+                :condition="
+                    (item) => {
+                        if (item._parentId) {
+                            return false;
+                        }
+                    }
+                "
             >
                 <template #item="{ $item }">
                     <pre v-text="$item" />

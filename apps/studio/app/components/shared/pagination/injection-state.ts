@@ -3,6 +3,7 @@ interface Args<T> {
     index: keyof T;
     page: MaybeRefOrGetter<number>;
     pageSize: number;
+    condition?: (item: T) => boolean | undefined;
 }
 
 type PaginationItem = { type: "item"; page: number } | { type: "ellipsis" };
@@ -10,8 +11,25 @@ type PaginationItem = { type: "item"; page: number } | { type: "ellipsis" };
 function _state<T>(args: Args<T>) {
     const config = useAppConfig();
 
-    const items = computed(() => toValue(args.items));
+    const items = computed(() =>
+        toValue(args.items)?.filter((item) => {
+            if (args.condition) {
+                return args.condition(item) ?? true;
+            }
+
+            return true;
+        }),
+    );
     const page = computed(() => toValue(args.page));
+
+    const visibleItems = computed(() => {
+        if (!items.value?.length) {
+            return [];
+        }
+
+        const startIndex = (page.value - 1) * args.pageSize;
+        return items.value.slice(startIndex, startIndex + args.pageSize);
+    });
 
     const totalPages = computed(() => {
         if (!items.value?.length) {
@@ -66,7 +84,7 @@ function _state<T>(args: Args<T>) {
     });
 
     return {
-        items,
+        items: visibleItems,
         page,
         pageSize: args.pageSize,
         totalPages,
