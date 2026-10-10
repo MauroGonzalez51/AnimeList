@@ -41,6 +41,7 @@ entries:
 
           - kind: anime
             name: "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai"
+            chronology: Movie / Special
             status:
                 watched: true
             notes: Movie was divided into episodes
@@ -94,10 +95,13 @@ entries:
 
     - name: Tsue to Tsurugi no Wistoria
       kind: anime
-      chronology: 1st Season
-      status:
-          watched: true
       children:
+          - kind: anime
+            name: Tsue to Tsurugi no Wistoria
+            chronology: 1st Season
+            status:
+                watched: true
+
           - kind: anime
             name: Tsue to Tsurugi no Wistoria 2nd Season
             chronology: 2nd Season
@@ -172,11 +176,14 @@ entries:
 
     - name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
       kind: anime
-      chronology: 1st Season
-      status:
-          watched: true
-          favorite: true
       children:
+          - kind: anime
+            name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
+            chronology: 1st Season
+            status:
+                watched: true
+                favorite: true
+
           - kind: anime
             name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken 2nd Season
             chronology: 2nd Season
@@ -191,11 +198,15 @@ entries:
 
     - name: Yofukashi no Uta
       kind: anime
-      chronology: 1st Season
       status:
-          watched: true
           favorite: true
       children:
+          - kind: anime
+            name: Yofukashi no Uta
+            chronology: 1st Season
+            status:
+                watched: true
+
           - kind: anime
             name: Yofukashi no Uta Season 2
             chronology: 2nd Season
@@ -213,10 +224,13 @@ entries:
 
     - name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
       kind: anime
-      chronology: 1st Season
-      status:
-          watched: true
       children:
+          - kind: anime
+            name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
+            chronology: 1st Season
+            status:
+                watched: true
+
           - kind: anime
             name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
             chronology: 2nd Season
@@ -226,10 +240,13 @@ entries:
 
     - name: Arifureta Shokugyou de Sekai Saikyou
       kind: anime
-      chronology: 1st Season
-      status:
-          watched: true
       children:
+          - kind: anime
+            name: Arifureta Shokugyou de Sekai Saikyou
+            chronology: 1st Season
+            status:
+                watched: true
+
           - kind: anime
             name: Arifureta Shokugyou de Sekai Saikyou 2nd Season
             chronology: 2nd Season
