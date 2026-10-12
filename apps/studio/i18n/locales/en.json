@@ -12,5 +12,23 @@
             "system": "System",
             "changed_to": "Color scheme changed to {mode}"
         }
+    },
+    "exceptions": {
+        "config": {
+            "load": {
+                "title": "Could not load saved config"
+            },
+            "save": {
+                "title": "Could not save current config",
+                "description": "Please try again later"
+            }
+        }
+    },
+    "actions": {
+        "config": {
+            "save": {
+                "title": "Config saved"
+            }
+        }
     }
 }

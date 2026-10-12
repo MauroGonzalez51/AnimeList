@@ -1,1 +1,1 @@
-pub mod store_path;
+pub mod config;

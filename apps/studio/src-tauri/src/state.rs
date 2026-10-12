@@ -1,7 +1,8 @@
 use crate::config::{Config, app_directories};
 
+#[derive(lombok_macros::Getter)]
 pub struct AppState {
-    pub config: std::sync::Mutex<Config>,
+    config: std::sync::Mutex<Config>,
 }
 
 impl AppState {

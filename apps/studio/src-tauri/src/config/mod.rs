@@ -1,8 +1,11 @@
 use directories::ProjectDirs;
+use lombok_macros::{Getter, Setter};
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
+#[derive(lombok_macros::Getter)]
 pub struct AppDirectories {
-    pub config_file: Option<PathBuf>,
+    config_file: Option<PathBuf>,
 }
 
 impl AppDirectories {
@@ -19,7 +22,7 @@ pub fn app_directories() -> &'static AppDirectories {
     CONFIG.get_or_init(AppDirectories::new)
 }
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Getter, Setter)]
 pub struct Config {
     store_path: Option<PathBuf>,
 }
@@ -59,13 +62,5 @@ impl Config {
         let content = toml::to_string_pretty(self)?;
         std::fs::write(config_file, content)?;
         Ok(())
-    }
-
-    pub fn store_path(&self) -> Option<PathBuf> {
-        self.store_path.clone()
-    }
-
-    pub fn set_store_path(&mut self, store_path: PathBuf) {
-        self.store_path = Some(store_path);
     }
 }

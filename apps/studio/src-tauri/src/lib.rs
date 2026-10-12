@@ -9,8 +9,8 @@ use tauri::Manager;
 pub fn run() -> anyhow::Result<()> {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            commands::store_path::get_store_path,
-            commands::store_path::set_store_path,
+            commands::config::get_config,
+            commands::config::save_config,
         ])
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())

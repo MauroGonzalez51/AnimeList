@@ -38,7 +38,14 @@ export const NuxtKeys = {
             },
         },
     },
-    Composables: {},
+    Composables: {
+        UseConfig: {
+            State: "composables:use-config:state",
+        },
+        UseStoreManager: {
+            Content: "composables:use-store-manager:content",
+        },
+    },
     Sidebar: {
         OpenCollapsible: (group: Components.Sidebar.GroupCollapsibleKind) =>
             `sidebar:${group.kind}:${group.label}`,
