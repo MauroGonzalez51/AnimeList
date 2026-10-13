@@ -7,6 +7,10 @@ import { tauri } from "@/lib/tauri";
 
 type _Config = z.infer<typeof Config>;
 
+interface PatchOptions {
+    autoSave?: boolean;
+}
+
 export default function () {
     const {
         $logger,
@@ -50,13 +54,16 @@ export default function () {
     function patch<P extends Paths<_Config>, V extends Get<_Config, P>>(
         path: P,
         value: V,
+        options: PatchOptions = { autoSave: true },
     ) {
         if (!state.value) {
             return;
         }
 
         set(state.value, path, value);
-        save();
+        if (options.autoSave) {
+            save();
+        }
     }
 
     return { state, dispatch: { init, save, patch } };

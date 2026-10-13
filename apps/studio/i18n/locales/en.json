@@ -30,5 +30,13 @@
                 "title": "Config saved"
             }
         }
+    },
+    "views": {
+        "home": {
+            "banner": {
+                "your_library": "Your Library",
+                "n_entries": "{count} Entry found | {count} Entries found"
+            }
+        }
     }
 }

@@ -5,9 +5,9 @@ export default function () {
     const { $logger } = useNuxtApp();
     const config = useConfig();
 
-    const entries = useState<FlatEntry[] | null>(
+    const entries = useState<FlatEntry[] | undefined>(
         NuxtKeys.Composables.UseStoreManager.Content,
-        () => null,
+        () => undefined,
     );
 
     const entriesMap = shallowReactive<Map<string, FlatEntry>>(
@@ -54,7 +54,7 @@ export default function () {
         () => config.state.value?.store_path,
         async (path) => {
             if (!path) {
-                entries.value = null;
+                entries.value = undefined;
                 return;
             }
 
