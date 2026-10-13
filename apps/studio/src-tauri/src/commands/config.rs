@@ -17,17 +17,18 @@ pub fn get_config(state: State<'_, AppState>) -> anyhow::Result<Config, String> 
 #[tauri::command]
 pub fn save_config(
     state: State<'_, AppState>,
-    new_config: Config,
+    config: Config,
 ) -> anyhow::Result<Config, String> {
-    let mut config = state
-        .get_config()
-        .lock()
-        .map_err(|error| format!("could not lock config: {error}"))?;
-
-    *config = new_config;
     config
         .save(app_directories())
         .map_err(|error| format!("could not save config: {error}"))?;
 
-    Ok(config.clone())
+    let mut current_config = state
+        .get_config()
+        .lock()
+        .map_err(|error| format!("could not lock config: {error}"))?;
+
+    *current_config = config;
+
+    Ok(current_config.clone())
 }

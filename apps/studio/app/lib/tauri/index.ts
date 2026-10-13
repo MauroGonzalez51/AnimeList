@@ -10,7 +10,7 @@ export const tauri = defineCommands({
         result: Config,
     },
     save_config: {
-        input: z.object({ config: Config.shape }),
+        input: z.object({ config: Config }),
         result: Config,
     },
 });
