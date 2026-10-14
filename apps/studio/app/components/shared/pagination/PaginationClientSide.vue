@@ -63,7 +63,7 @@
         page.value = newPage;
         await nextTick();
         containerRef.value?.scrollIntoView({
-            behavior: "auto",
+            behavior: "smooth",
             block: "start",
             inline: "nearest",
         });
@@ -85,7 +85,7 @@
 <template>
     <section
         ref="container"
-        class="relative flex flex-col grow h-full space-y-2"
+        class="relative flex min-h-0 min-w-0 flex-1 flex-col space-y-2"
     >
         <div class="relative min-h-0 grow">
             <template v-if="!items || items.length === 0">

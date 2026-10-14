@@ -7,35 +7,43 @@
 </script>
 
 <template>
-    <section class="mx-auto max-w-6xl space-y-8">
-        <div class="max-w-xl space-y-2">
-            <p
-                class="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase"
+    <section class="flex min-h-0 min-w-0 flex-1 flex-col">
+        <div class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col">
+            <div class="max-w-xl space-y-2">
+                <p
+                    class="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase"
+                >
+                    {{ $t("views.home.banner.your_library") }}
+                </p>
+                <p
+                    v-if="(manager.entries.value?.length ?? 0) > 0"
+                    class="text-sm leading-relaxed text-muted-foreground"
+                >
+                    {{
+                        $t("views.home.banner.n_entries", {
+                            count: manager.entries.value?.length ?? 0,
+                        })
+                    }}
+                </p>
+            </div>
+            <PaginationClientSide
+                :items="manager.entries"
+                index="id"
+                :page-size="20"
+                loading-method="single"
+                :condition="
+                    (item) => {
+                        if (item._parentId) {
+                            return false;
+                        }
+                    }
+                "
+                class="grid w-full min-w-0 grid-cols-5 grid-rows-5 gap-4"
             >
-                {{ $t("views.home.banner.your_library") }}
-            </p>
-            <p
-                v-if="manager.entries.value && manager.entries.value.length > 0"
-                class="text-sm leading-relaxed text-muted-foreground"
-            >
-                {{
-                    $t("views.home.banner.n_entries", {
-                        count: manager.entries.value.length,
-                    })
-                }}
-            </p>
+                <template #item="{ $item }">
+                    <EntryCard :entry="$item" class="min-w-0" />
+                </template>
+            </PaginationClientSide>
         </div>
-        <PaginationClientSide
-            :items="manager.entries"
-            index="id"
-            :page-size="20"
-            :loading-time="10_000"
-            loading-method="single"
-            class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
-        >
-            <template #item="{ $item }">
-                <pre v-text="$item.kind" />
-            </template>
-        </PaginationClientSide>
     </section>
 </template>

@@ -44,6 +44,11 @@ export default defineNuxtConfig({
             pathPrefix: false,
             extensions: ["vue"],
         },
+        {
+            path: "~/components/domain",
+            pathPrefix: false,
+            extensions: ["vue"],
+        },
     ],
     modules: [
         "@nuxt/eslint",

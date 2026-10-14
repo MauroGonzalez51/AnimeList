@@ -11,7 +11,7 @@
             class="h-svh min-h-0 overflow-hidden"
         >
             <LayoutAppSidebar collapsible="icon" variant="floating" />
-            <SidebarInset class="min-h-0 overflow-hidden">
+            <SidebarInset class="min-h-0 min-w-0 overflow-hidden">
                 <header
                     class="sticky top-0 z-50 flex h-16 shrink-0 items-center rounded-t-lg border-b border-border/20 bg-background/60 backdrop-blur-md transition-colors duration-200"
                 >
