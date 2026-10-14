@@ -7,6 +7,8 @@
     import { usePaginationControls } from "@/components/shared/pagination/injection-state";
     import { cn } from "@/lib/utils";
 
+    type LoadingMethod = "single" | "multiple";
+
     interface Props {
         items: MaybeRefOrGetter<TData[] | undefined>;
         index: keyof TData;
@@ -14,11 +16,13 @@
         class?: HTMLAttributes["class"];
         containerAs?: PrimitiveProps["as"];
         loadingTime?: number;
+        loadingMethod?: LoadingMethod;
         condition?: (item: TData) => boolean | undefined;
     }
 
     interface Slots {
         empty: () => VNode[];
+        "loading-container": () => VNode[];
         loading: () => VNode[];
         item: (props: TData & { $item: TData; $index: number }) => VNode[];
     }
@@ -26,6 +30,7 @@
     const props = withDefaults(defineProps<Props>(), {
         containerAs: "div",
         loadingTime: 500,
+        loadingMethod: "multiple",
     });
     defineSlots<Slots>();
 
@@ -108,13 +113,31 @@
                 v-if="loading"
                 class="absolute inset-0 z-10 overflow-hidden bg-background"
             >
-                <template v-for="_ in pageSize" :key="_">
-                    <slot name="loading">
-                        <div class="flex min-h-10 items-center justify-center">
-                            <Spinner class="size-6" />
+                <slot name="loading-container">
+                    <template v-if="loadingMethod === 'multiple'">
+                        <div :class="cn('w-full', props.class)">
+                            <template v-for="_ in pageSize" :key="_">
+                                <slot name="loading">
+                                    <div
+                                        class="w-full h-full flex items-center justify-center"
+                                    >
+                                        <Spinner />
+                                    </div>
+                                </slot>
+                            </template>
                         </div>
-                    </slot>
-                </template>
+                    </template>
+
+                    <template v-else>
+                        <slot name="loading">
+                            <div
+                                class="flex h-full w-full items-center justify-center"
+                            >
+                                <Spinner class="size-8" />
+                            </div>
+                        </slot>
+                    </template>
+                </slot>
             </div>
         </div>
 

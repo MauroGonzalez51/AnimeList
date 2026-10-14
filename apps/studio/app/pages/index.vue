@@ -29,10 +29,12 @@
             :items="manager.entries"
             index="id"
             :page-size="20"
+            :loading-time="10_000"
+            loading-method="single"
             class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
         >
             <template #item="{ $item }">
-                <pre v-text="$item.id" />
+                <pre v-text="$item.kind" />
             </template>
         </PaginationClientSide>
     </section>
