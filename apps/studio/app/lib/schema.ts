@@ -1,6 +1,7 @@
 import type { Entry } from "@animelist/packages-schema";
 import type { ConsolaInstance } from "consola";
 import type { DistributedOmit } from "type-fest";
+import type { CSSProperties } from "vue";
 import { JSONSchema } from "@animelist/packages-schema";
 import { homeDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -13,10 +14,12 @@ export type FlatEntry = DistributedOmit<Entry, "children" | "related"> & {
     id: string;
     _parentId?: string;
     _isGeneratedId?: boolean;
+    style?: CSSProperties;
 };
 
 interface Options {
     logger: ConsolaInstance;
+    style?: boolean;
 }
 
 class FileNotExists extends Error {
@@ -52,7 +55,10 @@ export async function pickStoreFile() {
     return path;
 }
 
-export async function readStoreContent(path: string, options?: Options) {
+export async function readStoreContent(
+    path: string,
+    options?: Pick<Options, "logger">,
+) {
     const resolvedPath = await resolvePath(path);
 
     if (!(await exists(resolvedPath))) {
@@ -79,7 +85,10 @@ export async function readStoreContent(path: string, options?: Options) {
     }
 }
 
-export function flattenEntries(entries: Entry[], parentId?: string) {
+export function flattenEntries(
+    entries: Entry[],
+    options?: Pick<Options, "style"> & { parentId?: string },
+) {
     const flatten: FlatEntry[] = [];
 
     for (const entry of entries) {
@@ -92,22 +101,30 @@ export function flattenEntries(entries: Entry[], parentId?: string) {
             id,
         };
 
-        if (parentId) {
-            flated._parentId = parentId;
+        if (options?.parentId) {
+            flated._parentId = options.parentId;
         }
 
         if (!hasId) {
             flated._isGeneratedId = true;
         }
 
+        if (!flated._parentId && options?.style) {
+            flated.style = getGradient([flated.id]);
+        }
+
         flatten.push(flated);
 
         if (children && children.length > 0) {
-            flatten.push(...flattenEntries(children, id));
+            flatten.push(
+                ...flattenEntries(children, { ...options, parentId: id }),
+            );
         }
 
         if (related && related.length > 0) {
-            flatten.push(...flattenEntries(related, id));
+            flatten.push(
+                ...flattenEntries(related, { ...options, parentId: id }),
+            );
         }
     }
 

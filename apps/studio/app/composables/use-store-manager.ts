@@ -26,7 +26,7 @@ export default function () {
             return null;
         }
 
-        return flattenEntries(data.entries);
+        return flattenEntries(data.entries, { style: true });
     }
 
     async function pick() {

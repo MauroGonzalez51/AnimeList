@@ -32,10 +32,7 @@
             )
         "
     >
-        <div
-            class="relative h-36 overflow-hidden"
-            :style="getGradient([entry.id])"
-        >
+        <div class="relative h-36 overflow-hidden" :style="entry?.style">
             <div
                 class="absolute inset-0 bg-linear-to-t from-black/65 via-black/10 to-transparent"
             />
