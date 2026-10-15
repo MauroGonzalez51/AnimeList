@@ -70,7 +70,12 @@
     }
 
     function updateColorMode() {
-        if (!document.startViewTransition) {
+        // ? PROVISIONAL: having issues with nvidia drivers so
+        // this validation prevents everything from broking
+        const skipTransition =
+            import.meta.dev && "__TAURI_INTERNALS__" in window;
+
+        if (!document.startViewTransition || skipTransition) {
             updateTheme();
             return;
         }
