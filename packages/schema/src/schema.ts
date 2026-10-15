@@ -54,7 +54,7 @@ export const BaseStatusSchema = z.object({
     review: ValueLike.optional().describe(MESSAGES.BASE_ENTRY_STATUS.REVIEW),
 });
 
-export const WatchableKindSchema = z.union([
+export const WatchableTypeSchema = z.union([
     z.literal("anime").describe(MESSAGES.ENTRY.KIND.JP),
     z.literal("donghua").describe(MESSAGES.ENTRY.KIND.CH),
     z.literal("aeni").describe(MESSAGES.ENTRY.KIND.KR),
@@ -71,7 +71,7 @@ export const WatchableStatusSchema = BaseStatusSchema.safeExtend({
     ),
 });
 
-export const ReadableKindSchema = z.union([
+export const ReadableTypeSchema = z.union([
     z.literal("manga").describe(MESSAGES.ENTRY.KIND.JP),
     z.literal("manhua").describe(MESSAGES.ENTRY.KIND.CH),
     z.literal("manhwa").describe(MESSAGES.ENTRY.KIND.KR),
@@ -91,7 +91,7 @@ export const ReadableStatusSchema = BaseStatusSchema.safeExtend({
 });
 
 export const AdaptedUntilSchema = z.object({
-    kind: WatchableKindSchema.optional(),
+    kind: WatchableTypeSchema.optional(),
     chapter: PositiveNumberLike.optional().describe(
         MESSAGES.ADAPTATION.CHAPTER,
     ),
@@ -117,7 +117,7 @@ export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
     }),
 
     BaseEntrySchema.safeExtend({
-        kind: WatchableKindSchema.default("anime"),
+        kind: WatchableTypeSchema.default("anime"),
         status: WatchableStatusSchema.optional().describe(
             MESSAGES.ENTRY.STATUS,
         ),
@@ -130,7 +130,7 @@ export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
     }),
 
     BaseEntrySchema.safeExtend({
-        kind: ReadableKindSchema,
+        kind: ReadableTypeSchema,
         status: ReadableStatusSchema.optional().describe(MESSAGES.ENTRY.STATUS),
         adaptedUntil: AdaptedUntilSchema.optional().describe(
             MESSAGES.ENTRY.ADAPTED_UNTIL,

@@ -1,5 +1,5 @@
 import type { FlatEntry } from "@/lib/schema";
-import { StoreManager } from "@/lib/schema";
+import { flattenEntries, pickStoreFile, readStoreContent } from "@/lib/schema";
 
 export default function () {
     const { $logger } = useNuxtApp();
@@ -9,15 +9,12 @@ export default function () {
         NuxtKeys.Composables.UseStoreManager.Content,
         () => undefined,
     );
-
     const entriesMap = shallowReactive<Map<string, FlatEntry>>(
         new Map<string, FlatEntry>(),
     );
 
-    async function _process(path: string) {
-        const data = (
-            await StoreManager.readContent(path, { logger: $logger })
-        ).match(
+    async function process(path: string) {
+        const data = (await readStoreContent(path, { logger: $logger })).match(
             (content) => content,
             (error) => {
                 $logger.error(error);
@@ -29,51 +26,32 @@ export default function () {
             return null;
         }
 
-        return StoreManager.flatten(data.entries);
+        return flattenEntries(data.entries);
     }
 
     async function pick() {
-        const path = await StoreManager.pick();
+        const path = await pickStoreFile();
         if (!path) {
             return;
         }
 
         config.dispatch.patch("store_path", path);
-
-        const _entries = await _process(path);
-        if (_entries) {
-            entries.value = _entries;
-        }
     }
 
     async function clear() {
-        config.dispatch.patch("store_path", null);
+        if (config.state.value?.store_path) {
+            config.dispatch.patch("store_path", null);
+        }
     }
-
-    watch(
-        () => config.state.value?.store_path,
-        async (path) => {
-            if (!path) {
-                entries.value = undefined;
-                return;
-            }
-
-            const _entries = await _process(path);
-            if (_entries) {
-                entries.value = _entries;
-            }
-        },
-        { immediate: true },
-    );
 
     watch(
         entries,
         (newEntries) => {
+            entriesMap.clear();
+
             if (!newEntries) {
                 return;
             }
-
-            entriesMap.clear();
 
             for (let i = 0; i < newEntries.length; i++) {
                 const entry = newEntries[i];
@@ -88,5 +66,5 @@ export default function () {
         { immediate: true },
     );
 
-    return { entries, entriesMap, dispatch: { pick, clear } };
+    return { entries, entriesMap, dispatch: { pick, clear, process } };
 }

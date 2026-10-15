@@ -87,7 +87,7 @@
         ref="container"
         class="relative flex min-h-0 min-w-0 flex-1 flex-col space-y-2"
     >
-        <div class="relative min-h-0 grow">
+        <div class="relative grow">
             <template v-if="!items || items.length === 0">
                 <slot name="empty" />
             </template>

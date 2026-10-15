@@ -1,5 +1,6 @@
 import type { Entry } from "@animelist/packages-schema";
 import type { ConsolaInstance } from "consola";
+import type { DistributedOmit } from "type-fest";
 import { JSONSchema } from "@animelist/packages-schema";
 import { homeDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -8,7 +9,7 @@ import { err, ok } from "neverthrow";
 import { ulid } from "ulidx";
 import { parse } from "yaml";
 
-export type FlatEntry = Omit<Entry, "children" | "related"> & {
+export type FlatEntry = DistributedOmit<Entry, "children" | "related"> & {
     id: string;
     _parentId?: string;
     _isGeneratedId?: boolean;
@@ -43,88 +44,72 @@ async function resolvePath(path: string): Promise<string> {
     return path;
 }
 
-export const StoreManager = {
-    async pick() {
-        const path = await open({
-            filters: [{ name: "YAML", extensions: ["yml", "yaml"] }],
-            multiple: false,
+export async function pickStoreFile() {
+    const path = await open({
+        filters: [{ name: "YAML", extensions: ["yml", "yaml"] }],
+        multiple: false,
+    });
+    return path;
+}
+
+export async function readStoreContent(path: string, options?: Options) {
+    const resolvedPath = await resolvePath(path);
+
+    if (!(await exists(resolvedPath))) {
+        return err(new FileNotExists());
+    }
+
+    const logger = options?.logger;
+
+    try {
+        const contents = await readTextFile(resolvedPath, {
+            encoding: "utf-8",
         });
-        return path;
-    },
-    async readContent(path: string, options?: Options) {
-        const resolvedPath = await resolvePath(path);
+        const parsed = JSONSchema.safeParse(parse(contents));
 
-        if (!(await exists(resolvedPath))) {
-            return err(new FileNotExists());
-        }
-
-        const logger = options?.logger;
-
-        try {
-            const contents = await readTextFile(resolvedPath, {
-                encoding: "utf-8",
-            });
-            const parsed = JSONSchema.safeParse(parse(contents));
-
-            if (!parsed.success) {
-                logger?.error(parsed.error.issues);
-                return err(new InvalidFileFormat());
-            }
-
-            return ok(parsed.data);
-        } catch (error: unknown) {
-            logger?.error(error);
+        if (!parsed.success) {
+            logger?.error(parsed.error.issues);
             return err(new InvalidFileFormat());
         }
-    },
-    flatten(entries: Entry[], parentId?: string) {
-        const flatten: FlatEntry[] = [];
 
-        for (const entry of entries) {
-            const hasId = Boolean(entry.id);
-            const id = entry.id ?? `${ID_PREFIX}${ulid()}`;
+        return ok(parsed.data);
+    } catch (error: unknown) {
+        logger?.error(error);
+        return err(new InvalidFileFormat());
+    }
+}
 
-            const { children, related, ...rest } = entry;
-            const flated: FlatEntry = {
-                ...rest,
-                id,
-            };
+export function flattenEntries(entries: Entry[], parentId?: string) {
+    const flatten: FlatEntry[] = [];
 
-            if (parentId) {
-                flated._parentId = parentId;
-            }
+    for (const entry of entries) {
+        const hasId = Boolean(entry.id);
+        const id = entry.id ?? `${ID_PREFIX}${ulid()}`;
 
-            if (!hasId) {
-                flated._isGeneratedId = true;
-            }
+        const { children, related, ...rest } = entry;
+        const flated: FlatEntry = {
+            ...rest,
+            id,
+        };
 
-            flatten.push(flated);
-
-            if (children && children.length > 0) {
-                flatten.push(...this.flatten(children, id));
-            }
-
-            if (related && related.length > 0) {
-                flatten.push(...this.flatten(related, id));
-            }
+        if (parentId) {
+            flated._parentId = parentId;
         }
 
-        return flatten;
-    },
-    buildMaps(flattenEntries: FlatEntry[]) {
-        const indexMap = new Map<string, number>();
-        const entryMap = new Map<string, FlatEntry>();
-
-        for (let index = 0; index < flattenEntries.length; index++) {
-            const entry = flattenEntries[index];
-            if (!entry) {
-                continue;
-            }
-
-            indexMap.set(entry.id, index);
-            entryMap.set(entry.id, entry);
+        if (!hasId) {
+            flated._isGeneratedId = true;
         }
 
-        return { indexMap, entryMap };
-    },
-};
+        flatten.push(flated);
+
+        if (children && children.length > 0) {
+            flatten.push(...flattenEntries(children, id));
+        }
+
+        if (related && related.length > 0) {
+            flatten.push(...flattenEntries(related, id));
+        }
+    }
+
+    return flatten;
+}

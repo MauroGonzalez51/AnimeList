@@ -47,6 +47,8 @@
 
     const { define: DefineItemKind, reuse: ReuseItemKind } =
         createReusableTemplate<{ group: Components.Sidebar.GroupItemKind }>();
+
+    const manager = useStoreManager();
 </script>
 
 <template>
@@ -158,6 +160,24 @@
                 </template>
             </ScrollArea>
         </SidebarContent>
+
+        <SidebarFooter>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton @click="manager.dispatch.pick">
+                        <LucideSearch />
+                        <span>Select</span>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                    <SidebarMenuButton @click="manager.dispatch.clear">
+                        <LucideTrash />
+                        <span>Remove</span>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarFooter>
 
         <SidebarRail />
     </Sidebar>

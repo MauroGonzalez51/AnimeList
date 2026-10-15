@@ -38,5 +38,26 @@
                 "n_entries": "{count} Entry found | {count} Entries found"
             }
         }
+    },
+    "domain": {
+        "entry": {
+            "kind": {
+                "universe": "Universe",
+                "anime": "Anime",
+                "donghua": "Donghua",
+                "aeni": "Aeni",
+                "ova": "OVA",
+                "movie": "Movie",
+                "jdrama": "J-Drama",
+                "cdrama": "C-Drama",
+                "kdrama": "K-Drama",
+                "manga": "Manga",
+                "manhua": "Manhua",
+                "manhwa": "Manhwa",
+                "light-novel": "Light Novel",
+                "web-novel": "Web Novel",
+                "other": "Other"
+            }
+        }
     }
 }

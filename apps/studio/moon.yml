@@ -39,6 +39,8 @@ tasks:
             - tauri
         options:
             cache: false
+        env:
+            WEBKIT_DISABLE_DMABUF_RENDERER: "1"
 
     shadcn:
         extends: pnpm
