@@ -14,18 +14,12 @@ type PatchedFlatEntry = DistributedOmit<
     "id" | "_isGeneratedId" | "_source" | "style"
 >;
 
-export default function () {
+export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
     const { $logger } = useNuxtApp();
     const config = useConfig();
 
-    const meta = useState<Meta | undefined>(
-        NuxtKeys.Composables.UseStoreManager.Meta,
-        () => undefined,
-    );
-    const entries = useState<FlatEntry[] | undefined>(
-        NuxtKeys.Composables.UseStoreManager.Entries,
-        () => undefined,
-    );
+    const meta = ref<Meta | undefined>(undefined);
+    const entries = ref<FlatEntry[] | undefined>(undefined);
     const entriesMap = shallowReactive<Map<FlatEntry["id"], FlatEntry>>(
         new Map<string, FlatEntry>(),
     );
@@ -111,4 +105,4 @@ export default function () {
         entriesMap,
         dispatch: { pick, clear, process, patchEntry },
     };
-}
+});

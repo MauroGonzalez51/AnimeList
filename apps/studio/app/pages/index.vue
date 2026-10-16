@@ -3,7 +3,7 @@
         layout: "sidebar",
     });
 
-    const manager = useStoreManager();
+    const { entries } = storeToRefs(useStoreManager());
 </script>
 
 <template>
@@ -18,18 +18,18 @@
                     {{ $t("views.home.banner.your_library") }}
                 </p>
                 <p
-                    v-if="(manager.entries.value?.length ?? 0) > 0"
+                    v-if="(entries?.length ?? 0) > 0"
                     class="text-sm leading-relaxed text-muted-foreground"
                 >
                     {{
                         $t("views.home.banner.n_entries", {
-                            count: manager.entries.value?.length ?? 0,
+                            count: entries?.length ?? 0,
                         })
                     }}
                 </p>
             </div>
             <PaginationClientSide
-                :items="manager.entries"
+                :items="entries"
                 index="id"
                 :page-size="20"
                 loading-method="single"

@@ -11,7 +11,7 @@
 
     const props = defineProps<Props>();
 
-    const _manager = useStoreManager();
+    const manager = useStoreManager();
 
     const { define: DefineHeartBadge, reuse: ReuseHeartBadge } =
         createReusableTemplate<{
@@ -24,6 +24,13 @@
         <Button
             variant="ghost"
             class="rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15"
+            @click="
+                manager?.dispatch.patchEntry(
+                    entry.id,
+                    'status.favorite',
+                    !favorite,
+                )
+            "
         >
             <LucideHeart
                 :class="

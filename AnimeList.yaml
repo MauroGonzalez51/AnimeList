@@ -5,15 +5,15 @@ meta:
     github: https://github.com/MauroGonzalez51/AnimeList
 
 entries:
-    - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
+    - id: kaguya-sama-wa-kokurasetai
       kind: universe
-      id: kaguya-sama-wa-kokurasetai
+      name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
       related:
-          - name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
-            kind: manga
+          - kind: manga
+            name: "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen"
             status:
-                chapter: 247
                 completed: true
+                chapter: 247
       references:
           - id: oshi-no-ko
             relation:
@@ -51,9 +51,9 @@ entries:
             status:
                 watched: true
 
-    - name: Oshi No Ko
+    - id: oshi-no-ko
       kind: anime
-      id: oshi-no-ko
+      name: Oshi No Ko
       references:
           - id: kaguya-sama-wa-kokurasetai
             relation:
@@ -61,40 +61,45 @@ entries:
                 - prequel
                 - author
 
-    - name: Sousou no Frieren
-      kind: anime
-      chronology: 1st Season
-      status:
-          watched: true
+    - kind: anime
+      name: Sousou no Frieren
       children:
-          - name: Sousou no Frieren 2nd Season
-            kind: anime
+          - kind: anime
+            name: Sousou no Frieren
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Sousou no Frieren 2nd Season
             chronology: 2nd Season
 
-    - name: Nichijou
-      kind: anime
+    - kind: anime
+      name: Nichijou
 
-    - name: Make Heroine ga Oosugiru!
-      kind: anime
+    - kind: anime
+      name: Make Heroine ga Oosugiru!
 
-    - name: Kowloon Generic Romance
-      kind: anime
+    - kind: anime
+      name: Kowloon Generic Romance
 
-    - name: Witch Watch
-      kind: anime
+    - kind: anime
+      name: Witch Watch
 
-    - name: Yasei no Last Boss ga Arawareta!
-      kind: anime
+    - kind: anime
+      name: Yasei no Last Boss ga Arawareta!
       status:
           watched: true
 
-    - name: Saikyou no Shienshoku "Wajutsushi" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru
-      kind: anime
+    - kind: anime
+      name:
+          Saikyou no Shienshoku "Wajutsushi" de Aru Ore wa Sekai Saikyou Clan wo
+          Shitagaeru
       status:
           watched: true
 
-    - name: Tsue to Tsurugi no Wistoria
-      kind: anime
+    - kind: anime
+      name: Tsue to Tsurugi no Wistoria
       children:
           - kind: anime
             name: Tsue to Tsurugi no Wistoria
@@ -111,19 +116,19 @@ entries:
       notes:
           - 3th Season Announced :O
 
-    - name: Loop 7-kaime no Akuyaku Reijou wa
-      kind: anime
+    - kind: anime
+      name: Loop 7-kaime no Akuyaku Reijou wa
       status:
           watched: true
 
-    - name: Solo Leveling
-      kind: universe
+    - kind: universe
+      name: Solo Leveling
       related:
-          - name: Solo Leveling
-            kind: manhwa
+          - kind: manhwa
+            name: Solo Leveling
             status:
-                chapter: 200
                 completed: true
+                chapter: 200
       children:
           - kind: anime
             name: Ore dake Level Up na Ken
@@ -137,67 +142,69 @@ entries:
             status:
                 watched: true
 
-    - name: Yubisaki to Renren
-      kind: anime
-      status:
-          watched: true
-          favorite: true
-
-    - name: Chiyu Mahou no Machigatta Tsukaikata
-      kind: anime
-      status:
-          watched: true
-          favorite: true
-
-    - name: Keikenzumi na Kimi to, Keiken Zero na Ore ga, Otsukiai suru Hanashi.
-      kind: anime
-      status:
-          watched: true
-
-    - name: Ragna Crimson
-      kind: anime
-      status:
-          watched: true
-
-    - name: Undead Girl Murder Farce
-      kind: anime
-      status:
-          watched: true
-
-    - name: Kimi wa Houkago Insomnia
-      kind: anime
-      status:
-          watched: true
-
-    - name: NieR:Automata Ver1.1a
-      kind: anime
+    - kind: anime
+      name: Yubisaki to Renren
       status:
           favorite: true
+          watched: true
 
-    - name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
-      kind: anime
+    - kind: anime
+      name: Chiyu Mahou no Machigatta Tsukaikata
+      status:
+          favorite: true
+          watched: true
+
+    - kind: anime
+      name: Keikenzumi na Kimi to, Keiken Zero na Ore ga, Otsukiai suru Hanashi.
+      status:
+          watched: true
+
+    - kind: anime
+      name: Ragna Crimson
+      status:
+          watched: true
+
+    - kind: anime
+      name: Undead Girl Murder Farce
+      status:
+          watched: true
+
+    - kind: anime
+      name: Kimi wa Houkago Insomnia
+      status:
+          watched: true
+
+    - kind: anime
+      name: NieR:Automata Ver1.1a
+      status:
+          favorite: true
+
+    - kind: anime
+      name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
       children:
           - kind: anime
             name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
             chronology: 1st Season
             status:
-                watched: true
                 favorite: true
+                watched: true
 
           - kind: anime
-            name: Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken 2nd Season
+            name:
+                Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken 2nd
+                Season
             chronology: 2nd Season
             status:
                 watched: true
 
-    - name: Tomo-chan wa Onnanoko!
-      kind: anime
+    - kind: anime
+      name: Tomo-chan wa Onnanoko!
       status:
-          watched: true
           favorite: true
+          watched: true
 
-    - name: Yofukashi no Uta
-      kind: anime
+    - kind: anime
+      name: Yofukashi no Uta
       status:
           favorite: true
       children:
@@ -211,19 +218,19 @@ entries:
             name: Yofukashi no Uta Season 2
             chronology: 2nd Season
 
-    - name: Kinsou no Vermeil
-      kind: anime
+    - kind: anime
+      name: Kinsou no Vermeil
       status:
-          watched: true
           favorite: true
+          watched: true
 
-    - name: Yuusha, Yamemasu
-      kind: anime
+    - kind: anime
+      name: Yuusha, Yamemasu
       status:
           watched: true
 
-    - name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
-      kind: anime
+    - kind: anime
+      name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
       children:
           - kind: anime
             name: Rikei ga Koi ni Ochita no de Shoumei shitemita.
@@ -235,11 +242,11 @@ entries:
             name: Rikei ga Koi ni Ochita no de Shoumei shitemita. Heart
             chronology: 2nd Season
             status:
-                watched: true
                 favorite: true
+                watched: true
 
-    - name: Arifureta Shokugyou de Sekai Saikyou
-      kind: anime
+    - kind: anime
+      name: Arifureta Shokugyou de Sekai Saikyou
       children:
           - kind: anime
             name: Arifureta Shokugyou de Sekai Saikyou
@@ -259,11 +266,11 @@ entries:
             status:
                 watched: true
 
-    - name: Jigokuraku
-      kind: universe
+    - kind: universe
+      name: Jigokuraku
       related:
-          - name: Jigokuraku
-            kind: manga
+          - kind: manga
+            name: Jigokuraku
             notes:
                 - Adapted CAP 90
       children:
@@ -283,21 +290,21 @@ entries:
                     - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     - Buscare el manga
 
-    - name: Make Heroine ga Oosugiru!
-      kind: anime
+    - kind: anime
+      name: Make Heroine ga Oosugiru!
       status:
           watched: true
 
-    - name: Sono Bisque Doll wa Koi wo Suru
-      kind: universe
+    - kind: universe
+      name: Sono Bisque Doll wa Koi wo Suru
       related:
-          - name: Sono Bisque Doll wa Koi wo Suru
-            kind: manga
+          - kind: manga
+            name: Sono Bisque Doll wa Koi wo Suru
             adaptedUntil:
                 chapter: 84
             status:
-                chapter: 115.5
                 completed: true
+                chapter: 115.5
       children:
           - kind: anime
             name: Sono Bisque Doll wa Koi wo Suru
@@ -311,28 +318,28 @@ entries:
             status:
                 watched: true
 
-    - name: Kuchi ga Saketemo Kimi Ni Wa
-      kind: manga
+    - kind: manga
+      name: Kuchi ga Saketemo Kimi Ni Wa
       status:
-          chapter: 80.5
-          completed: true
           favorite: true
-
-    - name: Circles
-      kind: manhwa
-      status:
-          chapter: 215
           completed: true
+          chapter: 80.5
+
+    - kind: manhwa
+      name: Circles
+      status:
+          completed: true
+          chapter: 215
           review:
               - Cloe Park The Goat
 
-    - name: Naze Boku no Sekai wo Daremo Oboeteinai no ka?
-      kind: anime
+    - kind: anime
+      name: Naze Boku no Sekai wo Daremo Oboeteinai no ka?
       status:
           watched: true
 
-    - name: Dr. Stone
-      kind: universe
+    - kind: universe
+      name: Dr. Stone
       related:
           - kind: manga
             name: Dr. Stone
@@ -426,8 +433,8 @@ entries:
     - kind: anime
       name: "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku"
       status:
-          watched: true
           favorite: true
+          watched: true
 
     - kind: anime
       name: Übel Blatt
