@@ -1,12 +1,24 @@
+import type { Meta } from "@animelist/packages-schema";
+import type { DistributedOmit, Get, Paths } from "type-fest";
 import type { FlatEntry } from "@/lib/schema";
+import { set } from "es-toolkit/compat";
 import { flattenEntries, pickStoreFile, readStoreContent } from "@/lib/schema";
+
+type PatchedFlatEntry = DistributedOmit<
+    FlatEntry,
+    "id" | "_isGeneratedId" | "style"
+>;
 
 export default function () {
     const { $logger } = useNuxtApp();
     const config = useConfig();
 
+    const meta = useState<Meta | undefined>(
+        NuxtKeys.Composables.UseStoreManager.Meta,
+        () => undefined,
+    );
     const entries = useState<FlatEntry[] | undefined>(
-        NuxtKeys.Composables.UseStoreManager.Content,
+        NuxtKeys.Composables.UseStoreManager.Entries,
         () => undefined,
     );
     const entriesMap = shallowReactive<Map<string, FlatEntry>>(
@@ -26,7 +38,10 @@ export default function () {
             return null;
         }
 
-        return flattenEntries(data.entries, { style: true });
+        return {
+            meta: data.meta,
+            entries: flattenEntries(data.entries, { style: true }),
+        };
     }
 
     async function pick() {
@@ -42,6 +57,18 @@ export default function () {
         if (config.state.value?.store_path) {
             config.dispatch.patch("store_path", null);
         }
+    }
+
+    async function patchEntry<
+        Path extends Paths<PatchedFlatEntry>,
+        Value extends Get<PatchedFlatEntry, Path>,
+    >(id: FlatEntry["id"], path: Path, value: Value) {
+        const entry = entriesMap.get(id);
+        if (!entry) {
+            return;
+        }
+
+        set(entry, path, value);
     }
 
     watch(
@@ -66,5 +93,10 @@ export default function () {
         { immediate: true },
     );
 
-    return { entries, entriesMap, dispatch: { pick, clear, process } };
+    return {
+        meta,
+        entries,
+        entriesMap,
+        dispatch: { pick, clear, process, patchEntry },
+    };
 }

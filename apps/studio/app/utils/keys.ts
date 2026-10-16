@@ -43,7 +43,8 @@ export const NuxtKeys = {
             State: "composables:use-config:state",
         },
         UseStoreManager: {
-            Content: "composables:use-store-manager:content",
+            Meta: "composables:use-store-manager:meta",
+            Entries: "composables:use-store-manager:entries",
         },
     },
     Sidebar: {

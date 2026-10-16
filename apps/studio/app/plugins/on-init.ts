@@ -16,9 +16,10 @@ export default defineNuxtPlugin({
                         return;
                     }
 
-                    const entries = await manager.dispatch.process(path);
-                    if (entries) {
-                        manager.entries.value = entries;
+                    const data = await manager.dispatch.process(path);
+                    if (data) {
+                        manager.meta.value = data.meta;
+                        manager.entries.value = data.entries;
                     }
                 },
                 { immediate: true },

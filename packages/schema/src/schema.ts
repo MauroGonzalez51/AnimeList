@@ -144,12 +144,12 @@ export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
     }),
 ]);
 
+export const MetaSchema = z.object({
+    name: z.string(),
+    github: z.url(),
+});
+
 export const JSONSchema = z.object({
-    meta: z
-        .object({
-            name: z.string(),
-            github: z.url(),
-        })
-        .describe(MESSAGES.SCHEMA.META),
+    meta: MetaSchema.describe(MESSAGES.SCHEMA.META),
     entries: z.array(EntrySchema).optional().describe(MESSAGES.SCHEMA.ENTRIES),
 });

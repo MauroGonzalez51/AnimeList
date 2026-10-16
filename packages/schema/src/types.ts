@@ -3,12 +3,15 @@ import type {
     AdaptedUntilSchema,
     BaseEntrySchema,
     BaseStatusSchema,
+    MetaSchema,
     ReadableStatusSchema,
     ReadableTypeSchema,
     UniverseKindSchema,
     WatchableStatusSchema,
     WatchableTypeSchema,
 } from "@/schema";
+
+export type Meta = z.infer<typeof MetaSchema>;
 
 export type BaseEntry = z.infer<typeof BaseEntrySchema>;
 export type BaseStatus = z.infer<typeof BaseStatusSchema>;
