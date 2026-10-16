@@ -82,6 +82,7 @@ export default defineNuxtConfig({
         "@nuxtjs/i18n",
         "@nuxt/image",
         "vue-sonner/nuxt",
+        "@pinia/nuxt",
     ],
     router: {
         options: {

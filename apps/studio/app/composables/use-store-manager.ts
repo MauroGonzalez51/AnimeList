@@ -2,11 +2,16 @@ import type { Meta } from "@animelist/packages-schema";
 import type { DistributedOmit, Get, Paths } from "type-fest";
 import type { FlatEntry } from "@/lib/schema";
 import { set } from "es-toolkit/compat";
-import { flattenEntries, pickStoreFile, readStoreContent } from "@/lib/schema";
+import {
+    flattenEntries,
+    performWrite,
+    pickStoreFile,
+    readStoreContent,
+} from "@/lib/schema";
 
 type PatchedFlatEntry = DistributedOmit<
     FlatEntry,
-    "id" | "_isGeneratedId" | "style"
+    "id" | "_isGeneratedId" | "_source" | "style"
 >;
 
 export default function () {
@@ -21,7 +26,7 @@ export default function () {
         NuxtKeys.Composables.UseStoreManager.Entries,
         () => undefined,
     );
-    const entriesMap = shallowReactive<Map<string, FlatEntry>>(
+    const entriesMap = shallowReactive<Map<FlatEntry["id"], FlatEntry>>(
         new Map<string, FlatEntry>(),
     );
 
@@ -69,6 +74,13 @@ export default function () {
         }
 
         set(entry, path, value);
+
+        if (config.state.value?.store_path && meta.value) {
+            performWrite({
+                path: config.state.value.store_path,
+                data: { meta: meta.value, entries: entriesMap },
+            });
+        }
     }
 
     watch(

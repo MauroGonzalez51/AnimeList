@@ -11,6 +11,8 @@
 
     const props = defineProps<Props>();
 
+    const _manager = useStoreManager();
+
     const { define: DefineHeartBadge, reuse: ReuseHeartBadge } =
         createReusableTemplate<{
             favorite?: boolean | undefined;
@@ -19,9 +21,19 @@
 
 <template>
     <DefineHeartBadge v-slot="{ favorite }">
-        <span class="rounded-full bg-white/15 p-2 backdrop-blur-md">
-            <LucideHeart :class="cn(favorite && 'fill-current')" />
-        </span>
+        <Button
+            variant="ghost"
+            class="rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15"
+        >
+            <LucideHeart
+                :class="
+                    cn(
+                        favorite && 'fill-current group-hover:text-rose-300',
+                        'size-6',
+                    )
+                "
+            />
+        </Button>
     </DefineHeartBadge>
 
     <Card

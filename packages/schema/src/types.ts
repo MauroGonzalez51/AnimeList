@@ -3,6 +3,7 @@ import type {
     AdaptedUntilSchema,
     BaseEntrySchema,
     BaseStatusSchema,
+    JSONSchema,
     MetaSchema,
     ReadableStatusSchema,
     ReadableTypeSchema,
@@ -12,6 +13,7 @@ import type {
 } from "@/schema";
 
 export type Meta = z.infer<typeof MetaSchema>;
+export type Store = z.infer<typeof JSONSchema>;
 
 export type BaseEntry = z.infer<typeof BaseEntrySchema>;
 export type BaseStatus = z.infer<typeof BaseStatusSchema>;
