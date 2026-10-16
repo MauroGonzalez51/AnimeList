@@ -1,3 +1,4 @@
+import process from "node:process";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
@@ -85,6 +86,13 @@ export default defineNuxtConfig({
     router: {
         options: {
             hashMode: true,
+        },
+    },
+    runtimeConfig: {
+        public: {
+            // WebKitGTK breaks view transitions when compositing is disabled
+            disableViewTransitions:
+                process.env.WEBKIT_DISABLE_COMPOSITING_MODE === "1",
         },
     },
 

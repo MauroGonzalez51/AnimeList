@@ -11,6 +11,9 @@
 
     const button = useTemplateRef("button");
     const colorMode = useColorMode();
+    const {
+        public: { disableViewTransitions },
+    } = useRuntimeConfig();
 
     const modes: Components.ColorModeOption[] = [
         {
@@ -70,12 +73,7 @@
     }
 
     function updateColorMode() {
-        // ? PROVISIONAL: having issues with nvidia drivers so
-        // this validation prevents everything from broking
-        const skipTransition =
-            import.meta.dev && "__TAURI_INTERNALS__" in window;
-
-        if (!document.startViewTransition || skipTransition) {
+        if (!document.startViewTransition || disableViewTransitions) {
             updateTheme();
             return;
         }
