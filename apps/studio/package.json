@@ -42,7 +42,6 @@
         "shadcn-nuxt": "2.8.2",
         "tailwind-merge": "^3.7.0",
         "temporal-polyfill": "^1.0.6",
-        "ulidx": "^2.4.1",
         "vue": "^3.5.44",
         "vue-router": "^5.4.0",
         "vue-sonner": "^2.0.9",

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import { buildEntryTree } from "~/lib/schema";
+
     definePageMeta({
         layout: "sidebar",
         i18n: {
@@ -20,6 +22,9 @@
     const { entriesMap } = storeToRefs(manager);
 
     const entry = computed(() => entriesMap.value.get(ENTRY_ID.value));
+    const tree = computed(() =>
+        buildEntryTree(entriesMap.value, ENTRY_ID.value),
+    );
 
     const { navigate } = useCallbackUrl();
 </script>
@@ -27,7 +32,7 @@
 <template>
     <section v-if="entry" class="flex min-h-0 min-w-0 flex-1 flex-col">
         <div
-            class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-2"
+            class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-4"
         >
             <div class="flex w-full items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
@@ -61,7 +66,6 @@
 
                         <template #watchable="{ watchable }">
                             <EntryFavoriteBadge
-                                variant="default"
                                 :entry="entry"
                                 :favorite="watchable.status?.favorite"
                             />
@@ -69,6 +73,11 @@
                     </EntryDiscriminator>
                 </div>
             </div>
+
+            <DebugBlock :content="entry" />
+            <DebugBlock :content="tree" />
+
+            <div class="py-12" />
         </div>
     </section>
 </template>

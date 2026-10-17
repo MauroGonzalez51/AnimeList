@@ -24,7 +24,7 @@
         :variant="variant"
         :class="
             cn(
-                'rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15',
+                'group rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15',
                 props.class,
             )
         "
@@ -36,8 +36,9 @@
         <LucideHeart
             :class="
                 cn(
-                    favorite && 'fill-current group-hover:text-rose-300',
-                    'size-6',
+                    'size-6 transition-colors',
+                    favorite &&
+                        'fill-current text-rose-300 group-hover:text-rose-500',
                 )
             "
         />
