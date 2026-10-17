@@ -1,11 +1,8 @@
 import type { ConsolaInstance } from "consola";
 import { JSONSchema } from "@animelist/packages-schema";
-import { homeDir } from "@tauri-apps/api/path";
 import { exists, readTextFile } from "@tauri-apps/plugin-fs";
 import { err, ok } from "neverthrow";
 import { parse } from "yaml";
-
-const TILDE_REGEX = /^~(?=\/|$)/;
 
 class FileNotExists extends Error {
     constructor() {
@@ -19,14 +16,6 @@ class InvalidFileFormat extends Error {
         super();
         this.name = "InvalidFileFormat";
     }
-}
-
-async function resolvePath(path: string): Promise<string> {
-    if (TILDE_REGEX.test(path)) {
-        return path.replace(TILDE_REGEX, await homeDir());
-    }
-
-    return path;
 }
 
 export async function readStoreContent(

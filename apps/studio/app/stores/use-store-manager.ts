@@ -72,6 +72,7 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         if (config.state.value?.store_path && meta.value) {
             performWrite({
                 path: config.state.value.store_path,
+                schemaPath: config.state.value.store_schema_path,
                 data: { meta: meta.value, entries: entriesMap },
             });
         }

@@ -3,6 +3,7 @@ import { defineCommands } from "@/lib/tauri/commands";
 
 export const Config = z.object({
     store_path: z.string().nullable(),
+    store_schema_path: z.string().nullable(),
 });
 
 export const tauri = defineCommands({

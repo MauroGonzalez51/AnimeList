@@ -25,6 +25,8 @@ pub fn app_directories() -> &'static AppDirectories {
 #[derive(Clone, Serialize, Deserialize, Getter, Setter)]
 pub struct Config {
     store_path: Option<PathBuf>,
+    #[serde(default)]
+    store_schema_path: Option<String>,
 }
 
 impl Config {
@@ -49,7 +51,10 @@ impl Config {
                     })
             })
             .transpose()?
-            .unwrap_or(Self { store_path: None });
+            .unwrap_or(Self {
+                store_path: None,
+                store_schema_path: None,
+            });
 
         Ok(config)
     }
