@@ -78,9 +78,6 @@ entries:
       name: Nichijou
 
     - kind: anime
-      name: Make Heroine ga Oosugiru!
-
-    - kind: anime
       name: Kowloon Generic Romance
 
     - kind: anime
@@ -332,6 +329,9 @@ entries:
           chapter: 215
           review:
               - Cloe Park The Goat
+
+      adaptedUntil:
+          volume: 23
 
     - kind: anime
       name: Naze Boku no Sekai wo Daremo Oboeteinai no ka?

@@ -3,6 +3,7 @@
         layout: "sidebar",
     });
 
+    const page = useRouteQuery("page", "1", { transform: Number });
     const { entries } = storeToRefs(useStoreManager());
 </script>
 
@@ -29,9 +30,10 @@
                 </p>
             </div>
             <PaginationClientSide
+                v-model:page="page"
                 :items="entries"
                 index="id"
-                :page-size="20"
+                :page-size="15"
                 loading-method="single"
                 :condition="
                     (item) => {
@@ -40,7 +42,7 @@
                         }
                     }
                 "
-                class="grid w-full min-w-0 grid-cols-4 grid-rows-5 gap-4"
+                class="grid w-full min-w-0 grid-cols-3 grid-rows-5 gap-4"
             >
                 <template #item="{ $item }">
                     <EntryCard :entry="$item" class="min-w-0" />

@@ -36,6 +36,15 @@
             "banner": {
                 "your_library": "Your Library",
                 "n_entries": "{count} Entry found | {count} Entries found"
+            },
+            "entry_card": {
+                "details_dropdown": {
+                    "see_details": "See details"
+                },
+                "n_references": "{count} reference | {count} references",
+                "adapted_until": {
+                    "label": "Adapted until"
+                }
             }
         }
     },
@@ -57,6 +66,16 @@
                 "light-novel": "Light Novel",
                 "web-novel": "Web Novel",
                 "other": "Other"
+            },
+            "status": {
+                "watched": "Watched",
+                "completed": "Completed",
+                "chapter": "Chapter {chapter}",
+                "episode": "Episode {episode}"
+            },
+            "adapted_until": {
+                "volume": "Volume {volume}",
+                "arc": "Arc {arc}"
             }
         }
     }
