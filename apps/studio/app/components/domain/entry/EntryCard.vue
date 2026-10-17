@@ -17,8 +17,6 @@
 
     const props = defineProps<Props>();
 
-    const manager = useStoreManager();
-
     const progress = computed(() => {
         if (_isUniverse(props.entry)) {
             return undefined;
@@ -114,11 +112,6 @@
         return JSON.stringify(value);
     }
 
-    const { define: DefineHeartBadge, reuse: ReuseHeartBadge } =
-        createReusableTemplate<{
-            favorite?: boolean | undefined;
-        }>();
-
     const { define: DefineRating, reuse: ReuseRating } =
         createReusableTemplate<{
             rating?: number | undefined;
@@ -128,32 +121,11 @@
         createReusableTemplate<{
             condition?: boolean | undefined;
         }>();
+
+    const { insertCallback } = useCallbackUrl();
 </script>
 
 <template>
-    <DefineHeartBadge v-slot="{ favorite }">
-        <Button
-            variant="ghost"
-            class="rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15"
-            @click="
-                manager?.dispatch.patchEntry(
-                    entry.id,
-                    'status.favorite',
-                    !favorite,
-                )
-            "
-        >
-            <LucideHeart
-                :class="
-                    cn(
-                        favorite && 'fill-current group-hover:text-rose-300',
-                        'size-6',
-                    )
-                "
-            />
-        </Button>
-    </DefineHeartBadge>
-
     <DefineRating v-slot="{ rating }">
         <div
             v-if="rating"
@@ -209,13 +181,15 @@
                 </Badge>
                 <EntryDiscriminator :entry="entry">
                     <template #readable="{ readable }">
-                        <ReuseHeartBadge
+                        <EntryFavoriteBadge
+                            :entry="readable"
                             :favorite="readable.status?.favorite"
                         />
                     </template>
 
                     <template #watchable="{ watchable }">
-                        <ReuseHeartBadge
+                        <EntryFavoriteBadge
+                            :entry="watchable"
                             :favorite="watchable.status?.favorite"
                         />
                     </template>
@@ -246,6 +220,14 @@
                                 {
                                     label: 'views.home.entry_card.details_dropdown.see_details',
                                     icon: LucideEye,
+                                    to: () =>
+                                        $localeRoute({
+                                            name: 'entry-id',
+                                            params: { id: entry.id },
+                                            query: {
+                                                ...insertCallback(),
+                                            },
+                                        }),
                                 },
                             ],
                         ]"

@@ -9,7 +9,7 @@ declare global {
                 icon?: Components.LucideIconComponent;
                 disabled?: boolean | ((ctx?: TContext) => boolean);
                 hidden?: boolean | (() => boolean);
-                to?: (ctx?: TContext) => RouteLocationRaw;
+                to?: (ctx?: TContext) => RouteLocationRaw | undefined;
                 action?: (ctx?: TContext) => void;
                 sub?: Components.Dropdown.Item<TContext>[][];
             }

@@ -46,6 +46,13 @@
                     "label": "Adapted until"
                 }
             }
+        },
+        "entry": {
+            "id": {
+                "banner": {
+                    "entry": "Entry"
+                }
+            }
         }
     },
     "domain": {
