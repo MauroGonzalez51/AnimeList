@@ -62,6 +62,8 @@ const KEY_ORDER: KeysOfUnion<
     "chapter",
 ];
 
+export const WRITE_QUEUE = new Queue({ concurrency: 1, autostart: true });
+
 function keyRank(key: unknown) {
     const index = KEY_ORDER.indexOf(String(key) as KeysOfUnion<Entry>);
 
@@ -79,20 +81,22 @@ function sortMapEntries(a: Pair, b: Pair) {
     );
 }
 
+function _template(path: string) {
+    return `# yaml-language-server: $schema=${path}\n\n`;
+}
+
 async function schemaHeader(storePath: string, schemaPath?: string | null) {
     if (!schemaPath) {
         return "";
     }
 
-    let target = relative(dirname(storePath), await resolvePath(schemaPath));
+    const target = relative(dirname(storePath), await resolvePath(schemaPath));
     if (!target.startsWith(".")) {
-        target = `./${target}`;
+        return _template(`./${target}`);
     }
 
-    return `# yaml-language-server: $schema=${target}\n\n`;
+    return _template(target);
 }
-
-export const WRITE_QUEUE = new Queue({ concurrency: 1, autostart: true });
 
 export function performWrite(args: Args) {
     WRITE_QUEUE.push(async () => {
