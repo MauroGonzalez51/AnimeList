@@ -504,3 +504,10 @@ entries:
             chronology: 3th Season
             status:
                 episode: 1
+
+    - kind: anime
+      name: Kanan-sama wa Akumade Choroi
+      status:
+          watched: true
+      notes:
+          - 2nd Season confirmed
