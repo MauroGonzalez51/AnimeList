@@ -16,6 +16,10 @@ function generateId(
     return `${ID_PREFIX}${index}`;
 }
 
+export function newGeneratedId() {
+    return `${ID_PREFIX}${crypto.randomUUID()}`;
+}
+
 export function flattenEntries(
     entries: Entry[],
     options?: { style?: boolean; parentId?: string; source?: SourceType },

@@ -32,7 +32,7 @@ export const BaseEntrySchema = z.object({
         .array(EntryReference)
         .optional()
         .describe(MESSAGES.ENTRY.REFERENCE),
-    name: z.string(),
+    name: z.string().min(1),
     chronology: z.string().optional(),
     notes: ValueLike.optional().describe(MESSAGES.ENTRY.NOTES),
 });

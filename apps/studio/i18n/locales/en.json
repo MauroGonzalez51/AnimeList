@@ -56,6 +56,61 @@
             "id": {
                 "banner": {
                     "entry": "Entry"
+                },
+                "sections": {
+                    "status": "Status",
+                    "rating": "Rating",
+                    "review": "Review",
+                    "adapted_until": "Adapted until",
+                    "notes": "Notes",
+                    "references": "References",
+                    "children": "Children",
+                    "related": "Related"
+                },
+                "actions": {
+                    "add": "Add",
+                    "move_up": "Move up",
+                    "move_down": "Move down",
+                    "cancel": "Cancel",
+                    "drag": "Drag to reorder",
+                    "edit": "Edit"
+                },
+                "dialogs": {
+                    "reference": {
+                        "title": "Add reference",
+                        "target": "Entry",
+                        "relation": "Relation",
+                        "submit": "Add",
+                        "relation_placeholder": "Add a relation...",
+                        "relation_empty": "No relations found"
+                    }
+                },
+                "form": {
+                    "create_title": "New entry",
+                    "edit_title": "Edit entry",
+                    "create_submit": "Create",
+                    "sections": {
+                        "general": "General",
+                        "status": "Status",
+                        "adapted_until": "Adapted until"
+                    },
+                    "fields": {
+                        "name": "Name",
+                        "kind": "Kind",
+                        "chronology": "Chronology",
+                        "notes": "Notes",
+                        "watched": "Watched",
+                        "favorite": "Favorite",
+                        "rating": "Rating",
+                        "review": "Review",
+                        "episode": "Episode",
+                        "completed": "Completed",
+                        "chapter": "Chapter",
+                        "adapted_kind": "Adapted into",
+                        "none": "Not adapted",
+                        "volume": "Volume",
+                        "arc": "Arc"
+                    }
                 }
             }
         }
@@ -88,10 +143,26 @@
             "adapted_until": {
                 "volume": "Volume {volume}",
                 "arc": "Arc {arc}"
+            },
+            "relation": {
+                "prequel": "Prequel",
+                "sequel": "Sequel",
+                "universe": "Universe",
+                "author": "Author",
+                "unknown": "Unknown"
+            },
+            "relation_help": {
+                "prequel": "Comes before this entry in the story",
+                "sequel": "Continues the story after this entry",
+                "universe": "Belongs to the same shared universe",
+                "author": "Shares the same author or creator",
+                "unknown": "Related, but the link is unclear"
             }
         }
     },
     "validation": {
-        "required": "This field is required. Please provide a value"
+        "required": "This field is required. Please provide a value",
+        "positive_number": "Enter a number greater than zero",
+        "number": "Enter a valid number"
     }
 }

@@ -17,3 +17,8 @@ export interface EntryNode {
     children: EntryNode[];
     related: EntryNode[];
 }
+
+export type EntryDraft = DistributedOmit<
+    FlatEntry,
+    "id" | "references" | "_parentId" | "_isGeneratedId" | "_source" | "style"
+>;

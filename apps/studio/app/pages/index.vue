@@ -45,7 +45,7 @@
                 class="grid w-full min-w-0 grid-cols-3 gap-4"
             >
                 <template #item="{ $item }">
-                    <EntryCard :entry="$item" class="min-w-0" />
+                    <EntryTile :entry="$item" class="min-w-0" />
                 </template>
             </PaginationClientSide>
         </div>

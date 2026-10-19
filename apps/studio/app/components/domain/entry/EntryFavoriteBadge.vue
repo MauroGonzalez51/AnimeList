@@ -14,6 +14,7 @@
 
     const props = withDefaults(defineProps<Props>(), {
         variant: "ghost",
+        size: "icon-sm",
     });
 
     const manager = useStoreManager();
@@ -23,25 +24,21 @@
     <Button
         type="button"
         :variant="variant"
+        :size="size"
+        :aria-pressed="Boolean(favorite)"
         :class="
             cn(
-                'group rounded-full p-2! cursor-pointer bg-white/15 backdrop-blur-md hover:bg-white/15',
+                'cursor-pointer rounded-full bg-white/15 text-white backdrop-blur-md transition-[transform,background-color] duration-100 hover:bg-white/25 hover:text-white active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100',
                 props.class,
             )
         "
-        :size="size"
         @click="
             manager?.dispatch.patchEntry(entry.id, 'status.favorite', !favorite)
         "
     >
         <LucideHeart
-            :class="
-                cn(
-                    'size-6 transition-colors',
-                    favorite &&
-                        'fill-current text-rose-300 group-hover:text-rose-500',
-                )
-            "
+            :aria-hidden="true"
+            :class="cn('transition-colors', favorite && 'fill-current text-rose-300')"
         />
     </Button>
 </template>

@@ -1,9 +1,10 @@
 import type { Meta } from "@animelist/packages-schema";
 import type { DistributedOmit, Get, Paths } from "type-fest";
-import type { FlatEntry } from "@/lib/schema";
+import type { EntryDraft, FlatEntry, SourceType } from "@/lib/schema";
 import { set } from "es-toolkit/compat";
 import {
     flattenEntries,
+    newGeneratedId,
     performWrite,
     pickStoreFile,
     readStoreContent,
@@ -68,7 +69,10 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         }
 
         set(entry, path, value);
+        persist();
+    }
 
+    function persist() {
         if (config.state.value?.store_path && meta.value) {
             performWrite({
                 path: config.state.value.store_path,
@@ -76,6 +80,83 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
                 data: { meta: meta.value, entries: entriesMap },
             });
         }
+    }
+
+    function replaceEntries(next: FlatEntry[]) {
+        entries.value = next;
+        entriesMap.clear();
+        for (const entry of next) {
+            entriesMap.set(entry.id, entry);
+        }
+    }
+
+    function moveEntry(id: FlatEntry["id"], direction: -1 | 1) {
+        const list = [...entriesMap.values()];
+        const index = list.findIndex((entry) => entry.id === id);
+        const current = list[index];
+        if (!current) {
+            return;
+        }
+
+        const isSibling = (entry: FlatEntry) =>
+            entry._parentId === current._parentId &&
+            entry._source === current._source;
+
+        let target = index + direction;
+        while (list[target] && !isSibling(list[target]!)) {
+            target += direction;
+        }
+
+        const neighbor = list[target];
+        if (!neighbor) {
+            return;
+        }
+
+        list[index] = neighbor;
+        list[target] = current;
+
+        replaceEntries(list);
+        persist();
+    }
+
+    function updateEntry(id: FlatEntry["id"], draft: EntryDraft) {
+        const current = entriesMap.get(id);
+        if (!current) {
+            return;
+        }
+
+        const next: FlatEntry = {
+            ...draft,
+            id,
+            references: current.references,
+            _parentId: current._parentId,
+            _source: current._source,
+            _isGeneratedId: current._isGeneratedId,
+            style: current.style,
+        };
+
+        const list = [...entriesMap.values()];
+        list[list.findIndex((entry) => entry.id === id)] = next;
+
+        replaceEntries(list);
+        persist();
+    }
+
+    function addEntry(
+        parentId: FlatEntry["id"],
+        source: SourceType,
+        draft: EntryDraft,
+    ) {
+        const entry: FlatEntry = {
+            ...draft,
+            id: newGeneratedId(),
+            _parentId: parentId,
+            _source: source,
+            _isGeneratedId: true,
+        };
+
+        replaceEntries([...entriesMap.values(), entry]);
+        persist();
     }
 
     watch(
@@ -104,6 +185,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         meta,
         entries,
         entriesMap,
-        dispatch: { pick, clear, process, patchEntry },
+        dispatch: { pick, clear, process, patchEntry, moveEntry, addEntry, updateEntry },
     };
 });
