@@ -81,7 +81,7 @@
                             >
                                 {{ $t("views.entry.id.banner.entry") }}
                             </FieldLabel>
-                            <EditableText>
+                            <InlineEdit>
                                 <template #input="{ id, end }">
                                     <InputGroup>
                                         <InputGroupInput
@@ -105,7 +105,7 @@
                                         {{ entry.name }}
                                     </h1>
                                 </template>
-                            </EditableText>
+                            </InlineEdit>
                             <FieldError v-if="errors.length" :errors="errors" />
                         </Field>
                     </VeeField>

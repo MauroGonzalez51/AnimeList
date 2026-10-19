@@ -37,6 +37,9 @@ export const NuxtKeys = {
                 Loading: "components:pagination:client-side:loading",
             },
         },
+        InlineEdit: {
+            Editing: (id: string) => `components:inline-edit:editing:${id}`,
+        },
     },
     Composables: {
         UseConfig: {

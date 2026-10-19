@@ -10,7 +10,10 @@
         id: () => useId(),
     });
 
-    const editing = useState<boolean>(() => false);
+    const editing = useState<boolean>(
+        NuxtKeys.Components.InlineEdit.Editing(props.id),
+        () => false,
+    );
 
     async function start() {
         editing.value = true;
