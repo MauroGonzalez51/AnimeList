@@ -181,17 +181,18 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
     }
 
     function addEntry(
-        parentId: FlatEntry["id"],
-        source: SourceType,
         draft: EntryDraft,
+        parent?: { id: FlatEntry["id"]; source: SourceType },
     ) {
-        const entry: FlatEntry = {
-            ...draft,
-            id: newGeneratedId(),
-            _parentId: parentId,
-            _source: source,
-            _isGeneratedId: true,
-        };
+        const id = newGeneratedId();
+        const entry: FlatEntry = { ...draft, id, _isGeneratedId: true };
+
+        if (parent) {
+            entry._parentId = parent.id;
+            entry._source = parent.source;
+        } else {
+            entry.style = getGradient([id]);
+        }
 
         replaceEntries([...entriesMap.values(), entry]);
         persist();

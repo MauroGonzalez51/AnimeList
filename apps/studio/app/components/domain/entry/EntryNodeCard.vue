@@ -68,7 +68,7 @@
                 type="button"
                 variant="ghost"
                 class="mt-1 cursor-pointer justify-start text-muted-foreground"
-                @click="entryForm.create(parentId, source)"
+                @click="entryForm.create({ id: parentId, source })"
             >
                 <LucidePlus data-icon="inline-start" />
                 {{ $t("views.entry.id.actions.add") }}

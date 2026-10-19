@@ -168,5 +168,16 @@
         "required": "This field is required. Please provide a value",
         "positive_number": "Enter a number greater than zero",
         "number": "Enter a valid number"
+    },
+    "layout": {
+        "sidebar": {
+            "entry": {
+                "create": "New entry"
+            },
+            "store": {
+                "select": "Select",
+                "remove": "Remove"
+            }
+        }
     }
 }

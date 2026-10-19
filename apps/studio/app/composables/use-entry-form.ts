@@ -13,10 +13,10 @@ export function useEntryForm() {
         });
     }
 
-    function create(parentId: FlatEntry["id"], source: SourceType) {
+    // without a parent the entry is created at the root of the library
+    function create(parent?: { id: FlatEntry["id"]; source: SourceType }) {
         open({
-            submit: (draft) =>
-                manager.dispatch.addEntry(parentId, source, draft),
+            submit: (draft) => manager.dispatch.addEntry(draft, parent),
         });
     }
 

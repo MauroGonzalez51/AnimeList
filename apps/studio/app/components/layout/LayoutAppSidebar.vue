@@ -35,9 +35,12 @@
         }));
     }
 
-    const { sidebarContent } = useSidebarConfig();
+    const { sidebarContent, sidebarFooter } = useSidebarConfig();
     const filteredGroups = computed(() =>
         filterSidebarGroups(sidebarContent.value),
+    );
+    const filteredFooterGroups = computed(() =>
+        filterSidebarGroups(sidebarFooter.value),
     );
 
     const { define: DefineActionKind, reuse: ReuseActionKind } =
@@ -47,8 +50,6 @@
 
     const { define: DefineItemKind, reuse: ReuseItemKind } =
         createReusableTemplate<{ group: Components.Sidebar.GroupItemKind }>();
-
-    const manager = useStoreManager();
 </script>
 
 <template>
@@ -162,20 +163,19 @@
         </SidebarContent>
 
         <SidebarFooter>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton @click="manager.dispatch.pick">
-                        <LucideSearch />
-                        <span>Select</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                    <SidebarMenuButton @click="manager.dispatch.clear">
-                        <LucideTrash />
-                        <span>Remove</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
+            <SidebarMenu
+                v-for="(group, groupIndex) in filteredFooterGroups"
+                :key="`footer-${groupIndex}-${group.items.length}`"
+            >
+                <template
+                    v-for="(groupItem, groupItemIndex) in group.items"
+                    :key="`footer-${groupItem.kind}-${groupItemIndex}`"
+                >
+                    <ReuseItemKind
+                        v-if="groupItem.kind === 'item'"
+                        :group="groupItem"
+                    />
+                </template>
             </SidebarMenu>
         </SidebarFooter>
 
