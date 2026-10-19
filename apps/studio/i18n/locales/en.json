@@ -29,6 +29,11 @@
             "save": {
                 "title": "Config saved"
             }
+        },
+        "entry": {
+            "save": {
+                "label": "Save changes"
+            }
         }
     },
     "views": {
@@ -85,5 +90,8 @@
                 "arc": "Arc {arc}"
             }
         }
+    },
+    "validation": {
+        "required": "This field is required. Please provide a value"
     }
 }

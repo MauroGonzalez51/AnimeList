@@ -12,8 +12,8 @@ export type FlatEntry = DistributedOmit<Entry, "children" | "related"> & {
     style?: CSSProperties;
 };
 
-export type EntryNode = {
+export interface EntryNode {
     entry: FlatEntry;
     children: EntryNode[];
     related: EntryNode[];
-};
+}

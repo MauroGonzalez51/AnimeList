@@ -87,6 +87,7 @@ export default defineNuxtConfig({
         "@nuxt/image",
         "vue-sonner/nuxt",
         "@pinia/nuxt",
+        "@vee-validate/nuxt",
     ],
     router: {
         options: {
@@ -137,5 +138,13 @@ export default defineNuxtConfig({
     },
     image: {
         provider: "none",
+    },
+    veeValidate: {
+        componentNames: {
+            Form: "VeeForm",
+            Field: "VeeField",
+            FieldArray: "VeeFieldArray",
+            ErrorMessage: "VeeErrorMessage",
+        },
     },
 });

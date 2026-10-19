@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import { isEqual } from "es-toolkit";
+    import { z } from "zod";
     import { buildEntryTree } from "~/lib/schema";
 
     definePageMeta({
@@ -26,7 +28,18 @@
         buildEntryTree(entriesMap.value, ENTRY_ID.value),
     );
 
+    const { cloned: localEntry, sync } = useCloned(entry, {
+        deep: true,
+        manual: true,
+    });
+
     const { navigate } = useCallbackUrl();
+
+    const NAME_SCHEMA = computed(() =>
+        z.object({
+            name: z.string().min(1, { error: $t("validation.required") }),
+        }),
+    );
 </script>
 
 <template>
@@ -34,9 +47,25 @@
         <div
             class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-4"
         >
-            <div class="flex w-full items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
+            <VeeForm
+                v-slot="{ values }"
+                :validation-schema="toTypedSchema(NAME_SCHEMA)"
+                class="flex w-full items-center justify-between gap-4"
+                :initial-values="{ name: entry.name }"
+                @submit="
+                    (values) => {
+                        const { name } = NAME_SCHEMA.parse(values);
+                        if (entry) {
+                            manager.dispatch
+                                .patchEntry(entry.id, 'name', name)
+                                .then(() => sync());
+                        }
+                    }
+                "
+            >
+                <div class="flex items-center gap-1.5 flex-1">
                     <Button
+                        type="button"
                         variant="ghost"
                         class="cursor-pointer"
                         size="icon-lg"
@@ -44,18 +73,44 @@
                     >
                         <LucideArrowLeft class="size-5" />
                     </Button>
-                    <div class="space-y-1">
-                        <p
-                            class="text-[10px] font-semibold tracking-[0.2em] text-muted-foreground uppercase"
-                        >
-                            {{ $t("views.entry.id.banner.entry") }}
-                        </p>
-                        <h1 class="font-bold text-3xl wrap-break-word">
-                            {{ entry?.name }}
-                        </h1>
-                    </div>
+
+                    <VeeField v-slot="{ componentField, errors }" name="name">
+                        <Field class="gap-1">
+                            <FieldLabel
+                                class="text-[10px] pl-2 font-semibold tracking-[0.2em] text-muted-foreground uppercase"
+                            >
+                                {{ $t("views.entry.id.banner.entry") }}
+                            </FieldLabel>
+                            <EditableText>
+                                <template #input="{ id, end }">
+                                    <InputGroup>
+                                        <InputGroupInput
+                                            v-bind="componentField"
+                                            :id="id"
+                                            class="font-semibold"
+                                            :aria-invalid="!!errors.length"
+                                            @blur="end"
+                                            @keydown.enter="end"
+                                        />
+                                    </InputGroup>
+                                </template>
+                                <template #display="{ start }">
+                                    <h1
+                                        role="button"
+                                        tabindex="0"
+                                        class="font-bold text-3xl wrap-break-word"
+                                        @click="start"
+                                        @keydown.enter="start"
+                                    >
+                                        {{ entry.name }}
+                                    </h1>
+                                </template>
+                            </EditableText>
+                            <FieldError v-if="errors.length" :errors="errors" />
+                        </Field>
+                    </VeeField>
                 </div>
-                <div>
+                <div class="flex items-center gap-2">
                     <EntryDiscriminator :entry="entry">
                         <template #readable="{ readable }">
                             <EntryFavoriteBadge
@@ -71,8 +126,18 @@
                             />
                         </template>
                     </EntryDiscriminator>
+
+                    <Button
+                        v-if="!isEqual(values.name, localEntry?.name)"
+                        variant="outline"
+                        type="submit"
+                        class="cursor-pointer"
+                    >
+                        <LucideSave />
+                        {{ $t("actions.entry.save.label") }}
+                    </Button>
                 </div>
-            </div>
+            </VeeForm>
 
             <DebugBlock :content="entry" />
             <DebugBlock :content="tree" />

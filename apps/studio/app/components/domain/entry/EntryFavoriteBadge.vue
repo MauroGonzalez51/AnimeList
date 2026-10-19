@@ -21,6 +21,7 @@
 
 <template>
     <Button
+        type="button"
         :variant="variant"
         :class="
             cn(
