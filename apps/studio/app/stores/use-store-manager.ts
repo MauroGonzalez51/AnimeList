@@ -3,6 +3,7 @@ import type { DistributedOmit, Get, Paths } from "type-fest";
 import type { EntryDraft, FlatEntry, SourceType } from "@/lib/schema";
 import { set } from "es-toolkit/compat";
 import {
+    entryIdFromParts,
     flattenEntries,
     newGeneratedId,
     performWrite,
@@ -142,6 +143,43 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         persist();
     }
 
+    // references are stored by id, so an entry that only has a generated id needs a real one first
+    function ensureStableId(id: FlatEntry["id"]) {
+        const entry = entriesMap.get(id);
+        if (!entry?._isGeneratedId) {
+            return id;
+        }
+
+        const base = entryIdFromParts(entry);
+        let next = base;
+        let suffix = 2;
+        while (entriesMap.has(next)) {
+            next = `${base}-${suffix}`;
+            suffix++;
+        }
+
+        const list = [...entriesMap.values()];
+        for (const item of list) {
+            if (item._parentId === id) {
+                item._parentId = next;
+            }
+
+            for (const reference of item.references ?? []) {
+                if (reference.id === id) {
+                    reference.id = next;
+                }
+            }
+        }
+
+        entry.id = next;
+        delete entry._isGeneratedId;
+
+        replaceEntries(list);
+        persist();
+
+        return next;
+    }
+
     function addEntry(
         parentId: FlatEntry["id"],
         source: SourceType,
@@ -185,6 +223,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         meta,
         entries,
         entriesMap,
-        dispatch: { pick, clear, process, patchEntry, moveEntry, addEntry, updateEntry },
+        dispatch: { pick, clear, process, patchEntry, moveEntry, addEntry, updateEntry, ensureStableId },
     };
 });

@@ -82,7 +82,11 @@
                         "relation": "Relation",
                         "submit": "Add",
                         "relation_placeholder": "Add a relation...",
-                        "relation_empty": "No relations found"
+                        "relation_empty": "No relations found",
+                        "edit_title": "Edit reference",
+                        "target_placeholder": "Choose an entry",
+                        "target_search": "Search entries...",
+                        "target_empty": "No entries found"
                     }
                 },
                 "form": {

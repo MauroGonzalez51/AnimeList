@@ -43,7 +43,7 @@ export function useHighlightedCode(
         const current = highlighter.value;
 
         if (!current)
-            return code.split("\n").map(line => (line ? [{ content: line }] : []));
+            return code.split("\n").map((line) => (line ? [{ content: line }] : []));
 
         if (done.highlighter !== current || !code.startsWith(done.text))
             done = { highlighter: current, text: "", lines: [] };

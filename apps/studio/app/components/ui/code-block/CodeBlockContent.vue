@@ -26,14 +26,12 @@
                 continue;
             if (node.type === Text) {
                 text += node.children as string;
-            }
-            else if (node.type === Fragment && Array.isArray(node.children)) {
+            } else if (node.type === Fragment && Array.isArray(node.children)) {
                 const nested = getText(node.children as VNode[]);
                 if (nested === null)
                     return null;
                 text += nested;
-            }
-            else {
+            } else {
                 return null;
             }
         }

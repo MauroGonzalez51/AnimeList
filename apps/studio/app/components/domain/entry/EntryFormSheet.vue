@@ -21,7 +21,7 @@
     interface TextFieldProps {
         name: string;
         label: string;
-        type?: "number";
+        inputmode?: "numeric" | "decimal";
         multiline?: boolean;
     }
 
@@ -52,6 +52,8 @@
             ]),
         );
     });
+
+    const typedSchema = toTypedSchema(EntrySchema);
 
     const kinds = computed(() => {
         if (props.entry) {
@@ -100,37 +102,72 @@
 </script>
 
 <template>
-    <SheetContent class="sm:max-w-md">
-        <DefineText v-slot="{ name, label, type, multiline }">
+    <SheetContent class="gap-0 sm:max-w-md" @open-auto-focus.prevent>
+        <DefineText v-slot="{ name, label, inputmode, multiline }">
             <VeeField v-slot="{ value, handleChange, errors }" :name="name">
-                <Field :data-invalid="!!errors.length">
-                    <FieldLabel>{{ label }}</FieldLabel>
-                    <Textarea
+                <div>
+                    <Field
                         v-if="multiline"
-                        :model-value="displayText(value)"
-                        :aria-invalid="!!errors.length"
-                        @update:model-value="
-                            (next) => handleChange(blankToUndefined(next))
-                        "
-                    />
-                    <Input
+                        class="gap-1 px-4 py-3"
+                        :data-invalid="!!errors.length"
+                    >
+                        <FieldLabel
+                            class="text-xs font-normal text-muted-foreground"
+                        >
+                            {{ label }}
+                        </FieldLabel>
+                        <Textarea
+                            class="min-h-16 resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 dark:bg-transparent"
+                            :model-value="displayText(value)"
+                            :aria-invalid="!!errors.length"
+                            @update:model-value="
+                                (next) => handleChange(blankToUndefined(next))
+                            "
+                        />
+                    </Field>
+                    <Field
                         v-else
-                        :type="type"
-                        :model-value="value"
-                        :aria-invalid="!!errors.length"
-                        @update:model-value="
-                            (next) => handleChange(blankToUndefined(next))
-                        "
+                        orientation="horizontal"
+                        class="items-center gap-4 px-4 py-2.5"
+                        :data-invalid="!!errors.length"
+                    >
+                        <FieldLabel class="flex-none font-normal">
+                            {{ label }}
+                        </FieldLabel>
+                        <NumericInput
+                            v-if="inputmode"
+                            class="h-auto min-w-0 flex-1 border-0 bg-transparent p-0 text-right shadow-none focus-visible:ring-0 dark:bg-transparent"
+                            :inputmode="inputmode"
+                            :model-value="value"
+                            :aria-invalid="!!errors.length"
+                            @update:model-value="handleChange"
+                        />
+                        <Input
+                            v-else
+                            class="h-auto min-w-0 flex-1 border-0 bg-transparent p-0 text-right shadow-none focus-visible:ring-0 dark:bg-transparent"
+                            :model-value="value"
+                            :aria-invalid="!!errors.length"
+                            @update:model-value="
+                                (next) => handleChange(blankToUndefined(next))
+                            "
+                        />
+                    </Field>
+                    <FieldError
+                        v-if="errors.length"
+                        class="px-4 pb-2.5"
+                        :errors="errors"
                     />
-                    <FieldError v-if="errors.length" :errors="errors" />
-                </Field>
+                </div>
             </VeeField>
         </DefineText>
 
         <DefineSwitch v-slot="{ name, label }">
             <VeeField v-slot="{ value, handleChange }" :name="name">
-                <Field orientation="horizontal">
-                    <FieldLabel>{{ label }}</FieldLabel>
+                <Field
+                    orientation="horizontal"
+                    class="items-center px-4 py-2.5"
+                >
+                    <FieldLabel class="font-normal">{{ label }}</FieldLabel>
                     <Switch
                         :model-value="Boolean(value)"
                         @update:model-value="
@@ -142,51 +179,55 @@
             </VeeField>
         </DefineSwitch>
 
-        <SheetHeader>
-            <SheetTitle>
-                <template v-if="entry">
-                    {{ $t("views.entry.id.form.edit_title") }}
-                </template>
-                <template v-else>
-                    {{ $t("views.entry.id.form.create_title") }}
-                </template>
-            </SheetTitle>
-        </SheetHeader>
-
         <VeeForm
             v-slot="{ values }"
-            :validation-schema="toTypedSchema(EntrySchema)"
+            :validation-schema="typedSchema"
             :initial-values="initialValues"
             class="flex min-h-0 flex-1 flex-col"
             @submit="onSubmit"
         >
-            <div class="flex flex-1 flex-col gap-8 overflow-y-auto px-4 pb-4">
-                <FieldSet>
-                    <FieldLegend>
-                        {{ $t("views.entry.id.form.sections.general") }}
-                    </FieldLegend>
-                    <FieldGroup>
-                        <ReuseText
-                            name="name"
-                            :label="$t('views.entry.id.form.fields.name')"
-                        />
+            <SheetHeader
+                class="flex-row items-center gap-3 border-b py-4 pr-14 pl-6"
+            >
+                <SheetTitle class="text-xl font-semibold tracking-[-0.02em]">
+                    <template v-if="entry">
+                        {{ $t("views.entry.id.form.edit_title") }}
+                    </template>
+                    <template v-else>
+                        {{ $t("views.entry.id.form.create_title") }}
+                    </template>
+                </SheetTitle>
+            </SheetHeader>
 
-                        <VeeField
-                            v-slot="{ componentField, errors }"
-                            name="kind"
-                        >
-                            <Field :data-invalid="!!errors.length">
-                                <FieldLabel>
+            <div
+                class="flex flex-1 flex-col gap-8 overflow-y-auto px-4 pt-6 pb-10"
+            >
+                <EntryFormGroup
+                    :title="$t('views.entry.id.form.sections.general')"
+                >
+                    <ReuseText
+                        name="name"
+                        :label="$t('views.entry.id.form.fields.name')"
+                    />
+
+                    <VeeField v-slot="{ componentField, errors }" name="kind">
+                        <div>
+                            <Field
+                                orientation="horizontal"
+                                class="items-center px-4 py-2"
+                                :data-invalid="!!errors.length"
+                            >
+                                <FieldLabel class="flex-none font-normal">
                                     {{ $t("views.entry.id.form.fields.kind") }}
                                 </FieldLabel>
                                 <Select v-bind="componentField">
                                     <SelectTrigger
-                                        class="w-full"
+                                        class="ml-auto h-auto w-auto gap-1 border-0 bg-transparent p-0 text-muted-foreground shadow-none focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
                                         :aria-invalid="!!errors.length"
                                     >
                                         <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent align="end">
                                         <SelectGroup>
                                             <SelectItem
                                                 v-for="kind in kinds"
@@ -198,152 +239,162 @@
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                <FieldError
-                                    v-if="errors.length"
-                                    :errors="errors"
-                                />
                             </Field>
-                        </VeeField>
+                            <FieldError
+                                v-if="errors.length"
+                                class="px-4 pb-2.5"
+                                :errors="errors"
+                            />
+                        </div>
+                    </VeeField>
 
-                        <ReuseText
-                            name="chronology"
-                            :label="$t('views.entry.id.form.fields.chronology')"
-                        />
-                        <ReuseText
-                            name="notes"
-                            multiline
-                            :label="$t('views.entry.id.form.fields.notes')"
-                        />
-                    </FieldGroup>
-                </FieldSet>
+                    <ReuseText
+                        name="chronology"
+                        :label="$t('views.entry.id.form.fields.chronology')"
+                    />
+                    <ReuseText
+                        name="notes"
+                        multiline
+                        :label="$t('views.entry.id.form.fields.notes')"
+                    />
+                </EntryFormGroup>
 
-                <FieldSet v-if="!isUniverseKind(values.kind)">
-                    <FieldLegend>
-                        {{ $t("views.entry.id.form.sections.status") }}
-                    </FieldLegend>
-                    <FieldGroup>
-                        <ReuseSwitch
-                            name="status.watched"
-                            :label="$t('views.entry.id.form.fields.watched')"
-                        />
-                        <ReuseSwitch
-                            v-if="isReadableKind(values.kind)"
-                            name="status.completed"
-                            :label="$t('views.entry.id.form.fields.completed')"
-                        />
-                        <ReuseSwitch
-                            name="status.favorite"
-                            :label="$t('views.entry.id.form.fields.favorite')"
-                        />
-                        <ReuseText
-                            name="status.rating"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.rating')"
-                        />
-                        <ReuseText
-                            v-if="isReadableKind(values.kind)"
-                            name="status.chapter"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.chapter')"
-                        />
-                        <ReuseText
-                            v-else
-                            name="status.episode"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.episode')"
-                        />
-                        <ReuseText
-                            name="status.review"
-                            multiline
-                            :label="$t('views.entry.id.form.fields.review')"
-                        />
-                    </FieldGroup>
-                </FieldSet>
+                <EntryFormGroup
+                    v-if="!isUniverseKind(values.kind)"
+                    :title="$t('views.entry.id.form.sections.status')"
+                    class=""
+                >
+                    <ReuseSwitch
+                        name="status.watched"
+                        :label="$t('views.entry.id.form.fields.watched')"
+                    />
+                    <ReuseSwitch
+                        v-if="isReadableKind(values.kind)"
+                        name="status.completed"
+                        :label="$t('views.entry.id.form.fields.completed')"
+                    />
+                    <ReuseSwitch
+                        name="status.favorite"
+                        :label="$t('views.entry.id.form.fields.favorite')"
+                    />
+                    <ReuseText
+                        name="status.rating"
+                        inputmode="decimal"
+                        :label="$t('views.entry.id.form.fields.rating')"
+                    />
+                    <ReuseText
+                        v-if="isReadableKind(values.kind)"
+                        name="status.chapter"
+                        inputmode="numeric"
+                        :label="$t('views.entry.id.form.fields.chapter')"
+                    />
+                    <ReuseText
+                        v-else
+                        name="status.episode"
+                        inputmode="numeric"
+                        :label="$t('views.entry.id.form.fields.episode')"
+                    />
+                    <ReuseText
+                        name="status.review"
+                        multiline
+                        :label="$t('views.entry.id.form.fields.review')"
+                    />
+                </EntryFormGroup>
 
-                <FieldSet v-if="isReadableKind(values.kind)">
-                    <FieldLegend>
-                        {{ $t("views.entry.id.form.sections.adapted_until") }}
-                    </FieldLegend>
-                    <FieldGroup>
-                        <VeeField
-                            v-slot="{ value, handleChange }"
-                            name="adaptedUntil.kind"
+                <EntryFormGroup
+                    v-if="isReadableKind(values.kind)"
+                    :title="$t('views.entry.id.form.sections.adapted_until')"
+                >
+                    <VeeField
+                        v-slot="{ value, handleChange }"
+                        name="adaptedUntil.kind"
+                    >
+                        <Field
+                            orientation="horizontal"
+                            class="items-center px-4 py-2"
                         >
-                            <Field>
-                                <FieldLabel>
-                                    {{
-                                        $t(
-                                            "views.entry.id.form.fields.adapted_kind",
-                                        )
-                                    }}
-                                </FieldLabel>
-                                <Select
-                                    :model-value="value ?? NO_ADAPTATION"
-                                    @update:model-value="
-                                        (next) =>
-                                            handleChange(fromAdaptation(next))
-                                    "
+                            <FieldLabel class="flex-none font-normal">
+                                {{
+                                    $t(
+                                        "views.entry.id.form.fields.adapted_kind",
+                                    )
+                                }}
+                            </FieldLabel>
+                            <Select
+                                :model-value="value ?? NO_ADAPTATION"
+                                @update:model-value="
+                                    (next) => handleChange(fromAdaptation(next))
+                                "
+                            >
+                                <SelectTrigger
+                                    class="ml-auto h-auto w-auto gap-1 border-0 bg-transparent p-0 text-muted-foreground shadow-none focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
                                 >
-                                    <SelectTrigger class="w-full">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem :value="NO_ADAPTATION">
-                                                {{
-                                                    $t(
-                                                        "views.entry.id.form.fields.none",
-                                                    )
-                                                }}
-                                            </SelectItem>
-                                            <SelectItem
-                                                v-for="kind in WATCHABLE_KINDS"
-                                                :key="kind"
-                                                :value="kind"
-                                            >
-                                                {{ $t(KIND_LABELS[kind]) }}
-                                            </SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </Field>
-                        </VeeField>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent align="end">
+                                    <SelectGroup>
+                                        <SelectItem :value="NO_ADAPTATION">
+                                            {{
+                                                $t(
+                                                    "views.entry.id.form.fields.none",
+                                                )
+                                            }}
+                                        </SelectItem>
+                                        <SelectItem
+                                            v-for="kind in WATCHABLE_KINDS"
+                                            :key="kind"
+                                            :value="kind"
+                                        >
+                                            {{ $t(KIND_LABELS[kind]) }}
+                                        </SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </Field>
+                    </VeeField>
 
-                        <ReuseText
-                            name="adaptedUntil.volume"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.volume')"
-                        />
-                        <ReuseText
-                            name="adaptedUntil.chapter"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.chapter')"
-                        />
-                        <ReuseText
-                            name="adaptedUntil.episode"
-                            type="number"
-                            :label="$t('views.entry.id.form.fields.episode')"
-                        />
-                        <ReuseText
-                            name="adaptedUntil.arc"
-                            :label="$t('views.entry.id.form.fields.arc')"
-                        />
-                        <ReuseText
-                            name="adaptedUntil.notes"
-                            multiline
-                            :label="$t('views.entry.id.form.fields.notes')"
-                        />
-                    </FieldGroup>
-                </FieldSet>
+                    <ReuseText
+                        name="adaptedUntil.volume"
+                        inputmode="numeric"
+                        :label="$t('views.entry.id.form.fields.volume')"
+                    />
+                    <ReuseText
+                        name="adaptedUntil.chapter"
+                        inputmode="numeric"
+                        :label="$t('views.entry.id.form.fields.chapter')"
+                    />
+                    <ReuseText
+                        name="adaptedUntil.episode"
+                        inputmode="numeric"
+                        :label="$t('views.entry.id.form.fields.episode')"
+                    />
+                    <ReuseText
+                        name="adaptedUntil.arc"
+                        :label="$t('views.entry.id.form.fields.arc')"
+                    />
+                    <ReuseText
+                        name="adaptedUntil.notes"
+                        multiline
+                        :label="$t('views.entry.id.form.fields.notes')"
+                    />
+                </EntryFormGroup>
             </div>
 
-            <SheetFooter>
+            <SheetFooter class="grid grid-cols-2 gap-2 border-t p-4">
                 <SheetClose as-child>
-                    <Button type="button" variant="outline">
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        class="h-11 cursor-pointer rounded-xl transition-transform active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                    >
                         {{ $t("views.entry.id.actions.cancel") }}
                     </Button>
                 </SheetClose>
-                <Button type="submit" :disabled="!canSave(values)">
+                <Button
+                    type="submit"
+                    class="h-11 cursor-pointer rounded-xl transition-transform active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+                    :disabled="!canSave(values)"
+                >
                     <template v-if="entry">
                         {{ $t("actions.entry.save.label") }}
                     </template>

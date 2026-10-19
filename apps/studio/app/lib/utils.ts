@@ -7,7 +7,11 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function moveItem<T>(items: readonly T[], index: number, direction: -1 | 1): T[] {
+export function moveItem<T>(
+    items: readonly T[],
+    index: number,
+    direction: -1 | 1,
+): T[] {
     const target = index + direction;
     const next = [...items];
     const current = next[index];
@@ -21,7 +25,6 @@ export function moveItem<T>(items: readonly T[], index: number, direction: -1 | 
     return next;
 }
 
-// form controls report "no value" as "", false or NaN: the entry file should omit them
 export function blankToUndefined<T>(value: T): T | undefined {
     if (value === "" || value === false) {
         return undefined;
@@ -34,7 +37,6 @@ export function blankToUndefined<T>(value: T): T | undefined {
     return value;
 }
 
-// drops undefined values and objects left empty by that
 export function prune<T>(value: T): T {
     if (Array.isArray(value)) {
         return value.map((item) => prune(item)) as T;
@@ -53,4 +55,17 @@ export function prune<T>(value: T): T {
         );
 
     return Object.fromEntries(entries) as T;
+}
+
+export function parseNumber(value: string): string | number {
+    if (value.trim() === "") {
+        return value;
+    }
+
+    const parsed = Number(value);
+    if (Number.isNaN(parsed)) {
+        return value;
+    }
+
+    return parsed;
 }

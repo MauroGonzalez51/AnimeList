@@ -16,6 +16,24 @@ function generateId(
     return `${ID_PREFIX}${index}`;
 }
 
+function slug(text: string) {
+    return text
+        .normalize("NFKD")
+        .replaceAll(/\p{M}/gu, "")
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9]+/g, "-")
+        .replaceAll(/^-+|-+$/g, "");
+}
+
+// kind-name-chronology, e.g. "anime-kaguya-sama-wa-kokurasetai-1st-season"
+export function entryIdFromParts({
+    kind,
+    name,
+    chronology,
+}: Pick<FlatEntry, "kind" | "name" | "chronology">) {
+    return [kind, name, chronology ?? ""].map(slug).filter(Boolean).join("-");
+}
+
 export function newGeneratedId() {
     return `${ID_PREFIX}${crypto.randomUUID()}`;
 }

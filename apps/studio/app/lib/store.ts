@@ -89,7 +89,7 @@ export function kindsInFamily(kind: EntryKind): readonly EntryKind[] {
     return [kind];
 }
 
-type EntryReference = NonNullable<Entry["references"]>[number];
+export type EntryReference = NonNullable<Entry["references"]>[number];
 export type EntryRelation = NonNullable<EntryReference["relation"]>[number];
 
 export const RELATION_LABELS: Record<EntryRelation, string> = {

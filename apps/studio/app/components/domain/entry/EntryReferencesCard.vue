@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import type { FlatEntry } from "~/lib/schema";
+    import type { EntryReference } from "~/lib/store";
     import { RELATION_LABELS } from "~/lib/store";
     import { moveItem } from "~/lib/utils";
 
@@ -12,7 +13,6 @@
     const manager = useStoreManager();
     const { entriesMap } = storeToRefs(manager);
     const modal = useModal();
-    const entryForm = useEntryForm();
 
     const references = computed(() =>
         (props.entry.references ?? []).map((reference) => ({
@@ -21,13 +21,15 @@
         })),
     );
 
-    const candidates = computed(() => {
+    function candidatesFor(editingId?: string) {
         const referenced = new Set(references.value.map(({ id }) => id));
 
         return [...entriesMap.value.values()].filter(
-            ({ id }) => id !== props.entry.id && !referenced.has(id),
+            ({ id }) =>
+                id !== props.entry.id &&
+                (id === editingId || !referenced.has(id)),
         );
-    });
+    }
 
     const { define: DefineReference, reuse: ReuseReference } =
         createReusableTemplate<(typeof references.value)[number]>();
@@ -40,21 +42,54 @@
         );
     }
 
-    function openAdd() {
+    function openDialog(options: {
+        reference?: EntryReference;
+        submit: (reference: EntryReference) => void;
+    }) {
         modal.dispatch.loadComponent({
             key: "entry:reference",
             kind: "dialog",
             loader: () =>
                 import("@/components/domain/entry/EntryReferenceDialog.vue"),
-            props: { candidates: candidates.value, submit: add },
+            props: {
+                candidates: candidatesFor(options.reference?.id),
+                ...options,
+            },
         });
     }
 
-    function add(reference: NonNullable<FlatEntry["references"]>[number]) {
+    function openAdd() {
+        openDialog({ submit: add });
+    }
+
+    function openEdit(index: number) {
+        openDialog({
+            reference: props.entry.references?.[index],
+            submit: (reference) => replace(index, reference),
+        });
+    }
+
+    function withStableId(reference: EntryReference): EntryReference {
+        return { ...reference, id: manager.dispatch.ensureStableId(reference.id) };
+    }
+
+    function add(reference: EntryReference) {
         manager.dispatch.patchEntry(props.entry.id, "references", [
             ...(props.entry.references ?? []),
-            reference,
+            withStableId(reference),
         ]);
+    }
+
+    function replace(index: number, reference: EntryReference) {
+        manager.dispatch.patchEntry(
+            props.entry.id,
+            "references",
+            (props.entry.references ?? []).toSpliced(
+                index,
+                1,
+                withStableId(reference),
+            ),
+        );
     }
 </script>
 
@@ -85,8 +120,8 @@
                 :key="reference.id"
                 :index="index"
                 :count="references.length"
-                :editable="!!reference.target"
-                @edit="reference.target && entryForm.edit(reference.target)"
+                editable
+                @edit="openEdit(index)"
                 @move="(direction) => move(index, direction)"
             >
                 <NuxtLink
