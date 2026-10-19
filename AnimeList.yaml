@@ -511,3 +511,24 @@ entries:
           watched: true
       notes:
           - 2nd Season confirmed
+
+    - kind: universe
+      name: Black Clover
+      related:
+          - kind: manga
+            name: Black Clover
+            status:
+                completed: true
+                chapter: 392
+      children:
+          - kind: anime
+            name: Black Clover
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Black Clover
+            chronology: 2nd Season
+            status:
+                episode: 3
