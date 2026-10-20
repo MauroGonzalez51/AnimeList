@@ -9,15 +9,27 @@
         "fs:default",
         {
             "identifier": "fs:allow-exists",
-            "allow": [{ "path": "$HOME" }, { "path": "$HOME/**/*" }]
+            "allow": [
+                { "path": "$HOME" },
+                { "path": "$HOME/**/*" },
+                { "path": "$HOME/.local/share/animelist-studio/**" }
+            ]
         },
         {
             "identifier": "fs:allow-read-text-file",
-            "allow": [{ "path": "$HOME" }, { "path": "$HOME/**/*" }]
+            "allow": [
+                { "path": "$HOME" },
+                { "path": "$HOME/**/*" },
+                { "path": "$HOME/.local/share/animelist-studio/**" }
+            ]
         },
         {
             "identifier": "fs:allow-write-text-file",
-            "allow": [{ "path": "$HOME" }, { "path": "$HOME/**/*" }]
+            "allow": [
+                { "path": "$HOME" },
+                { "path": "$HOME/**/*" },
+                { "path": "$HOME/.local/share/animelist-studio/**" }
+            ]
         }
     ]
 }

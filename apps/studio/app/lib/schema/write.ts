@@ -12,7 +12,8 @@ import type {
 import type { KeysOfUnion } from "type-fest";
 import type { Pair } from "yaml";
 import type { FlatEntry } from "@/lib/schema/types";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { JSONSchema } from "@animelist/packages-schema";
+import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { dirname, relative } from "pathe";
 import * as yamlPlugin from "prettier/plugins/yaml";
 import { format } from "prettier/standalone";
@@ -98,6 +99,23 @@ async function schemaHeader(storePath: string, schemaPath?: string | null) {
     return _template(target);
 }
 
+async function ensureSchemaFile(schemaPath: string) {
+    if (
+        (await exists(schemaPath)) &&
+        (await readTextFile(schemaPath)).trim() !== ""
+    ) {
+        return;
+    }
+
+    const schema = JSONSchema.toJSONSchema({ reused: "ref" });
+    await writeTextFile(
+        schemaPath,
+        await format(JSON.stringify(schema), {
+            tabWidth: 4,
+        }),
+    );
+}
+
 export function performWrite(args: Args) {
     WRITE_QUEUE.push(async () => {
         const path = await resolvePath(args.path);
@@ -130,6 +148,10 @@ export function performWrite(args: Args) {
                 }
             },
         });
+
+        if (args.schemaPath) {
+            await ensureSchemaFile(await resolvePath(args.schemaPath));
+        }
 
         const content = await format(
             (await schemaHeader(path, args.schemaPath)) + doc.toString(),
