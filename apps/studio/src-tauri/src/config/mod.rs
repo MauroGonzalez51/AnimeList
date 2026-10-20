@@ -8,8 +8,6 @@ use tauri_plugin_fs::FsExt;
 #[derive(lombok_macros::Getter)]
 pub struct AppDirectories {
     config_file: Option<PathBuf>,
-    #[allow(dead_code)]
-    schema_path: Option<PathBuf>,
 }
 
 impl AppDirectories {
@@ -19,12 +17,8 @@ impl AppDirectories {
         match project_dirs {
             Some(dirs) => Self {
                 config_file: Some(dirs.config_dir().join("config.toml")),
-                schema_path: Some(dirs.data_dir().join("schema.json")),
             },
-            None => Self {
-                config_file: None,
-                schema_path: None,
-            },
+            None => Self { config_file: None },
         }
     }
 }
@@ -83,10 +77,6 @@ impl Config {
 
         config.store_path = config.store_path.as_deref().map(expand_home);
         config.store_schema_path = config.store_schema_path.as_deref().map(expand_home);
-
-        if config.store_schema_path.is_none() {
-            config.store_schema_path = app_dirs.schema_path.clone();
-        }
 
         if let Some(schema_directory) = config
             .store_schema_path

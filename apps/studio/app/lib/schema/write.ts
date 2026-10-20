@@ -65,6 +65,9 @@ const KEY_ORDER: KeysOfUnion<
     "chapter",
 ];
 
+const REMOTE_SCHEMA_URL =
+    "https://raw.githubusercontent.com/MauroGonzalez51/AnimeList/main/packages/schema/.output/schema.json";
+
 export const WRITE_QUEUE = new Queue({ concurrency: 1, autostart: true });
 
 function keyRank(key: unknown) {
@@ -90,7 +93,7 @@ function _template(path: string) {
 
 async function schemaHeader(storePath: string, schemaPath?: string | null) {
     if (!schemaPath) {
-        return "";
+        return _template(REMOTE_SCHEMA_URL);
     }
 
     const target = relative(dirname(storePath), await resolvePath(schemaPath));
