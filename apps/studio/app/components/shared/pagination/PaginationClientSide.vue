@@ -42,7 +42,7 @@
         () => null,
     );
     const { items } = usePaginationControls.provide({
-        items: props.items,
+        items: () => props.items,
         index: props.index,
         page,
         pageSize: props.pageSize,

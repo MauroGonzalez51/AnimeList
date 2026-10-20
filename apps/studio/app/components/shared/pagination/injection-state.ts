@@ -1,5 +1,7 @@
 interface Args<T> {
-    items: MaybeRefOrGetter<T[] | undefined>;
+    items:
+        | MaybeRefOrGetter<T[] | undefined>
+        | (() => MaybeRefOrGetter<T[] | undefined>);
     index: keyof T;
     page: MaybeRefOrGetter<number>;
     pageSize: number;
@@ -11,15 +13,25 @@ type PaginationItem = { type: "item"; page: number } | { type: "ellipsis" };
 function _state<T>(args: Args<T>) {
     const config = useAppConfig();
 
-    const items = computed(() =>
-        toValue(args.items)?.filter((item) => {
+    const items = computed(() => {
+        if (typeof args.items === "function") {
+            return toValue(args.items())?.filter((item) => {
+                if (args.condition) {
+                    return args.condition(item) ?? true;
+                }
+
+                return true;
+            });
+        }
+
+        return toValue(args.items)?.filter((item) => {
             if (args.condition) {
                 return args.condition(item) ?? true;
             }
 
             return true;
-        }),
-    );
+        });
+    });
     const page = computed(() => toValue(args.page));
 
     const visibleItems = computed(() => {

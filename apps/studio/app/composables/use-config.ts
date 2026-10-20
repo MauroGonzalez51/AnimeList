@@ -32,13 +32,13 @@ export default function () {
             });
     }
 
-    function save() {
-        if (!state.value) {
+    async function save(config = state.value) {
+        if (!config) {
             return;
         }
 
         tauri
-            .call("save_config", { config: state.value })
+            .call("save_config", { config })
             .then((config) => {
                 state.value = config;
                 toast(t("actions.config.save.title"));
@@ -51,7 +51,7 @@ export default function () {
             });
     }
 
-    function patch<P extends Paths<_Config>, V extends Get<_Config, P>>(
+    async function patch<P extends Paths<_Config>, V extends Get<_Config, P>>(
         path: P,
         value: V,
         options: PatchOptions = { autoSave: true },
@@ -60,10 +60,13 @@ export default function () {
             return;
         }
 
-        set(state.value, path, value);
+        const next = set({ ...state.value }, path, value);
         if (options.autoSave) {
-            save();
+            await save(next);
+            return;
         }
+
+        state.value = next;
     }
 
     return { state, dispatch: { init, save, patch } };

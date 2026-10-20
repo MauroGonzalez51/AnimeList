@@ -23,7 +23,14 @@ pub fn run() -> anyhow::Result<()> {
                 )?;
             }
 
-            app.manage(AppState::new()?);
+            let state = AppState::new()?;
+            state
+                .get_config()
+                .lock()
+                .map_err(|error| anyhow::anyhow!("could not lock config: {error}"))?
+                .allow_in_fs_scope(app)?;
+
+            app.manage(state);
 
             Ok(())
         })

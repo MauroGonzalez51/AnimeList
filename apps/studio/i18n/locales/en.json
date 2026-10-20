@@ -28,6 +28,9 @@
         "config": {
             "save": {
                 "title": "Config saved"
+            },
+            "reload": {
+                "title": "Config reloaded"
             }
         },
         "entry": {
@@ -38,6 +41,18 @@
     },
     "views": {
         "home": {
+            "empty": {
+                "no_store": {
+                    "title": "No store file selected",
+                    "description": "Select a YAML file to load your library from",
+                    "action": "Select store file"
+                },
+                "no_entries": {
+                    "title": "No entries yet",
+                    "description": "Your library is empty. Add your first entry to get started",
+                    "action": "New entry"
+                }
+            },
             "banner": {
                 "your_library": "Your Library",
                 "n_entries": "{count} Entry found | {count} Entries found"
@@ -176,7 +191,9 @@
             },
             "store": {
                 "select": "Select",
-                "remove": "Remove"
+                "remove": "Remove",
+                "reload": "Reload",
+                "current": "Store file"
             }
         }
     }

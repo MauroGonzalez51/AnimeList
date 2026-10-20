@@ -1,6 +1,14 @@
-import { LucidePlus, LucideSearch, LucideTrash } from "@lucide/vue";
+import {
+    LucideFolderOpen,
+    LucidePlus,
+    LucideRefreshCw,
+    LucideUnplug,
+} from "@lucide/vue";
+import { toast } from "vue-sonner";
 
-export function useSidebarConfig() {
+export default function () {
+    const { t } = useI18n();
+
     const config = useConfig();
     const manager = useStoreManager();
     const entryForm = useEntryForm();
@@ -29,15 +37,29 @@ export function useSidebarConfig() {
                     kind: "item",
                     actionKind: "function",
                     label: "layout.sidebar.store.select",
-                    icon: LucideSearch,
+                    icon: LucideFolderOpen,
                     action: manager.dispatch.pick,
                 },
                 {
                     kind: "item",
                     actionKind: "function",
                     label: "layout.sidebar.store.remove",
-                    icon: LucideTrash,
+                    icon: LucideUnplug,
                     action: manager.dispatch.clear,
+                    hidden: () => !hasStore(),
+                },
+                {
+                    kind: "item",
+                    actionKind: "function",
+                    label: "layout.sidebar.store.reload",
+                    icon: LucideRefreshCw,
+                    action: () => {
+                        manager.dispatch
+                            .reload()
+                            .then(() =>
+                                toast.success(t("actions.config.reload.title")),
+                            );
+                    },
                     hidden: () => !hasStore(),
                 },
             ],

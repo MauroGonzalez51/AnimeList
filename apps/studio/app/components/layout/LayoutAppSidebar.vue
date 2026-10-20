@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import type { DropdownMenuContentProps } from "reka-ui";
     import type { SidebarProps } from "@/components/ui/sidebar";
+    import { basename } from "pathe";
     import SidebarImage from "@/assets/images/sidebar.webp";
     import { useSidebar } from "@/components/ui/sidebar";
 
@@ -34,6 +35,9 @@
             items: group.items.filter((item) => !toValue(item.hidden)),
         }));
     }
+
+    const config = useConfig();
+    const storePath = computed(() => config.state.value?.store_path);
 
     const { sidebarContent, sidebarFooter } = useSidebarConfig();
     const filteredGroups = computed(() =>
@@ -176,6 +180,34 @@
                         :group="groupItem"
                     />
                 </template>
+            </SidebarMenu>
+
+            <SidebarMenu v-if="storePath">
+                <SidebarMenuItem>
+                    <SidebarMenuButton
+                        size="lg"
+                        class="cursor-default border border-border/40 bg-muted"
+                        :title="storePath"
+                    >
+                        <div
+                            class="flex size-8 shrink-0 items-center justify-center"
+                        >
+                            <LucideFileText class="size-4" />
+                        </div>
+                        <div
+                            class="grid flex-1 text-left text-sm leading-tight"
+                        >
+                            <span class="truncate font-medium text-primary">
+                                {{ basename(storePath) }}
+                            </span>
+                            <span
+                                class="truncate text-xs text-muted-foreground"
+                            >
+                                {{ storePath }}
+                            </span>
+                        </div>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
             </SidebarMenu>
         </SidebarFooter>
 

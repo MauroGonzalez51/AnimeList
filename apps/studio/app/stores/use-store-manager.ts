@@ -45,6 +45,19 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         };
     }
 
+    async function reload() {
+        const path = config.state.value?.store_path;
+        if (!path) {
+            return;
+        }
+
+        const data = await process(path);
+        if (data) {
+            meta.value = data.meta;
+            entries.value = data.entries;
+        }
+    }
+
     async function pick() {
         const path = await pickStoreFile();
         if (!path) {
@@ -143,7 +156,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         persist();
     }
 
-    // references are stored by id, so an entry that only has a generated id needs a real one first
     function ensureStableId(id: FlatEntry["id"]) {
         const entry = entriesMap.get(id);
         if (!entry?._isGeneratedId) {
@@ -196,6 +208,8 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
 
         replaceEntries([...entriesMap.values(), entry]);
         persist();
+
+        return id;
     }
 
     watch(
@@ -224,6 +238,16 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         meta,
         entries,
         entriesMap,
-        dispatch: { pick, clear, process, patchEntry, moveEntry, addEntry, updateEntry, ensureStableId },
+        dispatch: {
+            pick,
+            clear,
+            reload,
+            process,
+            patchEntry,
+            moveEntry,
+            addEntry,
+            updateEntry,
+            ensureStableId,
+        },
     };
 });

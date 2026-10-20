@@ -7,7 +7,7 @@ export default defineNuxtPlugin({
         const config = useConfig();
 
         const manager = useStoreManager();
-        const { meta, entries } = storeToRefs(manager);
+        const { entries } = storeToRefs(manager);
 
         if (import.meta.client) {
             config.dispatch.init();
@@ -20,11 +20,7 @@ export default defineNuxtPlugin({
                         return;
                     }
 
-                    const data = await manager.dispatch.process(path);
-                    if (data) {
-                        meta.value = data.meta;
-                        entries.value = data.entries;
-                    }
+                    await manager.dispatch.reload();
                 },
                 { immediate: true },
             );

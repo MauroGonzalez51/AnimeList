@@ -13,8 +13,10 @@ import type { KeysOfUnion } from "type-fest";
 import type { Pair } from "yaml";
 import type { FlatEntry } from "@/lib/schema/types";
 import { JSONSchema } from "@animelist/packages-schema";
-import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dirname, relative } from "pathe";
+import * as babelPlugin from "prettier/plugins/babel";
+import * as estreePlugin from "prettier/plugins/estree";
 import * as yamlPlugin from "prettier/plugins/yaml";
 import { format } from "prettier/standalone";
 import Queue from "queue";
@@ -99,18 +101,13 @@ async function schemaHeader(storePath: string, schemaPath?: string | null) {
     return _template(target);
 }
 
-async function ensureSchemaFile(schemaPath: string) {
-    if (
-        (await exists(schemaPath)) &&
-        (await readTextFile(schemaPath)).trim() !== ""
-    ) {
-        return;
-    }
-
+async function writeSchemaFile(schemaPath: string) {
     const schema = JSONSchema.toJSONSchema({ reused: "ref" });
     await writeTextFile(
         schemaPath,
         await format(JSON.stringify(schema), {
+            parser: "json",
+            plugins: [babelPlugin, estreePlugin],
             tabWidth: 4,
         }),
     );
@@ -150,7 +147,7 @@ export function performWrite(args: Args) {
         });
 
         if (args.schemaPath) {
-            await ensureSchemaFile(await resolvePath(args.schemaPath));
+            await writeSchemaFile(await resolvePath(args.schemaPath));
         }
 
         const content = await format(
