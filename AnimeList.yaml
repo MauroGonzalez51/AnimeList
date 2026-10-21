@@ -532,3 +532,9 @@ entries:
             chronology: 2nd Season
             status:
                 episode: 3
+
+    - kind: anime
+      name: Otaku ni Yasashii Gal wa Inai!?
+      status:
+          watched: true
+      notes: Maybe me lea el manga, esta interesante
