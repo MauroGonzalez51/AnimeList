@@ -1,4 +1,6 @@
 import {
+    LucideBug,
+    LucideFlaskConical,
     LucideFolderOpen,
     LucidePlus,
     LucideRefreshCw,
@@ -7,6 +9,7 @@ import {
 import { toast } from "vue-sonner";
 
 export default function () {
+    const { $localeRoute } = useNuxtApp();
     const { t } = useI18n();
 
     const config = useConfig();
@@ -25,6 +28,23 @@ export default function () {
                     icon: LucidePlus,
                     action: () => entryForm.create(),
                     hidden: () => !hasStore(),
+                },
+            ],
+        },
+        {
+            items: [
+                {
+                    kind: "collapsible",
+                    label: "layout.sidebar.debug.label",
+                    icon: LucideBug,
+                    hidden: () => !import.meta.dev,
+                    collapsibleItems: [
+                        {
+                            label: "layout.sidebar.debug.items.test_page",
+                            icon: LucideFlaskConical,
+                            to: () => $localeRoute({ name: "test" }),
+                        },
+                    ],
                 },
             ],
         },
