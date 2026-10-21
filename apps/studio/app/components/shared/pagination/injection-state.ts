@@ -99,6 +99,7 @@ function _state<T>(args: Args<T>) {
         items: visibleItems,
         page,
         pageSize: args.pageSize,
+        index: args.index,
         totalPages,
         hasNext,
         hasPrevious,
@@ -110,7 +111,7 @@ type _ReturnType<T> = ReturnType<typeof _state<T>>;
 
 const [_provide, _use] = createInjectionState(_state);
 
-function usePaginationControls() {
+function usePaginationControls<T>() {
     const state = _use();
     if (!state) {
         throw createError({
@@ -119,7 +120,7 @@ function usePaginationControls() {
         });
     }
 
-    return state;
+    return state as _ReturnType<T>;
 }
 
 usePaginationControls.provide = <T>(args: Args<T>) =>

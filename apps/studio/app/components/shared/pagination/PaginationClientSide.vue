@@ -94,19 +94,14 @@
 
             <template v-else>
                 <Primitive :as="containerAs" :class="cn('w-full', props.class)">
-                    <template
-                        v-for="(item, itemIndex) in items"
-                        :key="String(item[props.index])"
+                    <PaginationIterator
+                        :items="items"
+                        :index="props.index"
                     >
-                        <slot
-                            name="item"
-                            v-bind="{
-                                ...item,
-                                $item: item,
-                                $index: itemIndex,
-                            }"
-                        />
-                    </template>
+                        <template #item="slotProps">
+                            <slot name="item" v-bind="slotProps" />
+                        </template>
+                    </PaginationIterator>
                 </Primitive>
             </template>
             <div
