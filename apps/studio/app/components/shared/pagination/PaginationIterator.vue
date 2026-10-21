@@ -10,17 +10,18 @@
         item: (props: TData & { $item: TData; $index: number }) => VNode[];
     }
 
-    const props = defineProps<Props>();
+    defineProps<Props>();
     defineSlots<Slots>();
 
-    const state = usePaginationControls<TData>();
+    const { items, index } = usePaginationControls<TData>();
 
-    const items = computed(() => state.items.value || toValue(props.items));
-    const index = computed(() => state.index ?? props.index);
+    function _key(item: TData) {
+        return String(item[index]);
+    }
 </script>
 
 <template>
-    <template v-for="(item, itemIndex) in items" :key="String(item[index])">
+    <template v-for="(item, itemIndex) in items" :key="_key(item)">
         <slot
             name="item"
             v-bind="{
