@@ -44,7 +44,7 @@
 
     const model = defineModel<State>({
         default: () => ({}),
-        get() {
+        get(value) {
             const parsed: State = {};
 
             for (const key of keys.value) {
@@ -53,6 +53,11 @@
 
                 if (result?.success) {
                     parsed[key] = result.data as z.infer<Shape[typeof key]>;
+                    continue;
+                }
+
+                if (value?.[key] !== undefined) {
+                    parsed[key] = value[key];
                 }
             }
 
@@ -68,6 +73,11 @@
                 query.value = value[key] ?? undefined;
             }
         },
+    });
+
+    onMounted(() => {
+        // eslint-disable-next-line no-self-assign
+        model.value = model.value;
     });
 </script>
 
