@@ -1,26 +1,28 @@
 <script
     setup
     lang="ts"
-    generic="TData, Schemas extends Record<string, z.ZodType>"
+    generic="TItem, TShape extends Record<string, z.ZodType>"
 >
+    import type { DebounceFilterOptions } from "@vueuse/core";
     import type { PrimitiveProps } from "reka-ui";
     import type { HTMLAttributes } from "vue";
     import type { z } from "zod";
     import type {
-        FieldDefinitions,
-        FieldsData,
+        FilterFields,
+        FilterValues,
     } from "@/components/shared/filters/types";
     import { Primitive } from "reka-ui";
     import { cn } from "@/lib/utils";
 
-    type Data = FieldsData<Schemas>;
-    type DataKey = Extract<keyof Data, string>;
-    type State = Partial<Data>;
+    type Values = FilterValues<TShape>;
+    type FieldKey = Extract<keyof Values, string>;
+    type ActiveValues = Partial<Values>;
 
     interface Props extends Omit<PrimitiveProps, "asChild"> {
-        items: MaybeRefOrGetter<TData[] | undefined>;
-        fields: MaybeRefOrGetter<FieldDefinitions<TData, Schemas>>;
+        items: MaybeRefOrGetter<TItem[] | undefined>;
+        fields: MaybeRefOrGetter<FilterFields<TItem, TShape>>;
         class?: HTMLAttributes["class"];
+        debounce?: { ms?: number } & DebounceFilterOptions;
     }
 
     const props = withDefaults(defineProps<Props>(), {
@@ -28,8 +30,8 @@
     });
 
     const fields = computed(() => toValue(props.fields));
-    const keys = computed<DataKey[]>(
-        () => Object.keys(fields.value) as DataKey[],
+    const keys = computed<FieldKey[]>(
+        () => Object.keys(fields.value) as FieldKey[],
     );
 
     const queries = computed(
@@ -38,13 +40,13 @@
                 keys.value
                     .filter((key) => fields.value[key]?.sync)
                     .map((key) => [key, useRouteQuery(key.toString())]),
-            ) as { [K in DataKey]: Ref<State[K]> },
+            ) as { [K in FieldKey]: Ref<ActiveValues[K]> },
     );
 
-    const model = defineModel<NoInfer<State>>({
+    const model = defineModel<NoInfer<ActiveValues>>({
         default: () => ({}),
         get(value) {
-            const parsed: State = {};
+            const parsed: ActiveValues = {};
 
             for (const key of keys.value) {
                 const raw = queries.value[key]?.value;
@@ -53,7 +55,7 @@
                 );
 
                 if (result?.success && result.data !== undefined) {
-                    parsed[key] = result.data as Data[typeof key];
+                    parsed[key] = result.data;
                     continue;
                 }
 
@@ -64,7 +66,7 @@
 
                 const initialValue = fields.value[key]?.initialValue;
                 if (initialValue !== undefined) {
-                    parsed[key] = initialValue as Data[typeof key];
+                    parsed[key] = initialValue;
                 }
             }
 
@@ -84,10 +86,14 @@
         },
     });
 
+    const debounced = refDebounced(model, props.debounce?.ms ?? 1000, {
+        ...props.debounce,
+    });
+
     const filtered = computed(() => {
         const data = toValue(props.items) ?? [];
         const activeKeys = keys.value.filter(
-            (key) => model.value[key] !== undefined,
+            (key) => debounced.value[key] !== undefined,
         );
 
         if (activeKeys.length === 0) {
@@ -97,7 +103,7 @@
         return data.filter((item) =>
             activeKeys.every((key) => {
                 const def = fields.value[key];
-                const value = model.value[key];
+                const value = debounced.value[key];
 
                 if (!def?.predicate || value === undefined) {
                     return true;
@@ -108,7 +114,10 @@
         );
     });
 
-    function set<K extends DataKey>(key: K, value: State[K] | undefined) {
+    function set<K extends FieldKey>(
+        key: K,
+        value: ActiveValues[K] | undefined,
+    ) {
         if (value === undefined) {
             reset(key);
             return;
@@ -117,7 +126,7 @@
         model.value[key] = value;
     }
 
-    function reset(key?: DataKey) {
+    function reset(key?: FieldKey) {
         if (key) {
             const next = { ...model.value };
             delete next[key];
@@ -131,6 +140,8 @@
 
 <template>
     <Primitive :as="as" :class="cn('flex flex-wrap gap-2 w-full', props.class)">
-        <slot v-bind="{ keys, fields, model, filtered, set, reset }" />
+        <slot
+            v-bind="{ keys, fields, model, debounced, filtered, set, reset }"
+        />
     </Primitive>
 </template>
