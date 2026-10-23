@@ -1,24 +1,25 @@
 <script
     setup
     lang="ts"
-    generic="TData, Fields extends Record<string, FieldDefinition<TData>>"
+    generic="TData, Schemas extends Record<string, z.ZodType>"
 >
     import type { PrimitiveProps } from "reka-ui";
     import type { HTMLAttributes } from "vue";
+    import type { z } from "zod";
     import type {
-        FieldDefinition,
+        FieldDefinitions,
         FieldsData,
     } from "@/components/shared/filters/types";
     import { Primitive } from "reka-ui";
     import { cn } from "@/lib/utils";
 
-    type Data = FieldsData<TData, Fields>;
+    type Data = FieldsData<Schemas>;
     type DataKey = Extract<keyof Data, string>;
     type State = Partial<Data>;
 
     interface Props extends Omit<PrimitiveProps, "asChild"> {
         items: MaybeRefOrGetter<TData[] | undefined>;
-        fields: MaybeRefOrGetter<Fields>;
+        fields: MaybeRefOrGetter<FieldDefinitions<TData, Schemas>>;
         class?: HTMLAttributes["class"];
     }
 
@@ -27,7 +28,9 @@
     });
 
     const fields = computed(() => toValue(props.fields));
-    const keys = computed(() => Object.keys(fields.value) as DataKey[]);
+    const keys = computed<DataKey[]>(
+        () => Object.keys(fields.value) as DataKey[],
+    );
 
     const queries = computed(
         () =>
@@ -38,7 +41,7 @@
             ) as { [K in DataKey]: Ref<State[K]> },
     );
 
-    const model = defineModel<State>({
+    const model = defineModel<NoInfer<State>>({
         default: () => ({}),
         get(value) {
             const parsed: State = {};
@@ -56,6 +59,12 @@
 
                 if (value?.[key] !== undefined) {
                     parsed[key] = value[key];
+                    continue;
+                }
+
+                const initialValue = fields.value[key]?.initialValue;
+                if (initialValue !== undefined) {
+                    parsed[key] = initialValue as Data[typeof key];
                 }
             }
 
@@ -122,6 +131,6 @@
 
 <template>
     <Primitive :as="as" :class="cn('flex flex-wrap gap-2 w-full', props.class)">
-        <slot v-bind="{ fields, model, filtered, set, reset }" />
+        <slot v-bind="{ keys, fields, model, filtered, set, reset }" />
     </Primitive>
 </template>

@@ -17,7 +17,7 @@
 
 <template>
     <FiltersController
-        v-slot="slotProps"
+        v-slot="{ keys }"
         v-model="state"
         :items="items"
         :fields="{
@@ -25,9 +25,17 @@
                 schema: z.string().optional(),
                 sync: true,
                 predicate: ({ item, value }) => item.kind === value,
+                initialValue: '',
             },
         }"
     >
-        <DebugBlock :content="slotProps" class="w-full" />
+        <FiltersGroup :keys="keys">
+            <template #kind> Puta la wea </template>
+        </FiltersGroup>
+
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
+        cupiditate inventore quae minima maiores veritatis, dolorem iusto rerum
+        quis laborum nostrum esse architecto? Laborum itaque vel totam et rerum
+        fugit?
     </FiltersController>
 </template>
