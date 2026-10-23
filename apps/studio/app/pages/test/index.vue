@@ -16,30 +16,17 @@
     });
 
     const items = [{ kind: "tv" }, { kind: "movie" }, { kind: "tv" }];
+
+    const model = useState<z.infer<typeof SCHEMA>>(() => ({ kind: "32523" }));
 </script>
 
 <template>
-    <FiltersController v-slot="{ items: filtered, keys, activeCount, reset }" :items :schema="SCHEMA">
-        <FiltersGroup :keys>
-            <template #kind="field">
-                <select v-bind="field" @change="field['onUpdate:modelValue'](($event.target as HTMLSelectElement).value || undefined)">
-                    <option value="">
-                        all
-                    </option>
-                    <option value="tv">
-                        tv
-                    </option>
-                    <option value="movie">
-                        movie
-                    </option>
-                </select>
-            </template>
-        </FiltersGroup>
-
-        <button @click="reset">
-            reset ({{ activeCount }})
-        </button>
-
-        <pre>{{ filtered }}</pre>
+    <FiltersController
+        v-slot="slotProps"
+        v-model="model"
+        :items
+        :schema="SCHEMA"
+    >
+        <DebugBlock :content="slotProps" class="w-full" />
     </FiltersController>
 </template>
