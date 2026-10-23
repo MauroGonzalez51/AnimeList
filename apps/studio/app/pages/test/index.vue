@@ -11,21 +11,22 @@
         },
     });
 
-    const SCHEMA = z.object({
-        kind: z.string().optional(),
-    });
-
     const items = [{ kind: "tv" }, { kind: "movie" }, { kind: "tv" }];
-
-    const model = useState<z.infer<typeof SCHEMA>>(() => ({ kind: "32523" }));
+    const state = useState<{ kind?: string }>(() => ({ kind: "tv" }));
 </script>
 
 <template>
     <FiltersController
         v-slot="slotProps"
-        v-model="model"
-        :items
-        :schema="SCHEMA"
+        v-model="state"
+        :items="items"
+        :fields="{
+            kind: {
+                schema: z.string().optional(),
+                sync: true,
+                predicate: ({ item, value }) => item.kind === value,
+            },
+        }"
     >
         <DebugBlock :content="slotProps" class="w-full" />
     </FiltersController>
