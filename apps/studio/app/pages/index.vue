@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { z } from "zod";
-    import { KINDS_SCHEMA } from "@/lib/store";
+    import { KIND_LABELS, KINDS_SCHEMA } from "@/lib/store";
 
     definePageMeta({
         layout: "sidebar",
@@ -14,46 +14,45 @@
 </script>
 
 <template>
-    <section class="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div
-            class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-2"
-        >
-            <div class="max-w-xl space-y-2">
-                <p
-                    class="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase"
-                >
-                    {{ $t("views.home.banner.your_library") }}
-                </p>
-                <p
-                    v-if="(entries?.length ?? 0) > 0"
-                    class="text-sm leading-relaxed text-muted-foreground"
-                >
-                    {{
-                        $t("views.home.banner.n_entries", {
-                            count: entries?.length ?? 0,
-                        })
-                    }}
-                </p>
-            </div>
-            <FiltersController
-                v-slot="{ keys, model, dispatch, debounced, filtered }"
-                class="flex flex-col gap-4"
-                :fields="{
-                    kind: {
-                        schema: z.preprocess((value) => {
-                            if (value === undefined) {
-                                return undefined;
-                            }
+    <FiltersController
+        v-slot="{ keys, model, dispatch, debounced, filtered, loading }"
+        class="flex flex-col gap-4"
+        :fields="{
+            kind: {
+                schema: z.preprocess((value) => {
+                    if (value === undefined) {
+                        return undefined;
+                    }
 
-                            return [value].flat();
-                        }, z.array(KINDS_SCHEMA).optional()),
-                        sync: true,
-                        predicate: ({ item, value }) =>
-                            value?.includes(item.kind),
-                    },
-                }"
-                :items="entries"
+                    return [value].flat();
+                }, z.array(KINDS_SCHEMA).optional()),
+                sync: true,
+                predicate: ({ item, value }) => value?.includes(item.kind),
+            },
+        }"
+        :items="entries"
+    >
+        <section class="flex min-h-0 min-w-0 flex-1 flex-col">
+            <div
+                class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-2"
             >
+                <div class="max-w-xl space-y-2">
+                    <p
+                        class="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase"
+                    >
+                        {{ $t("views.home.banner.your_library") }}
+                    </p>
+                    <p
+                        v-if="(filtered?.length ?? 0) > 0"
+                        class="text-sm leading-relaxed text-muted-foreground"
+                    >
+                        {{
+                            $t("views.home.banner.n_entries", {
+                                count: filtered?.length ?? 0,
+                            })
+                        }}
+                    </p>
+                </div>
                 <DebugBlock :content="{ debounced }" />
                 <FiltersGroup :keys="keys">
                     <template #kind>
@@ -61,9 +60,28 @@
                             <PopoverTrigger as-child>
                                 <Button
                                     variant="outline"
-                                    class="justify-between"
+                                    class="cursor-pointer"
                                 >
-                                    {{ $t("domain.entry.kind.placeholder") }}
+                                    <i18n-t
+                                        keypath="domain.entry.kind.placeholder"
+                                        :plural="model.kind?.length ?? 0"
+                                        tag="span"
+                                    >
+                                        <template #kind>
+                                            {{
+                                                $t(
+                                                    KIND_LABELS[
+                                                        model.kind?.[0]!
+                                                    ],
+                                                )
+                                            }}
+                                        </template>
+                                        <template #count>
+                                            <span class="text-muted-foreground">
+                                                {{ model.kind?.length }}
+                                            </span>
+                                        </template>
+                                    </i18n-t>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent align="start" class="w-auto p-3">
@@ -81,6 +99,7 @@
                 <PaginationClientSide
                     v-model:page="page"
                     :items="filtered"
+                    :loading="loading"
                     index="id"
                     :page-size="15"
                     loading-method="single"
@@ -97,7 +116,7 @@
                         <EntryTile :entry="$item" class="min-w-0" />
                     </template>
                 </PaginationClientSide>
-            </FiltersController>
-        </div>
-    </section>
+            </div>
+        </section>
+    </FiltersController>
 </template>

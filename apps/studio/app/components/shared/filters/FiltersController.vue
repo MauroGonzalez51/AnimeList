@@ -87,14 +87,15 @@
         },
     });
 
-    const { debounced, filtered, dispatch } = useFiltersController.provide({
-        items: () => toValue(props.items),
-        debounce: props.debounce,
-        fields: props.fields,
-        keys,
-        queries,
-        model,
-    });
+    const { debounced, filtered, dispatch, loading } =
+        useFiltersController.provide({
+            items: () => toValue(props.items),
+            debounce: props.debounce,
+            fields: props.fields,
+            keys,
+            queries,
+            model,
+        });
 
     watch(debounced, () => emit("change", debounced.value));
 </script>
@@ -109,6 +110,7 @@
                 debounced,
                 filtered,
                 dispatch,
+                loading,
             }"
         />
     </Primitive>

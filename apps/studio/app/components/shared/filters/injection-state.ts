@@ -5,6 +5,7 @@ import type {
     FilterFields,
     FilterValues,
 } from "@/components/shared/filters/types";
+import { isEqual } from "es-toolkit";
 
 type Shape = Record<string, z.ZodType>;
 type ActiveValues<TShape extends Shape> = Partial<FilterValues<TShape>>;
@@ -73,6 +74,8 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
         );
     });
 
+    const loading = computed(() => !isEqual(args.model.value, debounced.value));
+
     function set<K extends FieldKey<TShape>>(
         key: K,
         value: ActiveValues<TShape>[K] | undefined,
@@ -106,6 +109,7 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
         model: args.model,
         debounced,
         filtered,
+        loading,
         dispatch: {
             set,
             reset,

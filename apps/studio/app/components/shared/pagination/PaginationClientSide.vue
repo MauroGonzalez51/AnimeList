@@ -16,6 +16,7 @@
         class?: HTMLAttributes["class"];
         containerAs?: PrimitiveProps["as"];
         loadingTime?: number;
+        loading?: boolean;
         loadingMethod?: LoadingMethod;
         condition?: (item: TData) => boolean | undefined;
     }
@@ -31,6 +32,7 @@
         containerAs: "div",
         loadingTime: 500,
         loadingMethod: "multiple",
+        loading: false,
     });
     defineSlots<Slots>();
 
@@ -94,10 +96,7 @@
 
             <template v-else>
                 <Primitive :as="containerAs" :class="cn('w-full', props.class)">
-                    <PaginationIterator
-                        :items="items"
-                        :index="props.index"
-                    >
+                    <PaginationIterator :items="items" :index="props.index">
                         <template #item="slotProps">
                             <slot name="item" v-bind="slotProps" />
                         </template>
@@ -105,7 +104,7 @@
                 </Primitive>
             </template>
             <div
-                v-if="loading"
+                v-if="loading || props.loading"
                 class="absolute inset-0 z-10 overflow-hidden bg-background"
             >
                 <slot name="loading-container">

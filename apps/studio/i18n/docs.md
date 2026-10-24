@@ -166,6 +166,59 @@ createI18n({
 });
 ```
 
+## Rich interpolation with `<i18n-t>`
+
+`$t` returns a plain string, so you cannot style part of a message with it.
+`<i18n-t>` renders the message with named slots instead. Each placeholder in the
+message maps to a slot with the same name.
+
+```json
+"info": "You can {action} until {limit} minutes from departure."
+```
+
+```vue
+<i18n-t keypath="info" tag="p">
+  <template #action>
+    <a :href="changeUrl">{{ $t("change") }}</a>
+  </template>
+  <template #limit>
+    <span class="font-semibold">{{ changeLimit }}</span>
+  </template>
+</i18n-t>
+```
+
+Rules:
+
+- **Slot name = placeholder name.** `{limit}` is filled by `#limit`.
+- **Slots take no props.** Put the value directly inside the slot template, as
+  in `{{ changeLimit }}` above.
+- **`tag` sets the wrapper element.** Use `tag="span"` or `tag="p"` for an
+  element. Leave it out to render the content without a wrapper, since Vue 3
+  supports fragments.
+- **Plural messages need `:plural`.** The number selects the form, the same way
+  `count` does in `$t`. The `{count}` placeholder gets its own slot, `#count`.
+
+Plural example, matching the `domain.entry.kind.placeholder` message:
+
+```vue
+<i18n-t
+  keypath="domain.entry.kind.placeholder"
+  :plural="kinds.length"
+  tag="span"
+>
+  <template #kind>
+    <b>{{ kindLabel(kinds[0]) }}</b>
+  </template>
+  <template #count>
+    <span class="text-muted-foreground">{{ kinds.length }}</span>
+  </template>
+</i18n-t>
+```
+
+`{count}` is the total number of kinds here, because the helper passes
+`kinds.length` as `count`. Check the message in `en.json` before you write the
+slot content.
+
 ## Escaping
 
 - A bare `|` in a message is a plural separator. I did not confirm a

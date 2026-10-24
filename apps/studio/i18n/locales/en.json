@@ -152,7 +152,7 @@
                 "light-novel": "Light Novel",
                 "web-novel": "Web Novel",
                 "other": "Other",
-                "placeholder": "Entry Kind"
+                "placeholder": "Any kind | {kind} | {kind} [{count}]"
             },
             "status": {
                 "watched": "Watched",
