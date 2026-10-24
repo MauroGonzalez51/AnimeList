@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import type { CSSProperties, HTMLAttributes } from "vue";
+    import type { HTMLAttributes } from "vue";
     import type { FlatEntry } from "~/lib/schema";
     import { LucideEye } from "@lucide/vue";
     import { entryText } from "~/lib/schema";
@@ -13,12 +13,19 @@
 
     const props = defineProps<Props>();
 
-    const manager = useStoreManager();
-
     const { progress, adaptedUntil } = useEntryDisplay(() => props.entry);
+    const metadata = computed(() => {
+        return (
+            progress ||
+            adaptedUntil ||
+            props.entry.notes ||
+            (props.entry.references?.length ?? 0) > 0
+        );
+    });
 
     const { insertCallback } = useCallbackUrl();
 
+    const manager = useStoreManager();
     watch(
         () => props.entry.style,
         (style) => {
@@ -155,13 +162,9 @@
             </div>
         </div>
 
+        puta la wea
         <div
-            v-if="
-                progress ||
-                adaptedUntil ||
-                entry.notes ||
-                (entry.references?.length ?? 0) > 0
-            "
+            v-if="metadata"
             class="relative mx-2 mb-2 flex flex-col gap-1.5 rounded-xl border border-white/20 bg-white/15 p-3 text-xs font-medium backdrop-blur-xl contrast-more:border-white contrast-more:bg-black/70"
         >
             <div v-if="progress" class="flex items-center gap-1.5">
