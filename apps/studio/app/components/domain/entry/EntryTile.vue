@@ -14,10 +14,10 @@
     const props = defineProps<Props>();
 
     const { progress, adaptedUntil } = useEntryDisplay(() => props.entry);
-    const metadata = computed(() => {
+    const showMetadata = computed(() => {
         return (
-            progress ||
-            adaptedUntil ||
+            progress.value ||
+            adaptedUntil.value ||
             props.entry.notes ||
             (props.entry.references?.length ?? 0) > 0
         );
@@ -25,21 +25,12 @@
 
     const { insertCallback } = useCallbackUrl();
 
-    const manager = useStoreManager();
-    watch(
-        () => props.entry.style,
-        (style) => {
-            if (!style) {
-                manager.dispatch.ensureStyle(props.entry.id);
-            }
-        },
-        { immediate: true, once: true },
-    );
+    const gradient = useEntryGradient(() => props.entry.id);
 </script>
 
 <template>
     <Card
-        :style="entry.style"
+        :style="gradient"
         :class="
             cn(
                 'group relative min-h-64 gap-0 overflow-hidden rounded-2xl border-0 py-0 text-white shadow-md transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98] active:duration-100 motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100',
@@ -48,7 +39,7 @@
         "
     >
         <div
-            class="absolute inset-0 bg-linear-to-b from-black/0 via-black/10 to-black/50"
+            class="absolute inset-0 bg-linear-to-b from-black/0 via-black/10 to-black/50 dark:via-black/30 dark:to-black/75"
         />
 
         <div class="relative flex items-center justify-between p-3">
@@ -163,7 +154,7 @@
         </div>
 
         <div
-            v-if="metadata"
+            v-if="showMetadata"
             class="relative mx-2 mb-2 flex flex-col gap-1.5 rounded-xl border border-white/20 bg-white/15 p-3 text-xs font-medium backdrop-blur-xl contrast-more:border-white contrast-more:bg-black/70"
         >
             <div v-if="progress" class="flex items-center gap-1.5">

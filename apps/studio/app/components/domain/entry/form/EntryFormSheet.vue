@@ -45,7 +45,6 @@
             omit(props.entry, [
                 "id",
                 "references",
-                "style",
                 "_parentId",
                 "_source",
                 "_isGeneratedId",

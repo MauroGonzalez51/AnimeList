@@ -13,7 +13,7 @@ import {
 
 type PatchedFlatEntry = DistributedOmit<
     FlatEntry,
-    "id" | "_isGeneratedId" | "_source" | "style"
+    "id" | "_isGeneratedId" | "_source"
 >;
 
 export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
@@ -41,7 +41,7 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
 
         return {
             meta: data.meta,
-            entries: flattenEntries(data.entries, { style: true }),
+            entries: flattenEntries(data.entries),
         };
     }
 
@@ -146,7 +146,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
             _parentId: current._parentId,
             _source: current._source,
             _isGeneratedId: current._isGeneratedId,
-            style: current.style,
         };
 
         const list = [...entriesMap.values()];
@@ -192,15 +191,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         return next;
     }
 
-    function ensureStyle(id: FlatEntry["id"]) {
-        const entry = entriesMap.get(id);
-        if (!entry || entry.style) {
-            return;
-        }
-
-        entry.style = getGradient([id]);
-    }
-
     function addEntry(
         draft: EntryDraft,
         parent?: { id: FlatEntry["id"]; source: SourceType },
@@ -211,8 +201,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         if (parent) {
             entry._parentId = parent.id;
             entry._source = parent.source;
-        } else {
-            entry.style = getGradient([id]);
         }
 
         replaceEntries([...entriesMap.values(), entry]);
@@ -257,7 +245,6 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
             addEntry,
             updateEntry,
             ensureStableId,
-            ensureStyle,
         },
     };
 });

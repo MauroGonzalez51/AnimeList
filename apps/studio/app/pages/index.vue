@@ -1,8 +1,7 @@
 <script setup lang="ts">
     import { z } from "zod";
-    import { KIND_LABELS, KINDS_SCHEMA } from "@/lib/store";
+    import { KINDS_SCHEMA } from "@/lib/store";
     import { flatToArray } from "~/lib/schema";
-    import { cn } from "~/lib/utils";
 
     definePageMeta({
         layout: "sidebar",
@@ -54,46 +53,10 @@
                     <template #kind>
                         <Popover>
                             <PopoverTrigger as-child>
-                                <Button
-                                    variant="outline"
-                                    :class="
-                                        cn(
-                                            'cursor-pointer',
-                                            !model.kind?.length &&
-                                                'text-muted-foreground',
-                                        )
-                                    "
-                                >
-                                    <LucideTags />
-                                    <VLet
-                                        v-slot="{ label }"
-                                        :vars="{
-                                            label: KIND_LABELS[
-                                                model.kind?.[0] ?? 'other'
-                                            ],
-                                        }"
-                                    >
-                                        <i18n-t
-                                            keypath="domain.entry.kind.placeholder"
-                                            :plural="model.kind?.length ?? 0"
-                                            tag="span"
-                                        >
-                                            <template #kind>
-                                                {{ $t(label) }}
-                                            </template>
-                                            <template #count>
-                                                <span
-                                                    class="text-muted-foreground"
-                                                >
-                                                    {{ model.kind?.length }}
-                                                </span>
-                                            </template>
-                                        </i18n-t>
-                                    </VLet>
-                                </Button>
+                                <EntryFilterKindTrigger :kind="model.kind" />
                             </PopoverTrigger>
                             <PopoverContent align="start" class="w-auto p-3">
-                                <EntryKindCheckboxGrid
+                                <EntryFilterKindCheckboxGrid
                                     :model-value="model.kind"
                                     @update:model-value="
                                         (value) => dispatch.set('kind', value)

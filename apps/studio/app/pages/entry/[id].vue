@@ -37,6 +37,7 @@
     const { navigate } = useCallbackUrl();
     const entryForm = useEntryForm();
     const { progress } = useEntryDisplay(entry);
+    const gradient = useEntryGradient(() => entry.value?.id ?? ENTRY_ID.value);
 
     const { define: DefineStatus, reuse: ReuseStatus } =
         createReusableTemplate<{
@@ -99,7 +100,7 @@
                 :key="entry.name"
                 v-slot="{ values }"
                 :validation-schema="toTypedSchema(NAME_SCHEMA)"
-                :style="entry.style ?? getGradient([entry.id])"
+                :style="gradient"
                 class="relative flex min-h-56 w-full flex-col justify-between gap-8 overflow-hidden rounded-2xl p-5 text-white shadow-md"
                 :initial-values="{ name: entry.name }"
                 @submit="

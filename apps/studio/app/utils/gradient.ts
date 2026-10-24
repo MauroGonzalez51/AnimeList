@@ -24,9 +24,11 @@ function hashHue(value: string): number {
     }
     // fmix32: FNV-1a alone barely moves for ids that differ in the last char
     hash ^= hash >>> 16;
-    hash = Math.imul(hash, 0x85EBCA6B);
+    // eslint-disable-next-line unicorn/number-literal-case
+    hash = Math.imul(hash, 0x85ebca6b);
     hash ^= hash >>> 13;
-    hash = Math.imul(hash, 0xC2B2AE35);
+    // eslint-disable-next-line unicorn/number-literal-case
+    hash = Math.imul(hash, 0xc2b2ae35);
     hash ^= hash >>> 16;
     return (hash >>> 0) % 360;
 }

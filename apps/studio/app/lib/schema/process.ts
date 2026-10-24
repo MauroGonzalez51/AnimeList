@@ -41,7 +41,7 @@ export function newGeneratedId() {
 
 export function flattenEntries(
     entries: Entry[],
-    options?: { style?: boolean; parentId?: string; source?: SourceType },
+    options?: { parentId?: string; source?: SourceType },
 ) {
     const flatten: FlatEntry[] = [];
 
@@ -65,10 +65,6 @@ export function flattenEntries(
 
         if (!hasId) {
             flated._isGeneratedId = true;
-        }
-
-        if (!flated._parentId && options?.style) {
-            flated.style = getGradient([flated.id]);
         }
 
         flatten.push(flated);
@@ -128,7 +124,6 @@ export function unflattenEntries(
 
         delete current._parentId;
         delete current._isGeneratedId;
-        delete current.style;
         delete current._source;
 
         if (!entry._parentId) {
