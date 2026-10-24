@@ -151,7 +151,8 @@
                 "manhwa": "Manhwa",
                 "light-novel": "Light Novel",
                 "web-novel": "Web Novel",
-                "other": "Other"
+                "other": "Other",
+                "placeholder": "Entry Kind"
             },
             "status": {
                 "watched": "Watched",

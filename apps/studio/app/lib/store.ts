@@ -7,8 +7,10 @@ import type {
 import type { FlatEntry } from "@/lib/schema";
 import {
     ReadableTypeSchema,
+    UniverseKindSchema,
     WatchableTypeSchema,
 } from "@animelist/packages-schema";
+import { z } from "zod";
 
 export const READABLE_KINDS = ReadableTypeSchema.options.map(
     (option) => option.value,
@@ -75,6 +77,12 @@ export const KIND_LABELS: Record<
 export type EntryKind = keyof typeof KIND_LABELS;
 
 export const KINDS = Object.keys(KIND_LABELS) as EntryKind[];
+
+export const KINDS_SCHEMA = z.union([
+    UniverseKindSchema,
+    ...ReadableTypeSchema.options,
+    ...WatchableTypeSchema.options,
+]);
 
 // kinds an existing entry can switch to without losing its family-specific fields
 export function kindsInFamily(kind: EntryKind): readonly EntryKind[] {

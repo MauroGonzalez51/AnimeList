@@ -1,4 +1,8 @@
 <script setup lang="ts">
+    import type { AcceptableValue } from "reka-ui";
+    import type { EntryKind } from "@/lib/store";
+    import { KIND_LABELS, KINDS_SCHEMA } from "@/lib/store";
+
     definePageMeta({
         layout: "sidebar",
     });
@@ -8,8 +12,6 @@
     const { entries } = storeToRefs(manager);
 
     const config = useConfig();
-    const entryForm = useEntryForm();
-    const hasStore = computed(() => Boolean(config.state.value?.store_path));
 </script>
 
 <template>
@@ -34,77 +36,78 @@
                     }}
                 </p>
             </div>
-            <PaginationClientSide
-                v-model:page="page"
+            <FiltersController
+                v-slot="{ keys, dispatch, model, debounced, filtered }"
+                class="flex flex-col gap-4"
+                :fields="{
+                    kind: {
+                        schema: KINDS_SCHEMA,
+                        sync: true,
+                        predicate: ({ item, value }) => item.kind === value,
+                    },
+                }"
                 :items="entries"
-                index="id"
-                :page-size="15"
-                loading-method="single"
-                :condition="
-                    (item) => {
-                        if (item._parentId) {
-                            return false;
-                        }
-                    }
-                "
-                class="grid w-full min-w-0 grid-cols-3 gap-4"
             >
-                <template #empty>
-                    <Empty v-if="hasStore" class="h-full">
-                        <EmptyHeader>
-                            <EmptyMedia variant="icon">
-                                <LucideLibrary />
-                            </EmptyMedia>
-                            <EmptyTitle>
-                                {{ $t("views.home.empty.no_entries.title") }}
-                            </EmptyTitle>
-                            <EmptyDescription>
-                                {{
-                                    $t(
-                                        "views.home.empty.no_entries.description",
-                                    )
-                                }}
-                            </EmptyDescription>
-                        </EmptyHeader>
-                        <EmptyContent>
-                            <Button
-                                class="cursor-pointer"
-                                @click="entryForm.create()"
-                            >
-                                {{ $t("views.home.empty.no_entries.action") }}
-                            </Button>
-                        </EmptyContent>
-                    </Empty>
+                <DebugBlock :content="{ debounced }" />
+                <FiltersGroup :keys="keys">
+                    <template #kind>
+                        <Select
+                            :default-value="model.kind"
+                            @update:model-value="
+                                (value: AcceptableValue) => {
+                                    dispatch.set('kind', value as EntryKind);
+                                }
+                            "
+                        >
+                            <SelectTrigger>
+                                <SelectValue
+                                    :placeholder="
+                                        $t('domain.entry.kind.placeholder')
+                                    "
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="option in KINDS_SCHEMA.options"
+                                    :key="option.value"
+                                    :value="option.value"
+                                >
+                                    <TranslatedMessage
+                                        :keypath="KIND_LABELS[option.value]"
+                                    />
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </template>
+                </FiltersGroup>
 
-                    <Empty v-else class="h-full">
-                        <EmptyHeader>
-                            <EmptyMedia variant="icon">
-                                <LucideFolderOpen />
-                            </EmptyMedia>
-                            <EmptyTitle>
-                                {{ $t("views.home.empty.no_store.title") }}
-                            </EmptyTitle>
-                            <EmptyDescription>
-                                {{
-                                    $t("views.home.empty.no_store.description")
-                                }}
-                            </EmptyDescription>
-                        </EmptyHeader>
-                        <EmptyContent>
-                            <Button
-                                class="cursor-pointer"
-                                @click="manager.dispatch.pick()"
-                            >
-                                {{ $t("views.home.empty.no_store.action") }}
-                            </Button>
-                        </EmptyContent>
-                    </Empty>
-                </template>
+                <PaginationClientSide
+                    v-model:page="page"
+                    :items="filtered"
+                    index="id"
+                    :page-size="15"
+                    loading-method="single"
+                    :condition="
+                        (item) => {
+                            if (item._parentId) {
+                                return false;
+                            }
+                        }
+                    "
+                    class="grid w-full min-w-0 grid-cols-3 gap-4"
+                >
+                    <template #empty>
+                        <StoreEmptySelected
+                            v-if="config.state.value?.store_path"
+                        />
+                        <StoreNoSelected v-else />
+                    </template>
 
-                <template #item="{ $item }">
-                    <EntryTile :entry="$item" class="min-w-0" />
-                </template>
-            </PaginationClientSide>
+                    <template #item="{ $item }">
+                        <EntryTile :entry="$item" class="min-w-0" />
+                    </template>
+                </PaginationClientSide>
+            </FiltersController>
         </div>
     </section>
 </template>

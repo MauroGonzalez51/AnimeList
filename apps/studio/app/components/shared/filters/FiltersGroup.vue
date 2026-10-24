@@ -5,7 +5,7 @@
     import { cn } from "~/lib/utils";
 
     interface Props extends Omit<PrimitiveProps, "asChild"> {
-        keys: readonly TKey[];
+        keys: TKey[];
         class?: HTMLAttributes["class"];
     }
 

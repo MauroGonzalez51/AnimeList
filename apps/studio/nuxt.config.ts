@@ -41,7 +41,6 @@ export default defineNuxtConfig({
                 "reka-ui",
                 "tailwind-merge",
                 "temporal-polyfill",
-                "ulidx",
                 "yaml",
                 "zod",
                 "prettier",

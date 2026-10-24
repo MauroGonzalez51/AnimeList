@@ -4,6 +4,9 @@ export interface FilterField<TItem, TSchema extends z.ZodType = z.ZodType> {
     schema: TSchema;
     initialValue?: z.output<TSchema>;
     predicate?: (args: { item: TItem; value: z.output<TSchema> }) => boolean;
+    active?:
+        | boolean
+        | ((args: { item: TItem; value: z.output<TSchema> }) => boolean);
     sync?: boolean;
 }
 
