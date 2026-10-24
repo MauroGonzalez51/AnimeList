@@ -50,7 +50,7 @@
             key: "entry:reference",
             kind: "dialog",
             loader: () =>
-                import("@/components/domain/entry/EntryReferenceDialog.vue"),
+                import("~/components/domain/entry/reference/EntryReferenceDialog.vue"),
             props: {
                 candidates: candidatesFor(options.reference?.id),
                 ...options,
@@ -70,7 +70,10 @@
     }
 
     function withStableId(reference: EntryReference): EntryReference {
-        return { ...reference, id: manager.dispatch.ensureStableId(reference.id) };
+        return {
+            ...reference,
+            id: manager.dispatch.ensureStableId(reference.id),
+        };
     }
 
     function add(reference: EntryReference) {
@@ -95,7 +98,9 @@
 
 <template>
     <DefineReference v-slot="{ id, target, relation }">
-        <span class="truncate text-sm font-medium">{{ target?.name ?? id }}</span>
+        <span class="truncate text-sm font-medium">{{
+            target?.name ?? id
+        }}</span>
         <span class="flex shrink-0 gap-1">
             <Badge
                 v-for="item in relation"

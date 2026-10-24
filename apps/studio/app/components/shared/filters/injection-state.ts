@@ -57,19 +57,24 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
             return data;
         }
 
-        return data.filter((item) =>
-            activeKeys.every((key) => {
-                const definition = args.fields[key];
-                const value = debounced.value[key];
-                if (!value || !definition.predicate) {
-                    return true;
-                }
+        const checks = activeKeys.flatMap((key) => {
+            const definition = args.fields[key];
+            const value = debounced.value[key];
+            const predicate = definition.predicate;
+            if (!value || !predicate) {
+                return [];
+            }
 
+            return [{ definition, predicate, value }];
+        });
+
+        return data.filter((item) =>
+            checks.every(({ definition, predicate, value }) => {
                 if (!isActive(definition, { item, value })) {
                     return true;
                 }
 
-                return definition.predicate({ item, value }) ?? true;
+                return predicate({ item, value }) ?? true;
             }),
         );
     });

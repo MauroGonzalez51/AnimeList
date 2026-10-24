@@ -1,6 +1,8 @@
 <script setup lang="ts">
     import { z } from "zod";
     import { KIND_LABELS, KINDS_SCHEMA } from "@/lib/store";
+    import { flatToArray } from "~/lib/schema";
+    import { cn } from "~/lib/utils";
 
     definePageMeta({
         layout: "sidebar",
@@ -19,13 +21,7 @@
         class="flex flex-col gap-4"
         :fields="{
             kind: {
-                schema: z.preprocess((value) => {
-                    if (value === undefined) {
-                        return undefined;
-                    }
-
-                    return [value].flat();
-                }, z.array(KINDS_SCHEMA).optional()),
+                schema: flatToArray(z.array(KINDS_SCHEMA).optional()),
                 sync: true,
                 predicate: ({ item, value }) => value?.includes(item.kind),
             },
@@ -60,28 +56,40 @@
                             <PopoverTrigger as-child>
                                 <Button
                                     variant="outline"
-                                    class="cursor-pointer"
+                                    :class="
+                                        cn(
+                                            'cursor-pointer',
+                                            !model.kind?.length &&
+                                                'text-muted-foreground',
+                                        )
+                                    "
                                 >
-                                    <i18n-t
-                                        keypath="domain.entry.kind.placeholder"
-                                        :plural="model.kind?.length ?? 0"
-                                        tag="span"
+                                    <LucideTags />
+                                    <VLet
+                                        v-slot="{ label }"
+                                        :vars="{
+                                            label: KIND_LABELS[
+                                                model.kind?.[0] ?? 'other'
+                                            ],
+                                        }"
                                     >
-                                        <template #kind>
-                                            {{
-                                                $t(
-                                                    KIND_LABELS[
-                                                        model.kind?.[0]!
-                                                    ],
-                                                )
-                                            }}
-                                        </template>
-                                        <template #count>
-                                            <span class="text-muted-foreground">
-                                                {{ model.kind?.length }}
-                                            </span>
-                                        </template>
-                                    </i18n-t>
+                                        <i18n-t
+                                            keypath="domain.entry.kind.placeholder"
+                                            :plural="model.kind?.length ?? 0"
+                                            tag="span"
+                                        >
+                                            <template #kind>
+                                                {{ $t(label) }}
+                                            </template>
+                                            <template #count>
+                                                <span
+                                                    class="text-muted-foreground"
+                                                >
+                                                    {{ model.kind?.length }}
+                                                </span>
+                                            </template>
+                                        </i18n-t>
+                                    </VLet>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent align="start" class="w-auto p-3">

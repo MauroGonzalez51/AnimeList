@@ -130,7 +130,9 @@
                                     :ignore-filter="true"
                                     @update:model-value="handleChange"
                                 >
-                                    <ComboboxAnchor class="w-auto min-w-0 flex-1">
+                                    <ComboboxAnchor
+                                        class="w-auto min-w-0 flex-1"
+                                    >
                                         <ComboboxTrigger as-child>
                                             <Button
                                                 type="button"

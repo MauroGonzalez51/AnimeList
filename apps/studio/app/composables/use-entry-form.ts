@@ -9,7 +9,7 @@ export function useEntryForm() {
         modal.dispatch.loadComponent({
             key: "entry:form",
             kind: "sheet",
-            loader: () => import("@/components/domain/entry/EntryFormSheet.vue"),
+            loader: () => import("~/components/domain/entry/form/EntryFormSheet.vue"),
             props,
         });
     }
