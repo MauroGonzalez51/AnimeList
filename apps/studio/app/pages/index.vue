@@ -1,7 +1,6 @@
 <script setup lang="ts">
-    import type { AcceptableValue } from "reka-ui";
-    import type { EntryKind } from "@/lib/store";
-    import { KIND_LABELS, KINDS_SCHEMA } from "@/lib/store";
+    import { z } from "zod";
+    import { KINDS_SCHEMA } from "@/lib/store";
 
     definePageMeta({
         layout: "sidebar",
@@ -37,13 +36,20 @@
                 </p>
             </div>
             <FiltersController
-                v-slot="{ keys, dispatch, model, debounced, filtered }"
+                v-slot="{ keys, model, dispatch, debounced, filtered }"
                 class="flex flex-col gap-4"
                 :fields="{
                     kind: {
-                        schema: KINDS_SCHEMA,
+                        schema: z.preprocess((value) => {
+                            if (value === undefined) {
+                                return undefined;
+                            }
+
+                            return [value].flat();
+                        }, z.array(KINDS_SCHEMA).optional()),
                         sync: true,
-                        predicate: ({ item, value }) => item.kind === value,
+                        predicate: ({ item, value }) =>
+                            value?.includes(item.kind),
                     },
                 }"
                 :items="entries"
@@ -51,33 +57,24 @@
                 <DebugBlock :content="{ debounced }" />
                 <FiltersGroup :keys="keys">
                     <template #kind>
-                        <Select
-                            :default-value="model.kind"
-                            @update:model-value="
-                                (value: AcceptableValue) => {
-                                    dispatch.set('kind', value as EntryKind);
-                                }
-                            "
-                        >
-                            <SelectTrigger>
-                                <SelectValue
-                                    :placeholder="
-                                        $t('domain.entry.kind.placeholder')
+                        <Popover>
+                            <PopoverTrigger as-child>
+                                <Button
+                                    variant="outline"
+                                    class="justify-between"
+                                >
+                                    {{ $t("domain.entry.kind.placeholder") }}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent align="start" class="w-auto p-3">
+                                <EntryKindCheckboxGrid
+                                    :model-value="model.kind"
+                                    @update:model-value="
+                                        (value) => dispatch.set('kind', value)
                                     "
                                 />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    v-for="option in KINDS_SCHEMA.options"
-                                    :key="option.value"
-                                    :value="option.value"
-                                >
-                                    <TranslatedMessage
-                                        :keypath="KIND_LABELS[option.value]"
-                                    />
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
+                            </PopoverContent>
+                        </Popover>
                     </template>
                 </FiltersGroup>
 

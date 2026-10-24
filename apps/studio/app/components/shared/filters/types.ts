@@ -3,7 +3,10 @@ import type { z } from "zod";
 export interface FilterField<TItem, TSchema extends z.ZodType = z.ZodType> {
     schema: TSchema;
     initialValue?: z.output<TSchema>;
-    predicate?: (args: { item: TItem; value: z.output<TSchema> }) => boolean;
+    predicate?: (args: {
+        item: TItem;
+        value: z.output<TSchema>;
+    }) => boolean | undefined;
     active?:
         | boolean
         | ((args: { item: TItem; value: z.output<TSchema> }) => boolean);

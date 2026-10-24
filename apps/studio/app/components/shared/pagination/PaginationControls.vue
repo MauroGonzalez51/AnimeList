@@ -19,12 +19,9 @@
 </script>
 
 <template>
-    <Pagination
-        v-if="totalPages > 1"
-        :items-per-page="pageSize"
-        class="mt-auto shrink-0 py-6"
-    >
+    <Pagination :items-per-page="pageSize" class="mt-auto shrink-0 py-6">
         <PaginationContent
+            v-if="totalPages > 1"
             class="px-12 py-2 rounded-lg bg-sidebar border-sidebar"
         >
             <PaginationPrevious

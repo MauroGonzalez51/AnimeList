@@ -162,7 +162,6 @@
             </div>
         </div>
 
-        puta la wea
         <div
             v-if="metadata"
             class="relative mx-2 mb-2 flex flex-col gap-1.5 rounded-xl border border-white/20 bg-white/15 p-3 text-xs font-medium backdrop-blur-xl contrast-more:border-white contrast-more:bg-black/70"

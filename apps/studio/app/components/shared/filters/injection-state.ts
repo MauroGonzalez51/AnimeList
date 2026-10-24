@@ -26,6 +26,10 @@ interface Args<TItem, TShape extends Shape> {
     model: Ref<ActiveValues<TShape>>;
 }
 
+function defaultShouldReset(value: unknown) {
+    return Array.isArray(value) && value.length === 0;
+}
+
 function isActive<TItem, TSchema extends z.ZodType>(
     definition: FilterField<TItem, TSchema>,
     args: { item: TItem; value: z.output<TSchema> },
@@ -64,7 +68,7 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
                     return true;
                 }
 
-                return definition.predicate({ item, value });
+                return definition.predicate({ item, value }) ?? true;
             }),
         );
     });
@@ -72,8 +76,11 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
     function set<K extends FieldKey<TShape>>(
         key: K,
         value: ActiveValues<TShape>[K] | undefined,
+        options?: { shouldReset?: (value: ActiveValues<TShape>[K]) => boolean },
     ) {
-        if (value === undefined) {
+        const shouldReset = options?.shouldReset ?? defaultShouldReset;
+
+        if (value === undefined || shouldReset(value)) {
             reset(key);
             return;
         }

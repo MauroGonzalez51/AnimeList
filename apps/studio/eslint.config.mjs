@@ -17,4 +17,7 @@ export default withNuxt(
             "vue/operator-linebreak": "off",
         },
     },
+    {
+        ignores: ["i18n/docs.md"],
+    },
 );
