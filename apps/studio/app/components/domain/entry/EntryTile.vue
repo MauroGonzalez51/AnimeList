@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import type { HTMLAttributes } from "vue";
+    import type { CSSProperties, HTMLAttributes } from "vue";
     import type { FlatEntry } from "~/lib/schema";
     import { LucideEye } from "@lucide/vue";
     import { entryText } from "~/lib/schema";
@@ -13,9 +13,21 @@
 
     const props = defineProps<Props>();
 
+    const manager = useStoreManager();
+
     const { progress, adaptedUntil } = useEntryDisplay(() => props.entry);
 
     const { insertCallback } = useCallbackUrl();
+
+    watch(
+        () => props.entry.style,
+        (style) => {
+            if (!style) {
+                manager.dispatch.ensureStyle(props.entry.id);
+            }
+        },
+        { immediate: true, once: true },
+    );
 </script>
 
 <template>
@@ -144,7 +156,12 @@
         </div>
 
         <div
-            v-if="progress || adaptedUntil || entry.notes || (entry.references?.length ?? 0) > 0"
+            v-if="
+                progress ||
+                adaptedUntil ||
+                entry.notes ||
+                (entry.references?.length ?? 0) > 0
+            "
             class="relative mx-2 mb-2 flex flex-col gap-1.5 rounded-xl border border-white/20 bg-white/15 p-3 text-xs font-medium backdrop-blur-xl contrast-more:border-white contrast-more:bg-black/70"
         >
             <div v-if="progress" class="flex items-center gap-1.5">
@@ -169,7 +186,9 @@
                 <template #readable>
                     <div class="flex items-center justify-between gap-2">
                         <span class="text-white/70">
-                            {{ $t("views.home.entry_card.adapted_until.label") }}
+                            {{
+                                $t("views.home.entry_card.adapted_until.label")
+                            }}
                         </span>
                         <span>{{ adaptedUntil }}</span>
                     </div>

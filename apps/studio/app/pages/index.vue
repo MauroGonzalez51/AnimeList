@@ -87,13 +87,6 @@
                     index="id"
                     :page-size="15"
                     loading-method="single"
-                    :condition="
-                        (item) => {
-                            if (item._parentId) {
-                                return false;
-                            }
-                        }
-                    "
                     class="grid w-full min-w-0 grid-cols-3 gap-4"
                 >
                     <template #empty>

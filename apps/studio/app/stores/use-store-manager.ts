@@ -192,6 +192,15 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         return next;
     }
 
+    function ensureStyle(id: FlatEntry["id"]) {
+        const entry = entriesMap.get(id);
+        if (!entry || entry.style) {
+            return;
+        }
+
+        entry.style = getGradient([id]);
+    }
+
     function addEntry(
         draft: EntryDraft,
         parent?: { id: FlatEntry["id"]; source: SourceType },
@@ -248,6 +257,7 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
             addEntry,
             updateEntry,
             ensureStableId,
+            ensureStyle,
         },
     };
 });

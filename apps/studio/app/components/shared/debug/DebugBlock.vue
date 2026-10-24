@@ -12,9 +12,9 @@
 
 <template>
     <DevOnly>
-        <CodeBlock :class="cn(props.class)">
-            <CodeBlockContent wrap>
-                {{ content }}
+        <CodeBlock :class="cn('shrink-0', props.class)">
+            <CodeBlockContent wrap class="h-fit shrink-0">
+                {{ JSON.stringify(content, null, 4) }}
             </CodeBlockContent>
         </CodeBlock>
     </DevOnly>

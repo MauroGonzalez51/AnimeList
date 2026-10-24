@@ -239,6 +239,8 @@
                 </VeeField>
             </VeeForm>
 
+            <DebugBlock :content="tree" />
+
             <EntryNodeCard
                 :title="$t('views.entry.id.sections.children')"
                 :nodes="tree?.children ?? []"

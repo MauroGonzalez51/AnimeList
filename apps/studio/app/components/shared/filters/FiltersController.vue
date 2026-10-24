@@ -26,9 +26,15 @@
         debounce?: { ms?: number } & DebounceFilterOptions;
     }
 
+    interface Emits {
+        change: [value: ActiveValues];
+    }
+
     const props = withDefaults(defineProps<Props>(), {
         as: "div",
     });
+
+    const emit = defineEmits<Emits>();
 
     const keys = Object.keys(props.fields) as FieldKey[];
 
@@ -89,6 +95,8 @@
         queries,
         model,
     });
+
+    watch(debounced, () => emit("change", debounced.value));
 </script>
 
 <template>
