@@ -12,17 +12,10 @@
 
 <template>
     <DevOnly>
-        <div
-            :class="
-                cn(
-                    'p-4 border-2 border-border/60 rounded-lg bg-muted/30',
-                    props.class,
-                )
-            "
-        >
-            <slot :content="content">
-                <pre class="text-muted-foreground" v-text="content" />
-            </slot>
-        </div>
+        <CodeBlock :class="cn(props.class)">
+            <CodeBlockContent wrap>
+                {{ content }}
+            </CodeBlockContent>
+        </CodeBlock>
     </DevOnly>
 </template>

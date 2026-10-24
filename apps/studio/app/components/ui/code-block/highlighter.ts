@@ -78,8 +78,8 @@ export async function loadHighlighter(language: string) {
         await shiki.loadLanguage(languages[lang]);
 
     return {
-        // Returns the tokens of each line, and the grammar state after the last
-        // line. Pass that state back to continue where the code left off.
+    // Returns the tokens of each line, and the grammar state after the last
+    // line. Pass that state back to continue where the code left off.
         highlight(code: string, state?: GrammarState) {
             const tokenize = (text: string) =>
                 shiki.codeToTokens(text, {
@@ -91,17 +91,15 @@ export async function loadHighlighter(language: string) {
 
             // ANSI has no grammar state, so each line is tokenized on its own and
             // gets the same colors whether it arrives in one piece or streams.
-            const tokens =
-                lang === "ansi"
-                    ? code.split("\n").flatMap((line) => tokenize(line))
-                    : tokenize(code);
+            const tokens = lang === "ansi"
+                ? code.split("\n").flatMap((line) => tokenize(line))
+                : tokenize(code);
 
             return {
                 lines: tokens.map((line) =>
                     line.map((token): HighlightedToken => ({
                         content: token.content,
-                        htmlStyle: token.htmlStyle as
-                            Record<string, string> | undefined,
+                        htmlStyle: token.htmlStyle as Record<string, string> | undefined,
                     })),
                 ),
                 state: shiki.getLastGrammarState(tokens),
@@ -110,9 +108,7 @@ export async function loadHighlighter(language: string) {
     };
 }
 
-export type Highlighter = NonNullable<
-    Awaited<ReturnType<typeof loadHighlighter>>
->;
+export type Highlighter = NonNullable<Awaited<ReturnType<typeof loadHighlighter>>>;
 
 // Returns the tokens of each line, or null for a language that is not listed.
 export async function highlightCode(code: string, language: string) {
