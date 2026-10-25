@@ -73,7 +73,7 @@
                     :loading="loading"
                     index="id"
                     :page-size="15"
-                    loading-method="single"
+                    loading-method="multiple"
                     class="grid w-full min-w-0 grid-cols-3 gap-4"
                 >
                     <template #empty>
@@ -85,6 +85,10 @@
 
                     <template #item="{ $item }">
                         <EntryTile :entry="$item" class="min-w-0" />
+                    </template>
+
+                    <template #loading>
+                        <SkeletonsEntryTile class="min-w-0" />
                     </template>
                 </PaginationClientSide>
             </div>

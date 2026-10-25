@@ -39,10 +39,15 @@
     const page = defineModel<number>("page", { required: false, default: 1 });
 
     const containerRef = useTemplateRef("container");
-    const loading = useState<Temporal.Instant | null>(
+
+    const loadingTimestamp = useState<Temporal.Instant | null>(
         NuxtKeys.Components.Pagination.ClientSide.Loading,
         () => null,
     );
+    const loading = computed(
+        () => loadingTimestamp.value !== null || props.loading,
+    );
+
     const { items } = usePaginationControls.provide({
         items: () => props.items,
         index: props.index,
@@ -52,11 +57,11 @@
     });
 
     async function changePage(newPage: number) {
-        if (newPage === page.value || loading.value !== null) {
+        if (newPage === page.value || loadingTimestamp.value !== null) {
             return;
         }
 
-        loading.value = Temporal.Now.instant();
+        loadingTimestamp.value = Temporal.Now.instant();
         await nextTick();
         await new Promise<void>((resolve) => {
             requestAnimationFrame(() => resolve());
@@ -71,7 +76,7 @@
         });
 
         const elapsed = Temporal.Now.instant()
-            .since(loading.value)
+            .since(loadingTimestamp.value)
             .total("milliseconds");
 
         const remaining = props.loadingTime - elapsed;
@@ -80,7 +85,7 @@
             await promiseTimeout(remaining);
         }
 
-        loading.value = null;
+        loadingTimestamp.value = null;
     }
 </script>
 
@@ -90,7 +95,37 @@
         class="relative flex min-h-0 min-w-0 flex-1 flex-col space-y-2"
     >
         <div class="relative grow">
-            <template v-if="!items || items.length === 0">
+            <template v-if="loading">
+                <div class="w-full overflow-hidden bg-background">
+                    <slot name="loading-container">
+                        <template v-if="loadingMethod === 'multiple'">
+                            <div :class="cn('w-full', props.class)">
+                                <template v-for="_ in pageSize" :key="_">
+                                    <slot name="loading">
+                                        <div
+                                            class="w-full h-full flex items-center justify-center"
+                                        >
+                                            <Spinner />
+                                        </div>
+                                    </slot>
+                                </template>
+                            </div>
+                        </template>
+
+                        <template v-else>
+                            <slot name="loading">
+                                <div
+                                    class="flex h-full w-full items-center justify-center"
+                                >
+                                    <Spinner class="size-8" />
+                                </div>
+                            </slot>
+                        </template>
+                    </slot>
+                </div>
+            </template>
+
+            <template v-else-if="!items || items.length === 0">
                 <slot name="empty" />
             </template>
 
@@ -103,36 +138,6 @@
                     </PaginationIterator>
                 </Primitive>
             </template>
-            <div
-                v-if="loading || props.loading"
-                class="absolute inset-0 z-10 overflow-hidden bg-background"
-            >
-                <slot name="loading-container">
-                    <template v-if="loadingMethod === 'multiple'">
-                        <div :class="cn('w-full', props.class)">
-                            <template v-for="_ in pageSize" :key="_">
-                                <slot name="loading">
-                                    <div
-                                        class="w-full h-full flex items-center justify-center"
-                                    >
-                                        <Spinner />
-                                    </div>
-                                </slot>
-                            </template>
-                        </div>
-                    </template>
-
-                    <template v-else>
-                        <slot name="loading">
-                            <div
-                                class="flex h-full w-full items-center justify-center"
-                            >
-                                <Spinner class="size-8" />
-                            </div>
-                        </slot>
-                    </template>
-                </slot>
-            </div>
         </div>
 
         <PaginationControls @change-page="changePage" />
