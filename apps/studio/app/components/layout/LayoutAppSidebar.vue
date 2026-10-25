@@ -186,13 +186,15 @@
                 <SidebarMenuItem>
                     <SidebarMenuButton
                         size="lg"
-                        class="cursor-default border border-border/40 bg-muted"
+                        class="cursor-default border border-border/40 dark:border-purple-300/50 bg-muted"
                         :title="storePath"
                     >
                         <div
                             class="flex size-8 shrink-0 items-center justify-center"
                         >
-                            <LucideFileText class="size-4" />
+                            <LucideFileText
+                                class="size-4 text-rose-500 dark:text-purple-300"
+                            />
                         </div>
                         <div
                             class="grid flex-1 text-left text-sm leading-tight"

@@ -1,19 +1,27 @@
 <script setup lang="ts">
+    import type { HTMLAttributes } from "vue";
     import type { EntryKind } from "@/lib/store";
     import { KIND_LABELS } from "@/lib/store";
     import { cn } from "@/lib/utils";
 
     interface Props {
         kind: EntryKind[] | undefined;
+        class?: HTMLAttributes["class"];
     }
 
-    defineProps<Props>();
+    const props = defineProps<Props>();
 </script>
 
 <template>
     <Button
         variant="outline"
-        :class="cn('cursor-pointer', !kind?.length && 'text-muted-foreground')"
+        :class="
+            cn(
+                'cursor-pointer',
+                !kind?.length && 'text-muted-foreground',
+                props.class,
+            )
+        "
     >
         <LucideTags />
         <VLet

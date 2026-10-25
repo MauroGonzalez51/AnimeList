@@ -19,6 +19,15 @@
         v-slot="{ keys, model, dispatch, debounced, filtered, loading }"
         class="flex flex-col gap-4"
         :fields="{
+            name: {
+                schema: z.string().optional(),
+                sync: true,
+                predicate: ({ item, value }) => {
+                    if (value) {
+                        return item.name.toLowerCase().includes(value);
+                    }
+                },
+            },
             kind: {
                 schema: flatToArray(z.array(KINDS_SCHEMA).optional()),
                 sync: true,
@@ -29,7 +38,7 @@
     >
         <section class="flex min-h-0 min-w-0 flex-1 flex-col">
             <div
-                class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-2"
+                class="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col space-y-4"
             >
                 <div class="max-w-xl space-y-2">
                     <p
@@ -48,12 +57,41 @@
                         }}
                     </p>
                 </div>
-                <DebugBlock :content="{ debounced }" />
-                <FiltersGroup :keys="keys">
+                <DebugBlock :content="{ model, debounced }" />
+                <FiltersGroup class="items-end" :keys="keys">
+                    <template #name>
+                        <Field class="flex-1 max-w-96">
+                            <FieldLabel>
+                                {{ $t("domain.entry.label.name") }}
+                            </FieldLabel>
+                            <InputGroup>
+                                <InputGroupInput
+                                    :default-value="model.name"
+                                    @update:model-value="
+                                        (value: unknown) => {
+                                            if (!value) {
+                                                dispatch.reset('name');
+                                                return;
+                                            }
+
+                                            dispatch.set('name', String(value));
+                                        }
+                                    "
+                                />
+
+                                <InputGroupAddon align="inline-start">
+                                    <LucideBook />
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </Field>
+                    </template>
                     <template #kind>
                         <Popover>
                             <PopoverTrigger as-child>
-                                <EntryFilterKindTrigger :kind="model.kind" />
+                                <EntryFilterKindTrigger
+                                    :kind="model.kind"
+                                    class="flex-1 max-w-64"
+                                />
                             </PopoverTrigger>
                             <PopoverContent align="start" class="w-auto p-3">
                                 <EntryFilterKindCheckboxGrid

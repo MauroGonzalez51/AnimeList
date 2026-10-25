@@ -177,6 +177,9 @@
                 "universe": "Belongs to the same shared universe",
                 "author": "Shares the same author or creator",
                 "unknown": "Related, but the link is unclear"
+            },
+            "label": {
+                "name": "Name"
             }
         }
     },
