@@ -12,6 +12,7 @@
     const { entries } = storeToRefs(manager);
 
     const config = useConfig();
+    const LayoutSchema = z.union([z.literal("grid"), z.literal("bento")]);
 </script>
 
 <template>
@@ -32,6 +33,10 @@
                 schema: flatToArray(z.array(KINDS_SCHEMA).optional()),
                 sync: true,
                 predicate: ({ item, value }) => value?.includes(item.kind),
+            },
+            layout: {
+                schema: LayoutSchema,
+                sync: true,
             },
         }"
         :items="entries"
@@ -58,9 +63,12 @@
                     </p>
                 </div>
                 <DebugBlock :content="{ model, debounced }" />
-                <FiltersGroup class="items-end" :keys="keys">
+                <FiltersGroup
+                    class="items-end md:grid md:grid-cols-[minmax(0,1fr)_16rem_auto]"
+                    :keys="keys"
+                >
                     <template #name>
-                        <Field class="flex-1 max-w-96">
+                        <Field class="w-full min-w-0">
                             <FieldLabel>
                                 {{ $t("domain.entry.label.name") }}
                             </FieldLabel>
@@ -88,10 +96,7 @@
                     <template #kind>
                         <Popover>
                             <PopoverTrigger as-child>
-                                <EntryFilterKindTrigger
-                                    :kind="model.kind"
-                                    class="flex-1 max-w-64"
-                                />
+                                <EntryFilterKindTrigger :kind="model.kind" />
                             </PopoverTrigger>
                             <PopoverContent align="start" class="w-auto p-3">
                                 <EntryFilterKindCheckboxGrid
@@ -102,6 +107,33 @@
                                 />
                             </PopoverContent>
                         </Popover>
+                    </template>
+                    <template #layout>
+                        <ToggleGroup
+                            :default-value="model.layout"
+                            type="single"
+                            @update:model-value="
+                                (layout) => {
+                                    dispatch.set(
+                                        'layout',
+                                        LayoutSchema.parse(layout),
+                                    );
+                                }
+                            "
+                        >
+                            <ToggleGroupItem
+                                value="grid"
+                                class="cursor-pointer"
+                            >
+                                <LucideLayoutGrid />
+                            </ToggleGroupItem>
+                            <ToggleGroupItem
+                                value="bento"
+                                class="cursor-pointer"
+                            >
+                                <LucideLayoutDashboard />
+                            </ToggleGroupItem>
+                        </ToggleGroup>
                     </template>
                 </FiltersGroup>
 
@@ -121,8 +153,15 @@
                         <StoreNoSelected v-else />
                     </template>
 
-                    <template #items="{ items: pageItems }">
+                    <template
+                        v-if="model.layout === 'bento'"
+                        #items="{ items: pageItems }"
+                    >
                         <EntryBento :entries="pageItems" />
+                    </template>
+
+                    <template v-if="model.layout === 'grid'" #item="{ $item }">
+                        <EntryTile :entry="$item" />
                     </template>
 
                     <template #loading>
