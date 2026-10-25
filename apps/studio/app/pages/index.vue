@@ -37,6 +37,7 @@
             layout: {
                 schema: LayoutSchema,
                 sync: true,
+                initialValue: 'grid',
             },
         }"
         :items="entries"
