@@ -121,8 +121,8 @@
                         <StoreNoSelected v-else />
                     </template>
 
-                    <template #item="{ $item }">
-                        <EntryTile :entry="$item" class="min-w-0" />
+                    <template #items="{ items: pageItems }">
+                        <EntryBento :entries="pageItems" />
                     </template>
 
                     <template #loading>

@@ -231,10 +231,25 @@ export const useStoreManager = defineStore(NuxtKeys.Stores.StoreManager, () => {
         { immediate: true },
     );
 
+    const childCounts = computed(() => {
+        const counts = new Map<FlatEntry["id"], number>();
+
+        for (const entry of entries.value ?? []) {
+            if (entry._source !== "children" || !entry._parentId) {
+                continue;
+            }
+
+            counts.set(entry._parentId, (counts.get(entry._parentId) ?? 0) + 1);
+        }
+
+        return counts;
+    });
+
     return {
         meta,
         entries,
         entriesMap,
+        childCounts,
         dispatch: {
             pick,
             clear,

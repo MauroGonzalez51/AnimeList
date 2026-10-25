@@ -114,7 +114,7 @@
 
         <div class="relative mt-auto flex flex-col gap-1 px-4 pb-3 pt-6">
             <h3
-                class="line-clamp-3 wrap-break-word text-2xl leading-[1.1] font-semibold tracking-[-0.02em] drop-shadow-sm"
+                class="line-clamp-3 wrap-break-word text-2xl leading-snug font-semibold tracking-[-0.02em] drop-shadow-sm"
             >
                 {{ entry.name }}
             </h3>

@@ -110,6 +110,49 @@ export function repackCells(cells: BentoCell[], columns: number) {
     }
 }
 
+function buildOccupancy(cells: BentoCell[], columns: number) {
+    const rows = cells.reduce(
+        (bottom, cell) => Math.max(bottom, cell.y + cell.height),
+        0,
+    );
+    const occupied = Array.from({ length: rows }, () => {
+        return Array.from<boolean>({ length: columns }).fill(false);
+    });
+
+    for (const cell of cells) {
+        markOccupied(occupied, cell);
+    }
+
+    return occupied;
+}
+
+function canGrowRight(occupied: boolean[][], cell: BentoCell, columns: number) {
+    const col = cell.x + cell.width;
+
+    if (col >= columns) {
+        return false;
+    }
+
+    for (let r = cell.y; r < cell.y + cell.height; r++) {
+        if (occupied[r]?.[col] !== false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export function fillRightGaps(cells: BentoCell[], columns: number) {
+    const occupied = buildOccupancy(cells, columns);
+
+    for (const cell of sortByPosition(cells)) {
+        while (canGrowRight(occupied, cell, columns)) {
+            cell.width++;
+            markOccupied(occupied, cell);
+        }
+    }
+}
+
 export function repackIfNeeded(cells: BentoCell[], columns: number) {
     if (hasOverlap(cells) || isOutOfBounds(cells, columns)) {
         repackCells(cells, columns);

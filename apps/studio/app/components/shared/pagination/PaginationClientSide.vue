@@ -26,6 +26,7 @@
         "loading-container": () => VNode[];
         loading: () => VNode[];
         item: (props: TData & { $item: TData; $index: number }) => VNode[];
+        items: (props: { items: TData[] }) => VNode[];
     }
 
     const props = withDefaults(defineProps<Props>(), {
@@ -130,13 +131,18 @@
             </template>
 
             <template v-else>
-                <Primitive :as="containerAs" :class="cn('w-full', props.class)">
-                    <PaginationIterator :items="items" :index="props.index">
-                        <template #item="slotProps">
-                            <slot name="item" v-bind="slotProps" />
-                        </template>
-                    </PaginationIterator>
-                </Primitive>
+                <slot name="items" :items="items">
+                    <Primitive
+                        :as="containerAs"
+                        :class="cn('w-full', props.class)"
+                    >
+                        <PaginationIterator :items="items" :index="props.index">
+                            <template #item="slotProps">
+                                <slot name="item" v-bind="slotProps" />
+                            </template>
+                        </PaginationIterator>
+                    </Primitive>
+                </slot>
             </template>
         </div>
 
