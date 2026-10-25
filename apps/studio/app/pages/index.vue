@@ -1,5 +1,7 @@
 <script setup lang="ts">
+    import type { Layout } from "@/components/domain/entry/layout";
     import { z } from "zod";
+    import { LayoutSchema } from "@/components/domain/entry/layout";
     import { KINDS_SCHEMA } from "@/lib/store";
     import { flatToArray } from "~/lib/schema";
 
@@ -12,7 +14,6 @@
     const { entries } = storeToRefs(manager);
 
     const config = useConfig();
-    const LayoutSchema = z.union([z.literal("grid"), z.literal("bento")]);
 </script>
 
 <template>
@@ -110,31 +111,14 @@
                         </Popover>
                     </template>
                     <template #layout>
-                        <ToggleGroup
+                        <EntryLayoutToggle
                             :default-value="model.layout"
-                            type="single"
                             @update:model-value="
                                 (layout) => {
-                                    dispatch.set(
-                                        'layout',
-                                        LayoutSchema.parse(layout),
-                                    );
+                                    dispatch.set('layout', layout as Layout);
                                 }
                             "
-                        >
-                            <ToggleGroupItem
-                                value="grid"
-                                class="cursor-pointer"
-                            >
-                                <LucideLayoutGrid />
-                            </ToggleGroupItem>
-                            <ToggleGroupItem
-                                value="bento"
-                                class="cursor-pointer"
-                            >
-                                <LucideLayoutDashboard />
-                            </ToggleGroupItem>
-                        </ToggleGroup>
+                        />
                     </template>
                 </FiltersGroup>
 

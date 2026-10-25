@@ -1,4 +1,4 @@
-export function useEntryGradient(id: MaybeRefOrGetter<string>) {
+export default function (id: MaybeRefOrGetter<string>) {
     const colorMode = useColorMode();
 
     return computed(() => {
