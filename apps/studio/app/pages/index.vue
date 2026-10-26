@@ -1,6 +1,11 @@
 <script setup lang="ts">
     import type { Layout } from "@/components/domain/entry/layout";
     import { z } from "zod";
+    import {
+        getStatusChips,
+        matchesStatus,
+        StatusFilterSchema,
+    } from "@/components/domain/entry/filter/status";
     import { LayoutSchema } from "@/components/domain/entry/layout";
     import { KINDS_SCHEMA } from "@/lib/store";
     import { flatToArray } from "~/lib/schema";
@@ -35,6 +40,17 @@
                 sync: true,
                 predicate: ({ item, value }) => value?.includes(item.kind),
             },
+            status: {
+                schema: StatusFilterSchema,
+                initialValue: {},
+                predicate: ({ item, value }) => matchesStatus(item, value),
+            },
+            allEntries: {
+                schema: z.stringbool(),
+                sync: true,
+                initialValue: false,
+                predicate: ({ item, value }) => value || !item._parentId,
+            },
             layout: {
                 schema: LayoutSchema,
                 sync: true,
@@ -66,7 +82,7 @@
                 </div>
                 <DebugBlock :content="{ model, debounced }" />
                 <FiltersGroup
-                    class="items-end md:grid md:grid-cols-[minmax(0,1fr)_16rem_auto]"
+                    class="items-end md:grid md:grid-cols-[minmax(0,1fr)_16rem_auto_auto_auto]"
                     :keys="keys"
                 >
                     <template #name>
@@ -110,6 +126,34 @@
                             </PopoverContent>
                         </Popover>
                     </template>
+                    <template #status>
+                        <Popover>
+                            <PopoverTrigger as-child>
+                                <EntryFilterStatusTrigger
+                                    :count="
+                                        getStatusChips(model.status ?? {})
+                                            .length
+                                    "
+                                />
+                            </PopoverTrigger>
+                            <PopoverContent align="start" class="w-80 p-3">
+                                <EntryFilterStatusContent
+                                    :model-value="model.status ?? {}"
+                                    @update:model-value="
+                                        (value) => dispatch.set('status', value)
+                                    "
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </template>
+                    <template #allEntries>
+                        <EntryFilterShowAll
+                            :model-value="model.allEntries"
+                            @update:model-value="
+                                (value) => dispatch.set('allEntries', value)
+                            "
+                        />
+                    </template>
                     <template #layout>
                         <EntryLayoutToggle
                             :default-value="model.layout"
@@ -122,6 +166,13 @@
                         />
                     </template>
                 </FiltersGroup>
+
+                <EntryFilterStatusChips
+                    :model-value="model.status ?? {}"
+                    @update:model-value="
+                        (value) => dispatch.set('status', value)
+                    "
+                />
 
                 <PaginationClientSide
                     v-model:page="page"

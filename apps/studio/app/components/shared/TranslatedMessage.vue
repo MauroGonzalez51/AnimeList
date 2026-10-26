@@ -1,10 +1,15 @@
 <script setup lang="ts">
-    interface Props {
+    import type { PrimitiveProps } from "reka-ui";
+    import { Primitive } from "reka-ui";
+
+    interface Props extends Omit<PrimitiveProps, "asChild"> {
         keypath: MaybeRefOrGetter<string | undefined>;
     }
 
     defineOptions({ inheritAttrs: false });
-    const props = defineProps<Props>();
+    const props = withDefaults(defineProps<Props>(), {
+        as: "span",
+    });
 
     const { t, te } = useI18n();
     const message = computed(() => {
@@ -19,6 +24,6 @@
 
 <template>
     <slot :text="message">
-        <span v-bind="$attrs">{{ message }}</span>
+        <Primitive :as="as" v-bind="$attrs">{{ message }}</Primitive>
     </slot>
 </template>

@@ -179,7 +179,45 @@
                 "unknown": "Related, but the link is unclear"
             },
             "label": {
-                "name": "Name"
+                "name": "Name",
+                "all_entries": "Show all entries"
+            },
+            "filter": {
+                "status": {
+                    "trigger": "Status",
+                    "reset": "Reset",
+                    "groups": {
+                        "base": "All entries",
+                        "watchable": "Watchable",
+                        "readable": "Readable"
+                    },
+                    "fields": {
+                        "favorite": "Favorite",
+                        "watched": "Watched",
+                        "review": "Reviewed",
+                        "rating": "Rating",
+                        "episode": "Episode",
+                        "completed": "Completed",
+                        "adapted_until": "Adapted",
+                        "chapter": "Chapter"
+                    },
+                    "options": {
+                        "any": "Any",
+                        "yes": "Yes",
+                        "no": "No"
+                    },
+                    "range": {
+                        "min": "Min",
+                        "max": "Max"
+                    },
+                    "chip": {
+                        "yes": "{label}",
+                        "no": "Not {label}",
+                        "between": "{label} {min}-{max}",
+                        "min": "{label} ≥ {min}",
+                        "max": "{label} ≤ {max}"
+                    }
+                }
             }
         }
     },

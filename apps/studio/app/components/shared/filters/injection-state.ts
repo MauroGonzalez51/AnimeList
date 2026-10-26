@@ -61,7 +61,7 @@ function _state<TItem, TShape extends Shape>(args: Args<TItem, TShape>) {
             const definition = args.fields[key];
             const value = debounced.value[key];
             const predicate = definition.predicate;
-            if (!value || !predicate) {
+            if (value === undefined || !predicate) {
                 return [];
             }
 

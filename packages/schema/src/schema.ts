@@ -103,6 +103,12 @@ export const AdaptedUntilSchema = z.object({
     notes: ValueLike.optional().describe(MESSAGES.ADAPTATION.NOTES),
 });
 
+export const ReadableEntryExtrasSchema = z.object({
+    adaptedUntil: AdaptedUntilSchema.optional().describe(
+        MESSAGES.ENTRY.ADAPTED_UNTIL,
+    ),
+});
+
 export const UniverseKindSchema = z.literal("universe");
 
 export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
@@ -132,9 +138,7 @@ export const EntrySchema: z.ZodType<Entry> = z.discriminatedUnion("kind", [
     BaseEntrySchema.safeExtend({
         kind: ReadableTypeSchema,
         status: ReadableStatusSchema.optional().describe(MESSAGES.ENTRY.STATUS),
-        adaptedUntil: AdaptedUntilSchema.optional().describe(
-            MESSAGES.ENTRY.ADAPTED_UNTIL,
-        ),
+        ...ReadableEntryExtrasSchema.shape,
         get children() {
             return z.array(EntrySchema).optional();
         },
