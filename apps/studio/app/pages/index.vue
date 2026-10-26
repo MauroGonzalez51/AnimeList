@@ -115,6 +115,7 @@
                             :default-value="model.layout"
                             @update:model-value="
                                 (layout) => {
+                                    $logger.warn(layout);
                                     dispatch.set('layout', layout as Layout);
                                 }
                             "

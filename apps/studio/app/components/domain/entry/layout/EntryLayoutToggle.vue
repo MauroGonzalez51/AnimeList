@@ -3,6 +3,7 @@
     import type { z } from "zod";
     import type { LayoutSchema } from "@/components/domain/entry/layout";
     import { LucideLayoutDashboard, LucideLayoutGrid } from "@lucide/vue";
+    import { useForwardPropsEmits } from "reka-ui";
 
     interface LayoutOption {
         icon: Components.LucideIconComponent;
@@ -12,7 +13,9 @@
     interface Props extends ToggleGroupRootProps {}
 
     const props = defineProps<Props>();
-    defineEmits<ToggleGroupRootEmits>();
+    const emits = defineEmits<ToggleGroupRootEmits>();
+
+    const forwarded = useForwardPropsEmits(props, emits);
 
     const options: LayoutOption[] = [
         {
@@ -27,7 +30,7 @@
 </script>
 
 <template>
-    <ToggleGroup v-bind="props" type="single">
+    <ToggleGroup v-bind="forwarded" type="single">
         <template v-for="option in options" :key="option.value">
             <ToggleGroupItem :value="option.value" class="cursor-pointer">
                 <component :is="option.icon" />
