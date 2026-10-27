@@ -42,6 +42,7 @@
             },
             status: {
                 schema: StatusFilterSchema,
+                sync: true,
                 initialValue: {},
                 predicate: ({ item, value }) => matchesStatus(item, value),
             },

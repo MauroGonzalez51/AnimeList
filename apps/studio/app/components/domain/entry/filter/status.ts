@@ -29,8 +29,8 @@ export type OptionKey = Exclude<StatusKey, RangeKey>;
 
 export const OptionValueSchema = z.enum(["yes", "no"]);
 export const RangeSchema = z.object({
-    min: z.number().optional(),
-    max: z.number().optional(),
+    min: z.coerce.number().optional(),
+    max: z.coerce.number().optional(),
 });
 
 export type OptionValue = z.infer<typeof OptionValueSchema>;

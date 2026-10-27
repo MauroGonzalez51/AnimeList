@@ -12,6 +12,7 @@
         FilterValues,
     } from "@/components/shared/filters/types";
     import { Primitive } from "reka-ui";
+    import { useFieldQuery } from "@/components/shared/filters/flat-query";
     import { useFiltersController } from "@/components/shared/filters/injection-state";
     import { cn } from "@/lib/utils";
 
@@ -41,7 +42,10 @@
     const queries = Object.fromEntries(
         keys
             .filter((key) => props.fields[key]?.sync)
-            .map((key) => [key, useRouteQuery(key.toString())]),
+            .map((key) => [
+                key,
+                useFieldQuery(key.toString(), props.fields[key].schema),
+            ]),
     ) as { [K in FieldKey]: Ref<ActiveValues[K]> };
 
     const model = defineModel<NoInfer<ActiveValues>>({
