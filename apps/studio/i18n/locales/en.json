@@ -242,7 +242,15 @@
                 "items": {
                     "test_page": "Test Page"
                 }
+            },
+            "migrate": {
+                "label": "Migrate Store"
             }
+        }
+    },
+    "components": {
+        "dropzone": {
+            "title": "Upload a file"
         }
     }
 }

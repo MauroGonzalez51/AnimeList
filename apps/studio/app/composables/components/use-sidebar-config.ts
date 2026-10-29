@@ -1,5 +1,6 @@
 import {
     LucideBug,
+    LucideFile,
     LucideFlaskConical,
     LucideFolderOpen,
     LucidePlus,
@@ -28,6 +29,13 @@ export default function () {
                     icon: LucidePlus,
                     action: () => entryForm.create(),
                     hidden: () => !hasStore(),
+                },
+                {
+                    kind: "item",
+                    actionKind: "navigation",
+                    label: "layout.sidebar.migrate.label",
+                    icon: LucideFile,
+                    to: () => $localeRoute({ name: "migrate" }),
                 },
             ],
         },
