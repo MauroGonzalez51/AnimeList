@@ -25,7 +25,7 @@
             </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-            <Button class="cursor-pointer" @click="create">
+            <Button class="cursor-pointer" @click="() => create()">
                 {{ $t("views.home.empty.no_entries.action") }}
             </Button>
         </EmptyContent>

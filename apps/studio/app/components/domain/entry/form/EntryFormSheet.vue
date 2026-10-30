@@ -15,6 +15,7 @@
 
     interface Props {
         entry?: FlatEntry;
+        hints?: Partial<EntryDraft>;
         submit: (draft: EntryDraft) => void;
     }
 
@@ -38,7 +39,9 @@
 
     const initialValues = computed(() => {
         if (!props.entry) {
-            return { kind: "anime" };
+            // hints pre-fill a manual create form; they are not an automatic
+            // mapping of source fields, only a starting point the user can edit
+            return { kind: "anime", ...props.hints };
         }
 
         return cloneDeep(

@@ -15,11 +15,15 @@
         },
     });
 
+    const data = defineModel<File[] | null>({ default: () => [] });
+
     const disabled = computed(() => toValue(props.disabled));
 
     const dropzone = useTemplateRef<HTMLElement>("dropzone");
-    const { isOverDropZone, files } = useDropZone(dropzone, {
-        onDrop() {},
+    const { isOverDropZone } = useDropZone(dropzone, {
+        onDrop(files) {
+            data.value = files;
+        },
         onOver(_, event) {
             event.preventDefault();
             if (event.dataTransfer) {
@@ -31,6 +35,15 @@
         },
         ...props.options,
     });
+
+    function _handleChange(event: Event) {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement) || !target.files) {
+            return;
+        }
+
+        data.value = Array.from(target.files);
+    }
 </script>
 
 <template>
@@ -47,20 +60,25 @@
             )
         "
     >
-        <Input type="file" :disabled="disabled" class="sr-only" />
+        <Input
+            type="file"
+            :disabled="disabled"
+            class="sr-only"
+            @change="_handleChange"
+        />
 
-        <slot v-bind="{ files }" name="dropzone-content">
+        <slot v-bind="{ data }" name="dropzone-content">
             <div
                 class="flex size-12 items-center justify-center rounded-full bg-muted"
             >
                 <LucideUpload class="size-5 text-muted-foreground" />
             </div>
-            <div>
+            <div class="max-w-md space-y-1 text-center">
                 <p class="text-sm font-medium text-foreground">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Quibusdam eaque maxime odit cum odio, illum possimus
-                    excepturi id non repellendus explicabo dignissimos enim
-                    earum similique nostrum aliquid facilis asperiores quo!
+                    {{ $t("components.dropzone.migrate.title") }}
+                </p>
+                <p class="text-sm text-muted-foreground">
+                    {{ $t("components.dropzone.migrate.description") }}
                 </p>
             </div>
         </slot>

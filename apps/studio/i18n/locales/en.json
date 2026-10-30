@@ -250,7 +250,39 @@
     },
     "components": {
         "dropzone": {
-            "title": "Upload a file"
+            "title": "Upload a file",
+            "migrate": {
+                "title": "Load a JSON file to migrate",
+                "description": "Drop a scraped JSON file here or click to choose one. Entries you resolve or skip are written back to the file so you can pick up where you left off."
+            }
+        }
+    },
+    "migrate": {
+        "collection": {
+            "select_field": "Field to iterate",
+            "select_field_placeholder": "Choose a field",
+            "no_iterable_fields": "No array field found to iterate"
+        },
+        "source": {
+            "search_placeholder": "Search source entries",
+            "none_pending": "Nothing left to process",
+            "remaining": "{count} entry left | {count} entries left",
+            "drift_warning": "This entry does not match the inferred shape"
+        },
+        "actions": {
+            "resolve": "Mark resolved",
+            "skip": "Skip"
+        },
+        "store": {
+            "search_placeholder": "Search store entries",
+            "create": "Create new entry",
+            "attach_children": "Attach as child",
+            "attach_related": "Attach as related",
+            "edit": "Edit references",
+            "no_target": "Select a store entry to attach to"
+        },
+        "schema": {
+            "title": "Inferred shape"
         }
     }
 }
