@@ -31,6 +31,7 @@ export default defineNuxtConfig({
                 "@tauri-apps/api/path",
                 "@tauri-apps/plugin-dialog",
                 "@tauri-apps/plugin-fs",
+                "@tauri-apps/plugin-opener",
                 "class-variance-authority",
                 "clsx",
                 "cn",
@@ -94,6 +95,11 @@ export default defineNuxtConfig({
         },
         {
             path: "~/components/domain",
+            pathPrefix: false,
+            extensions: ["vue"],
+        },
+        {
+            path: "~/components/application",
             pathPrefix: false,
             extensions: ["vue"],
         },

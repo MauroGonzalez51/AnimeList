@@ -35,6 +35,7 @@ export default function () {
                     actionKind: "navigation",
                     label: "layout.sidebar.migrate.label",
                     icon: LucideFile,
+                    hidden: () => !hasStore(),
                     to: () => $localeRoute({ name: "migrate" }),
                 },
             ],

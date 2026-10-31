@@ -39,7 +39,8 @@
             "12": {
                 "watched": true
             }
-        }
+        },
+        "__animelist_migrator_status": "resolved"
     },
     {
         "label": "Sousou no Frieren 2nd Season",
@@ -75,7 +76,8 @@
             "10": {
                 "watched": false
             }
-        }
+        },
+        "__animelist_migrator_status": "resolved"
     },
     {
         "label": "Jigokuraku 2nd Season",
@@ -117,7 +119,8 @@
             "12": {
                 "watched": true
             }
-        }
+        },
+        "__animelist_migrator_status": "resolved"
     },
     {
         "label": "Maou no Musume wa Yasashisugiru!!",
@@ -159,7 +162,8 @@
             "12": {
                 "watched": false
             }
-        }
+        },
+        "__animelist_migrator_status": "resolved"
     },
     {
         "label": "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",

@@ -1,12 +1,18 @@
 <script setup lang="ts">
     import type { DialogFilter } from "@tauri-apps/plugin-dialog";
     import type { UseDropZoneOptions } from "@vueuse/core";
+    import type { HTMLAttributes } from "vue";
     import { cn } from "~/lib/utils";
 
     interface Props {
         filter?: DialogFilter[];
         disabled?: MaybeRefOrGetter<boolean>;
         options?: UseDropZoneOptions;
+        class?: HTMLAttributes["class"];
+    }
+
+    interface Emits {
+        click: [event: MouseEvent];
     }
 
     const props = withDefaults(defineProps<Props>(), {
@@ -14,6 +20,8 @@
             return { preventDefaultForUnhandled: true };
         },
     });
+
+    const emit = defineEmits<Emits>();
 
     const data = defineModel<File[] | null>({ default: () => [] });
 
@@ -57,8 +65,10 @@
                     'border-muted-foreground/25 hover:border-muted-foreground/50',
                 disabled &&
                     'opacity-60 cursor-not-allowed pointer-events-none grayscale-[0.5] border-muted',
+                props.class,
             )
         "
+        @click.prevent="emit('click', $event)"
     >
         <Input
             type="file"

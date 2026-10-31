@@ -23,7 +23,7 @@ export default function () {
 
     const source = ref<LoadedSource | undefined>(undefined);
     const selectedKey = ref<string | undefined>(undefined);
-    const schema = ref<InferredSchema | undefined>(undefined);
+    const schema = shallowRef<InferredSchema | undefined>(undefined);
 
     // fast-access index into the resolved collection, keyed by position
     const index = shallowReactive<Map<SourceEntry["key"], SourceEntry>>(

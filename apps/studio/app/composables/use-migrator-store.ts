@@ -1,11 +1,13 @@
 import type { EntryDraft, FlatEntry, SourceType } from "~/lib/schema";
+import { stringify } from "yaml";
+import { buildEntryTree } from "~/lib/schema";
 
 // store-side actions a migrator source entry can drive; selecting a source entry
 // never calls any of these, so selection alone leaves the store untouched
 export default function () {
     const manager = useStoreManager();
     const entryForm = useEntryForm();
-    const { entries } = storeToRefs(manager);
+    const { entries, entriesMap } = storeToRefs(manager);
 
     // create a brand new store entry, optionally pre-filled with manual hints;
     // stays on the current page instead of navigating to the new entry
@@ -49,13 +51,63 @@ export default function () {
         );
     }
 
+    function plain(entry: FlatEntry): Record<string, unknown> {
+        const internals = new Set([
+            "_parentId",
+            "_source",
+            "children",
+            "related",
+        ]);
+
+        const result: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(entry)) {
+            if (internals.has(key)) {
+                continue;
+            }
+
+            result[key] = value;
+        }
+
+        return result;
+    }
+
+    interface YamlNode extends Record<string, unknown> {
+        children?: YamlNode[];
+        related?: YamlNode[];
+    }
+
+    function toYaml(id: FlatEntry["id"]): string | undefined {
+        const tree = buildEntryTree(entriesMap.value, id);
+        if (!tree) {
+            return undefined;
+        }
+
+        function toNode(node: NonNullable<typeof tree>): YamlNode {
+            const result: YamlNode = plain(node.entry);
+
+            if (node.children.length) {
+                result.children = node.children.map(toNode);
+            }
+
+            if (node.related.length) {
+                result.related = node.related.map(toNode);
+            }
+
+            return result;
+        }
+
+        return stringify(toNode(tree), { indent: 4 });
+    }
+
     return {
         entries,
+        entriesMap,
         dispatch: {
             create,
             attach,
             edit,
             search,
+            toYaml,
         },
     };
 }
