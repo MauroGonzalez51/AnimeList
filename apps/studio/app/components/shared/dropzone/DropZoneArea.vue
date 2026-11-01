@@ -27,6 +27,13 @@
 
     const disabled = computed(() => toValue(props.disabled));
 
+    const accepted = computed(() =>
+        (props.filter ?? [])
+            .flatMap((filter) => filter.extensions)
+            .map((extension) => `.${extension}`)
+            .join(", "),
+    );
+
     const dropzone = useTemplateRef<HTMLElement>("dropzone");
     const { isOverDropZone } = useDropZone(dropzone, {
         onDrop(files) {
@@ -85,10 +92,14 @@
             </div>
             <div class="max-w-md space-y-1 text-center">
                 <p class="text-sm font-medium text-foreground">
-                    {{ $t("components.dropzone.migrate.title") }}
+                    {{ $t("components.dropzone.title") }}
                 </p>
-                <p class="text-sm text-muted-foreground">
-                    {{ $t("components.dropzone.migrate.description") }}
+                <p v-if="accepted" class="text-sm text-muted-foreground">
+                    {{
+                        $t("components.dropzone.accepts", {
+                            formats: accepted,
+                        })
+                    }}
                 </p>
             </div>
         </slot>

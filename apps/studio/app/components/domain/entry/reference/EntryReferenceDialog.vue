@@ -125,7 +125,6 @@
                                     }}
                                 </FieldLabel>
                                 <Combobox
-                                    v-model:search-term="targetSearch"
                                     :model-value="value"
                                     :ignore-filter="true"
                                     @update:model-value="handleChange"
@@ -171,6 +170,7 @@
                                         class="w-[50vw]"
                                     >
                                         <ComboboxInput
+                                            v-model="targetSearch"
                                             :display-value="() => ''"
                                             :placeholder="
                                                 $t(
@@ -282,7 +282,6 @@
                                 </div>
 
                                 <Combobox
-                                    v-model:search-term="relationSearch"
                                     open-on-focus
                                     :model-value="value"
                                     :ignore-filter="true"
@@ -290,6 +289,7 @@
                                 >
                                     <ComboboxAnchor as-child class="w-full">
                                         <RekaComboboxInput
+                                            v-model="relationSearch"
                                             as-child
                                             :placeholder="
                                                 $t(

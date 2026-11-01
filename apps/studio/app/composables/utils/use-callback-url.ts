@@ -56,6 +56,13 @@ export function useCallbackUrl(fallback: RouteLocationRaw = "/") {
         ) => {
             const cleanedPath = cleanPath(path.toString());
 
+            // TODO(debug): remove once the callback query loss is fixed
+            useNuxtApp().$logger.debug("[callback] insert", {
+                useRoute: route.fullPath,
+                router: router.currentRoute.value.fullPath,
+                cleanedPath,
+            });
+
             if (mode === "preserve") {
                 const currentCallback =
                     route.query[config.constants.query.CALLBACK_QUERY];

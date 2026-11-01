@@ -45,6 +45,10 @@ export const NuxtKeys = {
         UseConfig: {
             State: "composables:use-config:state",
         },
+        UseMigrator: {
+            Source: "composables:use-migrator:source",
+            SelectedKey: "composables:use-migrator:selected-key",
+        },
     },
     Stores: {
         StoreManager: "stores:store-manager",
@@ -56,4 +60,8 @@ export const NuxtKeys = {
     },
 } as const;
 
-export const ModalKeys = {} as const;
+export const ModalKeys = {
+    Migrator: {
+        Yaml: "modals:migrator:yaml",
+    },
+} as const;

@@ -15,12 +15,11 @@ import type { FlatEntry } from "@/lib/schema/types";
 import { JSONSchema } from "@animelist/packages-schema";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dirname, relative } from "pathe";
-import * as babelPlugin from "prettier/plugins/babel";
-import * as estreePlugin from "prettier/plugins/estree";
 import * as yamlPlugin from "prettier/plugins/yaml";
 import { format } from "prettier/standalone";
 import Queue from "queue";
 import { Document, isMap, isNode, visit } from "yaml";
+import { formatJson } from "@/lib/format";
 import { unflattenEntries } from "@/lib/schema/process";
 
 interface Args {
@@ -106,14 +105,7 @@ async function schemaHeader(storePath: string, schemaPath?: string | null) {
 
 async function writeSchemaFile(schemaPath: string) {
     const schema = JSONSchema.toJSONSchema({ reused: "ref" });
-    await writeTextFile(
-        schemaPath,
-        await format(JSON.stringify(schema), {
-            parser: "json",
-            plugins: [babelPlugin, estreePlugin],
-            tabWidth: 4,
-        }),
-    );
+    await writeTextFile(schemaPath, await formatJson(JSON.stringify(schema)));
 }
 
 export function performWrite(args: Args) {
