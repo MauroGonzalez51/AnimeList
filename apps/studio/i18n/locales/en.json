@@ -254,41 +254,5 @@
             "accepts": "Accepted formats: {formats}"
         }
     },
-    "migrate": {
-        "collection": {
-            "select_field": "Field to iterate",
-            "select_field_placeholder": "Choose a field",
-            "no_iterable_fields": "No array field found to iterate"
-        },
-        "source": {
-            "title": "Source entries",
-            "search_placeholder": "Search source entries",
-            "none_pending": "Nothing left to process",
-            "untitled": "Untitled entry",
-            "search_images": "Search cover images on Google",
-            "remaining": "{count} entry left | {count} entries left",
-            "drift_warning": "This entry does not match the inferred shape"
-        },
-        "actions": {
-            "resolve": "Mark resolved",
-            "skip": "Skip"
-        },
-        "store": {
-            "title": "Store entries",
-            "search_placeholder": "Search store entries",
-            "none_found": "No matching store entries",
-            "create": "Create new entry",
-            "attach_children": "Attach as child",
-            "attach_related": "Attach as related",
-            "edit": "Edit references",
-            "no_target": "Select a store entry to attach to",
-            "on_disk": "Stored on disk",
-            "view_on_disk": "View on disk",
-            "on_disk_note": "This preview carries extra in-memory metadata that is not written to disk.",
-            "deselect": "Deselect"
-        },
-        "schema": {
-            "title": "Inferred shape"
-        }
-    }
+    "migrate": {}
 }

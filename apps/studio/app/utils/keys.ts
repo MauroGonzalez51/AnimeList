@@ -45,13 +45,10 @@ export const NuxtKeys = {
         UseConfig: {
             State: "composables:use-config:state",
         },
-        UseMigrator: {
-            Source: "composables:use-migrator:source",
-            SelectedKey: "composables:use-migrator:selected-key",
-        },
     },
     Stores: {
         StoreManager: "stores:store-manager",
+        MigratorManager: "stores:migrator-manager",
     },
     Sidebar: {
         OpenCollapsible: (group: Components.Sidebar.GroupCollapsibleKind) =>
