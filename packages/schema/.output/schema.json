@@ -170,11 +170,11 @@
                         },
                         "status": {
                             "description": "Tracking information such as watch progress, reading progress, and personal notes",
-                            "$ref": "#/$defs/__schema28"
+                            "$ref": "#/$defs/__schema29"
                         },
                         "adaptedUntil": {
                             "description": "Shows how far this entry has been adapted into another medium",
-                            "$ref": "#/$defs/__schema31"
+                            "$ref": "#/$defs/__schema33"
                         },
                         "children": {
                             "type": "array",
@@ -360,7 +360,7 @@
                 },
                 "episode": {
                     "description": "Last watched episode of the current entry",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema28"
                 }
             },
             "additionalProperties": false
@@ -394,6 +394,19 @@
         "__schema22": {
             "anyOf": [
                 {
+                    "$ref": "#/$defs/__schema23"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/__schema23"
+                    }
+                }
+            ]
+        },
+        "__schema23": {
+            "anyOf": [
+                {
                     "type": "string",
                     "const": "watching",
                     "description": "Entry is currently being watched"
@@ -404,13 +417,13 @@
                     "description": "Entry is planned to be watched"
                 },
                 {
-                    "$ref": "#/$defs/__schema23"
-                },
-                {
                     "$ref": "#/$defs/__schema24"
                 },
                 {
                     "$ref": "#/$defs/__schema25"
+                },
+                {
+                    "$ref": "#/$defs/__schema26"
                 },
                 {
                     "type": "string",
@@ -428,31 +441,31 @@
                     "description": "Entry will not continue airing"
                 },
                 {
-                    "$ref": "#/$defs/__schema26"
+                    "$ref": "#/$defs/__schema27"
                 }
             ]
         },
-        "__schema23": {
+        "__schema24": {
             "type": "string",
             "const": "completed",
             "description": "Entry has been fully completed"
         },
-        "__schema24": {
+        "__schema25": {
             "type": "string",
             "const": "on-hold",
             "description": "Entry is temporarily paused"
         },
-        "__schema25": {
+        "__schema26": {
             "type": "string",
             "const": "dropped",
             "description": "Entry was abandoned before completion"
         },
-        "__schema26": {
+        "__schema27": {
             "type": "string",
             "const": "finished",
             "description": "The media has finished its original publication or broadcast"
         },
-        "__schema27": {
+        "__schema28": {
             "anyOf": [
                 {
                     "type": "string"
@@ -463,7 +476,7 @@
                 }
             ]
         },
-        "__schema28": {
+        "__schema29": {
             "type": "object",
             "properties": {
                 "watched": {
@@ -480,20 +493,33 @@
                 },
                 "progress": {
                     "description": "Current reading status and progress of the entry",
-                    "$ref": "#/$defs/__schema29"
+                    "$ref": "#/$defs/__schema30"
                 },
                 "completed": {
                     "description": "Wether the current entry has been fully completed or not",
-                    "$ref": "#/$defs/__schema30"
+                    "$ref": "#/$defs/__schema32"
                 },
                 "chapter": {
                     "description": "Last readed chapter of the current entry",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema28"
                 }
             },
             "additionalProperties": false
         },
-        "__schema29": {
+        "__schema30": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/__schema31"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/__schema31"
+                    }
+                }
+            ]
+        },
+        "__schema31": {
             "anyOf": [
                 {
                     "type": "string",
@@ -506,13 +532,13 @@
                     "description": "Entry is planned to be read"
                 },
                 {
-                    "$ref": "#/$defs/__schema23"
-                },
-                {
                     "$ref": "#/$defs/__schema24"
                 },
                 {
                     "$ref": "#/$defs/__schema25"
+                },
+                {
+                    "$ref": "#/$defs/__schema26"
                 },
                 {
                     "type": "string",
@@ -530,14 +556,14 @@
                     "description": "Entry publication is temporarily paused"
                 },
                 {
-                    "$ref": "#/$defs/__schema26"
+                    "$ref": "#/$defs/__schema27"
                 }
             ]
         },
-        "__schema30": {
+        "__schema32": {
             "type": "boolean"
         },
-        "__schema31": {
+        "__schema33": {
             "type": "object",
             "properties": {
                 "kind": {
@@ -545,19 +571,19 @@
                 },
                 "chapter": {
                     "description": "The last source chapter covered by the adaptation",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema28"
                 },
                 "volume": {
                     "description": "The last source volume covered by the adaptation",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema28"
                 },
                 "episode": {
                     "description": "The corresponding episode where the adaptation currently ends",
-                    "$ref": "#/$defs/__schema27"
+                    "$ref": "#/$defs/__schema28"
                 },
                 "arc": {
                     "description": "The last story arc covered by the adaptation",
-                    "$ref": "#/$defs/__schema32"
+                    "$ref": "#/$defs/__schema34"
                 },
                 "notes": {
                     "description": "Optional notes about the current status of the adaptation",
@@ -566,7 +592,7 @@
             },
             "additionalProperties": false
         },
-        "__schema32": {
+        "__schema34": {
             "type": "string"
         }
     }

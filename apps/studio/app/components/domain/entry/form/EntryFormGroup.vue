@@ -10,7 +10,7 @@
     <FieldSet class="min-w-0 gap-3">
         <FieldLabel
             v-if="title"
-            class="text-[10px] font-medium tracking-wide text-muted-foreground uppercase"
+            class="text-xs font-medium text-muted-foreground"
         >
             {{ title }}
         </FieldLabel>

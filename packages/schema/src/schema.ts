@@ -88,9 +88,10 @@ export const WatchableTypeSchema = z.union([
 ]);
 
 export const WatchableStatusSchema = BaseStatusSchema.safeExtend({
-    progress: WatchableProgressSchema.optional().describe(
-        MESSAGES.WATCHABLE_ENTRY.PROGRESS,
-    ),
+    progress: z
+        .union([WatchableProgressSchema, z.array(WatchableProgressSchema)])
+        .optional()
+        .describe(MESSAGES.WATCHABLE_ENTRY.PROGRESS),
     episode: PositiveNumberLike.optional().describe(
         MESSAGES.WATCHABLE_ENTRY.EPISODE,
     ),
@@ -116,9 +117,10 @@ export const ReadableProgressSchema = z.union([
 ]);
 
 export const ReadableStatusSchema = BaseStatusSchema.safeExtend({
-    progress: ReadableProgressSchema.optional().describe(
-        MESSAGES.READABLE_ENTRY.PROGRESS,
-    ),
+    progress: z
+        .union([ReadableProgressSchema, z.array(ReadableProgressSchema)])
+        .optional()
+        .describe(MESSAGES.READABLE_ENTRY.PROGRESS),
     completed: z
         .boolean()
         .optional()

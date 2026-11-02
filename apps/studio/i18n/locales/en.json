@@ -110,7 +110,8 @@
                     "create_submit": "Create",
                     "sections": {
                         "general": "General",
-                        "status": "Status",
+                        "progress": "Progress",
+                        "impressions": "Impressions",
                         "adapted_until": "Adapted until"
                     },
                     "fields": {
@@ -125,6 +126,9 @@
                         "episode": "Episode",
                         "completed": "Completed",
                         "chapter": "Chapter",
+                        "progress": "Progress",
+                        "progress_placeholder": "Add progress",
+                        "progress_empty": "No progress left",
                         "adapted_kind": "Adapted into",
                         "none": "Not adapted",
                         "volume": "Volume",
@@ -159,6 +163,22 @@
                 "completed": "Completed",
                 "chapter": "Chapter {chapter}",
                 "episode": "Episode {episode}"
+            },
+            "progress": {
+                "watching": "Watching",
+                "plan-to-watch": "Plan to watch",
+                "airing": "Airing",
+                "upcoming": "Upcoming",
+                "cancelled": "Cancelled",
+                "reading": "Reading",
+                "plan-to-read": "Plan to read",
+                "publishing": "Publishing",
+                "discontinued": "Discontinued",
+                "on-hiatus": "On hiatus",
+                "completed": "Completed",
+                "on-hold": "On hold",
+                "dropped": "Dropped",
+                "finished": "Finished"
             },
             "adapted_until": {
                 "volume": "Volume {volume}",

@@ -6,8 +6,10 @@ import type {
 } from "@animelist/packages-schema";
 import type { FlatEntry } from "@/lib/schema";
 import {
+    ReadableProgressSchema,
     ReadableTypeSchema,
     UniverseKindSchema,
+    WatchableProgressSchema,
     WatchableTypeSchema,
 } from "@animelist/packages-schema";
 import { z } from "zod";
@@ -17,6 +19,35 @@ export const READABLE_KINDS = ReadableTypeSchema.options.map(
 );
 
 export const WATCHABLE_KINDS = WatchableTypeSchema.options.map(
+    (option) => option.value,
+);
+
+export type EntryProgress =
+    | z.infer<typeof ReadableProgressSchema>
+    | z.infer<typeof WatchableProgressSchema>;
+
+export const PROGRESS_LABELS: Record<EntryProgress, string> = {
+    watching: "domain.entry.progress.watching",
+    "plan-to-watch": "domain.entry.progress.plan-to-watch",
+    airing: "domain.entry.progress.airing",
+    upcoming: "domain.entry.progress.upcoming",
+    cancelled: "domain.entry.progress.cancelled",
+    reading: "domain.entry.progress.reading",
+    "plan-to-read": "domain.entry.progress.plan-to-read",
+    publishing: "domain.entry.progress.publishing",
+    discontinued: "domain.entry.progress.discontinued",
+    "on-hiatus": "domain.entry.progress.on-hiatus",
+    completed: "domain.entry.progress.completed",
+    "on-hold": "domain.entry.progress.on-hold",
+    dropped: "domain.entry.progress.dropped",
+    finished: "domain.entry.progress.finished",
+};
+
+export const READABLE_PROGRESS = ReadableProgressSchema.options.map(
+    (option) => option.value,
+);
+
+export const WATCHABLE_PROGRESS = WatchableProgressSchema.options.map(
     (option) => option.value,
 );
 

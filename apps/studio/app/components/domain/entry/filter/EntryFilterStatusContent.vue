@@ -69,7 +69,7 @@
                             v-if="field.type === 'range'"
                             class="flex items-center gap-2"
                         >
-                            <NumericInput
+                            <InputNumeric
                                 class="h-8 w-20"
                                 :placeholder="
                                     $t('domain.entry.filter.status.range.min')
@@ -80,7 +80,7 @@
                                 "
                             />
                             <span class="text-muted-foreground">-</span>
-                            <NumericInput
+                            <InputNumeric
                                 class="h-8 w-20"
                                 :placeholder="
                                     $t('domain.entry.filter.status.range.max')

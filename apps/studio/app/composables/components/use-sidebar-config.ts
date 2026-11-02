@@ -1,6 +1,6 @@
 import {
+    LucideArrowRightLeft,
     LucideBug,
-    LucideFile,
     LucideFlaskConical,
     LucideFolderOpen,
     LucidePlus,
@@ -34,7 +34,7 @@ export default function () {
                     kind: "item",
                     actionKind: "navigation",
                     label: "layout.sidebar.migrate.label",
-                    icon: LucideFile,
+                    icon: LucideArrowRightLeft,
                     hidden: () => !hasStore(),
                     to: () => $localeRoute({ name: "migrate" }),
                 },

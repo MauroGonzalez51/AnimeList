@@ -205,7 +205,8 @@
             "12": {
                 "watched": false
             }
-        }
+        },
+        "__animelist_migrator_status": "resolved"
     },
     {
         "label": "Kaguya-sama wa Kokurasetai: Otona e no Kaidan",
