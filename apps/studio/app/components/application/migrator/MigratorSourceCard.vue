@@ -57,7 +57,7 @@
 </script>
 
 <template>
-    <Card class="w-full max-w-2xl self-center">
+    <Card class="w-full">
         <CardHeader>
             <CardTitle>{{ $t("migrate.source.title") }}</CardTitle>
             <CardDescription class="tabular-nums">

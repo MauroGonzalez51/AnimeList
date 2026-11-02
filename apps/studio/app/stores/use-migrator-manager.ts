@@ -18,6 +18,7 @@ export const useMigratorManager = defineStore(
         const filePath = ref<string | undefined>(undefined);
         const content = ref<unknown | undefined>(undefined);
         const collectionKey = ref<string | undefined>(undefined);
+        const targetId = ref<string | undefined>(undefined);
 
         const loaded = computed(() => content.value !== undefined);
         const keys = computed(() => arrayKeys(content.value));
@@ -52,6 +53,10 @@ export const useMigratorManager = defineStore(
             collectionKey.value = key;
         }
 
+        function pick(id: string) {
+            targetId.value = id;
+        }
+
         function mark(status: MigratorStatus) {
             const entry = current.value;
             if (!entry || !filePath.value) {
@@ -74,6 +79,7 @@ export const useMigratorManager = defineStore(
             filePath,
             content,
             collectionKey,
+            targetId,
             loaded,
             keys,
             entries,
@@ -82,6 +88,7 @@ export const useMigratorManager = defineStore(
             dispach: {
                 load,
                 select,
+                pick,
                 resolve,
                 skip,
             },

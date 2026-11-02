@@ -5,12 +5,8 @@
         "meta": {
             "type": "object",
             "properties": {
-                "name": {
-                    "$ref": "#/$defs/__schema0"
-                },
-                "github": {
-                    "$ref": "#/$defs/__schema1"
-                }
+                "name": { "$ref": "#/$defs/__schema0" },
+                "github": { "$ref": "#/$defs/__schema1" }
             },
             "required": ["name", "github"],
             "additionalProperties": false,
@@ -24,54 +20,30 @@
     "required": ["meta"],
     "additionalProperties": false,
     "$defs": {
-        "__schema0": {
-            "type": "string"
-        },
-        "__schema1": {
-            "type": "string",
-            "format": "uri"
-        },
+        "__schema0": { "type": "string" },
+        "__schema1": { "type": "string", "format": "uri" },
         "__schema2": {
             "type": "array",
-            "items": {
-                "$ref": "#/$defs/__schema3"
-            }
+            "items": { "$ref": "#/$defs/__schema3" }
         },
         "__schema3": {
             "oneOf": [
                 {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "$ref": "#/$defs/__schema4"
-                        },
-                        "references": {
-                            "$ref": "#/$defs/__schema6"
-                        },
-                        "name": {
-                            "$ref": "#/$defs/__schema9"
-                        },
-                        "chronology": {
-                            "$ref": "#/$defs/__schema10"
-                        },
-                        "notes": {
-                            "$ref": "#/$defs/__schema11"
-                        },
-                        "kind": {
-                            "type": "string",
-                            "const": "universe"
-                        },
+                        "id": { "$ref": "#/$defs/__schema4" },
+                        "references": { "$ref": "#/$defs/__schema6" },
+                        "name": { "$ref": "#/$defs/__schema9" },
+                        "chronology": { "$ref": "#/$defs/__schema10" },
+                        "notes": { "$ref": "#/$defs/__schema11" },
+                        "kind": { "type": "string", "const": "universe" },
                         "children": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         },
                         "related": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         }
                     },
                     "required": ["name", "kind"],
@@ -80,21 +52,11 @@
                 {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "$ref": "#/$defs/__schema4"
-                        },
-                        "references": {
-                            "$ref": "#/$defs/__schema6"
-                        },
-                        "name": {
-                            "$ref": "#/$defs/__schema9"
-                        },
-                        "chronology": {
-                            "$ref": "#/$defs/__schema10"
-                        },
-                        "notes": {
-                            "$ref": "#/$defs/__schema11"
-                        },
+                        "id": { "$ref": "#/$defs/__schema4" },
+                        "references": { "$ref": "#/$defs/__schema6" },
+                        "name": { "$ref": "#/$defs/__schema9" },
+                        "chronology": { "$ref": "#/$defs/__schema10" },
+                        "notes": { "$ref": "#/$defs/__schema11" },
                         "kind": {
                             "default": "anime",
                             "$ref": "#/$defs/__schema13"
@@ -105,15 +67,11 @@
                         },
                         "children": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         },
                         "related": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         }
                     },
                     "required": ["name", "kind"],
@@ -122,21 +80,11 @@
                 {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "$ref": "#/$defs/__schema4"
-                        },
-                        "references": {
-                            "$ref": "#/$defs/__schema6"
-                        },
-                        "name": {
-                            "$ref": "#/$defs/__schema9"
-                        },
-                        "chronology": {
-                            "$ref": "#/$defs/__schema10"
-                        },
-                        "notes": {
-                            "$ref": "#/$defs/__schema11"
-                        },
+                        "id": { "$ref": "#/$defs/__schema4" },
+                        "references": { "$ref": "#/$defs/__schema6" },
+                        "name": { "$ref": "#/$defs/__schema9" },
+                        "chronology": { "$ref": "#/$defs/__schema10" },
+                        "notes": { "$ref": "#/$defs/__schema11" },
                         "kind": {
                             "anyOf": [
                                 {
@@ -154,18 +102,9 @@
                                     "const": "manhwa",
                                     "description": "Korean"
                                 },
-                                {
-                                    "type": "string",
-                                    "const": "light-novel"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "web-novel"
-                                },
-                                {
-                                    "type": "string",
-                                    "const": "other"
-                                }
+                                { "type": "string", "const": "light-novel" },
+                                { "type": "string", "const": "web-novel" },
+                                { "type": "string", "const": "other" }
                             ]
                         },
                         "status": {
@@ -178,15 +117,11 @@
                         },
                         "children": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         },
                         "related": {
                             "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/__schema3"
-                            }
+                            "items": { "$ref": "#/$defs/__schema3" }
                         }
                     },
                     "required": ["name", "kind"],
@@ -198,9 +133,7 @@
             "description": "Stable identifier used for referencing this entry across the dataset",
             "$ref": "#/$defs/__schema5"
         },
-        "__schema5": {
-            "type": "string"
-        },
+        "__schema5": { "type": "string" },
         "__schema6": {
             "description": "References to other entries by id. Use this field when only a link is needed instead of embedding the full object",
             "$ref": "#/$defs/__schema7"
@@ -255,41 +188,28 @@
                 ]
             }
         },
-        "__schema9": {
-            "type": "string",
-            "minLength": 1
-        },
-        "__schema10": {
-            "type": "string"
-        },
+        "__schema9": { "type": "string", "minLength": 1 },
+        "__schema10": { "type": "string" },
         "__schema11": {
             "description": "Optional contextual notes, metadata, or external details about the entry",
             "$ref": "#/$defs/__schema12"
         },
         "__schema12": {
             "anyOf": [
-                {
-                    "type": "string"
-                },
+                { "type": "string" },
                 {
                     "type": "object",
-                    "propertyNames": {
-                        "type": "string"
-                    },
+                    "propertyNames": { "type": "string" },
                     "additionalProperties": {}
                 },
                 {
                     "type": "array",
                     "items": {
                         "anyOf": [
-                            {
-                                "type": "string"
-                            },
+                            { "type": "string" },
                             {
                                 "type": "object",
-                                "propertyNames": {
-                                    "type": "string"
-                                },
+                                "propertyNames": { "type": "string" },
                                 "additionalProperties": {}
                             }
                         ]
@@ -309,19 +229,9 @@
                     "const": "donghua",
                     "description": "Chinese"
                 },
-                {
-                    "type": "string",
-                    "const": "aeni",
-                    "description": "Korean"
-                },
-                {
-                    "type": "string",
-                    "const": "ova"
-                },
-                {
-                    "type": "string",
-                    "const": "movie"
-                },
+                { "type": "string", "const": "aeni", "description": "Korean" },
+                { "type": "string", "const": "ova" },
+                { "type": "string", "const": "movie" },
                 {
                     "type": "string",
                     "const": "jdrama",
@@ -332,28 +242,16 @@
                     "const": "cdrama",
                     "description": "Chinese"
                 },
-                {
-                    "type": "string",
-                    "const": "kdrama",
-                    "description": "Korean"
-                }
+                { "type": "string", "const": "kdrama", "description": "Korean" }
             ]
         },
         "__schema14": {
             "type": "object",
             "properties": {
-                "watched": {
-                    "$ref": "#/$defs/__schema15"
-                },
-                "favorite": {
-                    "$ref": "#/$defs/__schema17"
-                },
-                "rating": {
-                    "$ref": "#/$defs/__schema19"
-                },
-                "review": {
-                    "$ref": "#/$defs/__schema21"
-                },
+                "watched": { "$ref": "#/$defs/__schema15" },
+                "favorite": { "$ref": "#/$defs/__schema17" },
+                "rating": { "$ref": "#/$defs/__schema19" },
+                "review": { "$ref": "#/$defs/__schema21" },
                 "progress": {
                     "description": "Current watch status and progress of the entry",
                     "$ref": "#/$defs/__schema22"
@@ -369,39 +267,25 @@
             "description": "Indicates whether this entry has been watched",
             "$ref": "#/$defs/__schema16"
         },
-        "__schema16": {
-            "type": "boolean"
-        },
+        "__schema16": { "type": "boolean" },
         "__schema17": {
             "description": "Marks this entry as a personal favorite",
             "$ref": "#/$defs/__schema18"
         },
-        "__schema18": {
-            "type": "boolean"
-        },
+        "__schema18": { "type": "boolean" },
         "__schema19": {
             "description": "Personal rating for the current entry",
             "$ref": "#/$defs/__schema20"
         },
-        "__schema20": {
-            "type": "number",
-            "exclusiveMinimum": 0
-        },
+        "__schema20": { "type": "number", "exclusiveMinimum": 0 },
         "__schema21": {
             "description": "Personal review, feedback, or impressions about consuming this entry",
             "$ref": "#/$defs/__schema12"
         },
         "__schema22": {
             "anyOf": [
-                {
-                    "$ref": "#/$defs/__schema23"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/__schema23"
-                    }
-                }
+                { "$ref": "#/$defs/__schema23" },
+                { "type": "array", "items": { "$ref": "#/$defs/__schema23" } }
             ]
         },
         "__schema23": {
@@ -416,15 +300,9 @@
                     "const": "plan-to-watch",
                     "description": "Entry is planned to be watched"
                 },
-                {
-                    "$ref": "#/$defs/__schema24"
-                },
-                {
-                    "$ref": "#/$defs/__schema25"
-                },
-                {
-                    "$ref": "#/$defs/__schema26"
-                },
+                { "$ref": "#/$defs/__schema24" },
+                { "$ref": "#/$defs/__schema25" },
+                { "$ref": "#/$defs/__schema26" },
                 {
                     "type": "string",
                     "const": "airing",
@@ -440,9 +318,7 @@
                     "const": "cancelled",
                     "description": "Entry will not continue airing"
                 },
-                {
-                    "$ref": "#/$defs/__schema27"
-                }
+                { "$ref": "#/$defs/__schema27" }
             ]
         },
         "__schema24": {
@@ -467,30 +343,17 @@
         },
         "__schema28": {
             "anyOf": [
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "number",
-                    "exclusiveMinimum": 0
-                }
+                { "type": "string" },
+                { "type": "number", "exclusiveMinimum": 0 }
             ]
         },
         "__schema29": {
             "type": "object",
             "properties": {
-                "watched": {
-                    "$ref": "#/$defs/__schema15"
-                },
-                "favorite": {
-                    "$ref": "#/$defs/__schema17"
-                },
-                "rating": {
-                    "$ref": "#/$defs/__schema19"
-                },
-                "review": {
-                    "$ref": "#/$defs/__schema21"
-                },
+                "watched": { "$ref": "#/$defs/__schema15" },
+                "favorite": { "$ref": "#/$defs/__schema17" },
+                "rating": { "$ref": "#/$defs/__schema19" },
+                "review": { "$ref": "#/$defs/__schema21" },
                 "progress": {
                     "description": "Current reading status and progress of the entry",
                     "$ref": "#/$defs/__schema30"
@@ -508,15 +371,8 @@
         },
         "__schema30": {
             "anyOf": [
-                {
-                    "$ref": "#/$defs/__schema31"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/__schema31"
-                    }
-                }
+                { "$ref": "#/$defs/__schema31" },
+                { "type": "array", "items": { "$ref": "#/$defs/__schema31" } }
             ]
         },
         "__schema31": {
@@ -531,15 +387,9 @@
                     "const": "plan-to-read",
                     "description": "Entry is planned to be read"
                 },
-                {
-                    "$ref": "#/$defs/__schema24"
-                },
-                {
-                    "$ref": "#/$defs/__schema25"
-                },
-                {
-                    "$ref": "#/$defs/__schema26"
-                },
+                { "$ref": "#/$defs/__schema24" },
+                { "$ref": "#/$defs/__schema25" },
+                { "$ref": "#/$defs/__schema26" },
                 {
                     "type": "string",
                     "const": "publishing",
@@ -555,20 +405,14 @@
                     "const": "on-hiatus",
                     "description": "Entry publication is temporarily paused"
                 },
-                {
-                    "$ref": "#/$defs/__schema27"
-                }
+                { "$ref": "#/$defs/__schema27" }
             ]
         },
-        "__schema32": {
-            "type": "boolean"
-        },
+        "__schema32": { "type": "boolean" },
         "__schema33": {
             "type": "object",
             "properties": {
-                "kind": {
-                    "$ref": "#/$defs/__schema13"
-                },
+                "kind": { "$ref": "#/$defs/__schema13" },
                 "chapter": {
                     "description": "The last source chapter covered by the adaptation",
                     "$ref": "#/$defs/__schema28"
@@ -592,8 +436,6 @@
             },
             "additionalProperties": false
         },
-        "__schema34": {
-            "type": "string"
-        }
+        "__schema34": { "type": "string" }
     }
 }

@@ -291,6 +291,12 @@
             "search": "Search the web",
             "skip": "Skip",
             "resolve": "Resolve"
+        },
+        "entry": {
+            "title": "Library entry",
+            "results": "Results: {count}",
+            "search_placeholder": "Search by name",
+            "empty": "No entries match."
         }
     }
 }

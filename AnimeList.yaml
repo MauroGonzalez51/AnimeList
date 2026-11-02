@@ -556,3 +556,10 @@ entries:
             chronology: 2nd Season
             status:
                 progress: airing
+
+    - kind: anime
+      name:
+          Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da
+          ga
+      status:
+          watched: true
