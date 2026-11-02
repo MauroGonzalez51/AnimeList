@@ -541,3 +541,18 @@ entries:
 
     - kind: anime
       name: Maou no Musume wa Yasashisugiru!!
+
+    - kind: anime
+      name: Chitose-kun wa Ramune Bin no Naka
+      children:
+          - kind: anime
+            name: Chitose-kun wa Ramune Bin no Naka
+            chronology: 1st Season
+            status:
+                watched: true
+
+          - kind: anime
+            name: Chitose-kun wa Ramune Bin no Naka Part 2
+            chronology: 2nd Season
+            status:
+              progress: airing

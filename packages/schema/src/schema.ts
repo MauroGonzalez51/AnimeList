@@ -54,6 +54,28 @@ export const BaseStatusSchema = z.object({
     review: ValueLike.optional().describe(MESSAGES.BASE_ENTRY_STATUS.REVIEW),
 });
 
+export const UserProgressSchema = z.union([
+    z.literal("completed").describe(MESSAGES.USER_PROGRESS.COMPLETED),
+    z.literal("on-hold").describe(MESSAGES.USER_PROGRESS.ON_HOLD),
+    z.literal("dropped").describe(MESSAGES.USER_PROGRESS.DROPPED),
+]);
+
+export const MediaProgressSchema = z.union([
+    z.literal("finished").describe(MESSAGES.MEDIA_PROGRESS.FINISHED),
+]);
+
+export const WatchableProgressSchema = z.union([
+    z.literal("watching").describe(MESSAGES.WATCHABLE_PROGRESS.WATCHING),
+    z
+        .literal("plan-to-watch")
+        .describe(MESSAGES.WATCHABLE_PROGRESS.PLAN_TO_WATCH),
+    ...UserProgressSchema.options,
+    z.literal("airing").describe(MESSAGES.WATCHABLE_PROGRESS.AIRING),
+    z.literal("upcoming").describe(MESSAGES.WATCHABLE_PROGRESS.UPCOMING),
+    z.literal("cancelled").describe(MESSAGES.WATCHABLE_PROGRESS.CANCELLED),
+    ...MediaProgressSchema.options,
+]);
+
 export const WatchableTypeSchema = z.union([
     z.literal("anime").describe(MESSAGES.ENTRY.KIND.JP),
     z.literal("donghua").describe(MESSAGES.ENTRY.KIND.CH),
@@ -66,6 +88,9 @@ export const WatchableTypeSchema = z.union([
 ]);
 
 export const WatchableStatusSchema = BaseStatusSchema.safeExtend({
+    progress: WatchableProgressSchema.optional().describe(
+        MESSAGES.WATCHABLE_ENTRY.PROGRESS,
+    ),
     episode: PositiveNumberLike.optional().describe(
         MESSAGES.WATCHABLE_ENTRY.EPISODE,
     ),
@@ -80,7 +105,20 @@ export const ReadableTypeSchema = z.union([
     z.literal("other"),
 ]);
 
+export const ReadableProgressSchema = z.union([
+    z.literal("reading").describe(MESSAGES.READABLE_PROGRESS.READING),
+    z.literal("plan-to-read").describe(MESSAGES.READABLE_PROGRESS.PLAN_TO_READ),
+    ...UserProgressSchema.options,
+    z.literal("publishing").describe(MESSAGES.READABLE_PROGRESS.PUBLISHING),
+    z.literal("discontinued").describe(MESSAGES.READABLE_PROGRESS.DISCONTINUED),
+    z.literal("on-hiatus").describe(MESSAGES.READABLE_PROGRESS.ON_HIATUS),
+    ...MediaProgressSchema.options,
+]);
+
 export const ReadableStatusSchema = BaseStatusSchema.safeExtend({
+    progress: ReadableProgressSchema.optional().describe(
+        MESSAGES.READABLE_ENTRY.PROGRESS,
+    ),
     completed: z
         .boolean()
         .optional()

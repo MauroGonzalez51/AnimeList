@@ -6,11 +6,35 @@ export const MESSAGES = {
         REVIEW: "Personal review, feedback, or impressions about consuming this entry",
     },
     WATCHABLE_ENTRY: {
+        PROGRESS: "Current watch status and progress of the entry",
         EPISODE: "Last watched episode of the current entry",
     },
     READABLE_ENTRY: {
+        PROGRESS: "Current reading status and progress of the entry",
         COMPLETED: "Wether the current entry has been fully completed or not",
         CHAPTER: "Last readed chapter of the current entry",
+    },
+    USER_PROGRESS: {
+        COMPLETED: "Entry has been fully completed",
+        ON_HOLD: "Entry is temporarily paused",
+        DROPPED: "Entry was abandoned before completion",
+    },
+    MEDIA_PROGRESS: {
+        FINISHED: "The media has finished its original publication or broadcast",
+    },
+    WATCHABLE_PROGRESS: {
+        WATCHING: "Entry is currently being watched",
+        PLAN_TO_WATCH: "Entry is planned to be watched",
+        AIRING: "Entry is currently airing",
+        UPCOMING: "Entry has not started airing yet",
+        CANCELLED: "Entry will not continue airing",
+    },
+    READABLE_PROGRESS: {
+        READING: "Entry is currently being read",
+        PLAN_TO_READ: "Entry is planned to be read",
+        PUBLISHING: "Entry is currently being published",
+        DISCONTINUED: "Entry will not continue publication",
+        ON_HIATUS: "Entry publication is temporarily paused",
     },
     ENTRY_RELATION: {
         PREQUEL: "The referenced entry is a prequel to the current entry",
