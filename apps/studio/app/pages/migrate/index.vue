@@ -6,20 +6,16 @@
     });
 
     const migrator = useMigratorManager();
-    const { content } = storeToRefs(migrator);
 </script>
 
 <template>
     <section class="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 h-full">
+        <MigratorSourceCard v-if="migrator.loaded" />
         <DropZoneArea
-            v-if="!content"
+            v-else
             :formats="SOURCE_FILTER"
             class="h-full"
-            @select="migrator.dispatch.load"
+            @select="migrator.dispach.load"
         />
-
-        <div v-else>
-            <DebugBlock :content="content" />
-        </div>
     </section>
 </template>

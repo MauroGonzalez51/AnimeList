@@ -248,11 +248,29 @@
             }
         }
     },
+    "common": {
+        "clipboard": {
+            "copy": "Copy",
+            "copied": "Copied to clipboard"
+        }
+    },
     "components": {
         "dropzone": {
             "title": "Upload a file",
             "accepts": "Accepted formats: {formats}"
         }
     },
-    "migrate": {}
+    "migrate": {
+        "source": {
+            "title": "Source entry",
+            "remaining": "Remaining: {count}",
+            "field_placeholder": "Choose the field to iterate",
+            "choose_field": "Choose the field that holds the entries.",
+            "empty": "Nothing to iterate in this file.",
+            "done": "Every entry has been processed.",
+            "search": "Search the web",
+            "skip": "Skip",
+            "resolve": "Resolve"
+        }
+    }
 }
