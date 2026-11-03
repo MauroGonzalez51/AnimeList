@@ -563,3 +563,8 @@ entries:
           ga
       status:
           watched: true
+
+    - kind: anime
+      name: Kanata no Astra
+      status:
+          watched: true
