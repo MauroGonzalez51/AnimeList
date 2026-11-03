@@ -296,7 +296,12 @@
             "title": "Library entry",
             "results": "Results: {count}",
             "search_placeholder": "Search by name",
-            "empty": "No entries match."
+            "empty": "No entries match.",
+            "create": "New entry",
+            "create_root": "As root",
+            "create_children": "As child",
+            "create_related": "As related",
+            "deselect": "Deselect"
         }
     }
 }

@@ -22,8 +22,6 @@
 
     const initialValues = computed(() => {
         if (!props.entry) {
-            // hints pre-fill a manual create form; they are not an automatic
-            // mapping of source fields, only a starting point the user can edit
             return { kind: "anime", ...props.hints };
         }
 

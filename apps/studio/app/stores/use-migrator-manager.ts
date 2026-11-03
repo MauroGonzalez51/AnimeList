@@ -57,6 +57,10 @@ export const useMigratorManager = defineStore(
             targetId.value = id;
         }
 
+        function clear() {
+            targetId.value = undefined;
+        }
+
         function mark(status: MigratorStatus) {
             const entry = current.value;
             if (!entry || !filePath.value) {
@@ -89,6 +93,7 @@ export const useMigratorManager = defineStore(
                 load,
                 select,
                 pick,
+                clear,
                 resolve,
                 skip,
             },

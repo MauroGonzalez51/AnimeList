@@ -1,22 +1,59 @@
 <script setup lang="ts">
+    import type { SourceType } from "~/lib/schema";
+
     const migrator = useMigratorManager();
-    const { entries } = storeToRefs(useStoreManager());
+    const manager = useStoreManager();
+    const { entries } = storeToRefs(manager);
+    const { create } = useEntryForm();
 
     const selected = computed(() =>
-        entries.value.find((entry) => entry.id === migrator.targetId),
+        (entries.value ?? []).find((entry) => entry.id === migrator.targetId),
     );
 
     const query = useRouteQuery("q", "");
     const results = computed(() => {
+        const list = entries.value ?? [];
         const term = query.value.trim().toLowerCase();
         if (!term) {
-            return entries.value;
+            return list;
         }
 
-        return entries.value.filter((entry) =>
-            entry.name.toLowerCase().includes(term),
-        );
+        return list.filter((entry) => entry.name.toLowerCase().includes(term));
     });
+
+    function createRoot() {
+        create({ onCreated: migrator.dispach.clear });
+    }
+
+    function createWith(source: SourceType) {
+        const entry = selected.value;
+        if (!entry) {
+            return;
+        }
+
+        const id = manager.dispatch.ensureStableId(entry.id);
+        create({
+            parent: { id, source },
+            onCreated: migrator.dispach.clear,
+        });
+    }
+
+    const createItems = computed<Components.Dropdown.Item[][]>(() => [
+        [
+            {
+                label: "migrate.entry.create_root",
+                action: createRoot,
+            },
+            {
+                label: "migrate.entry.create_children",
+                action: () => createWith("children"),
+            },
+            {
+                label: "migrate.entry.create_related",
+                action: () => createWith("related"),
+            },
+        ],
+    ]);
 </script>
 
 <template>
@@ -63,5 +100,28 @@
         </Card>
 
         <EntryTile v-if="selected" :entry="selected" />
+
+        <div v-if="selected" class="flex gap-2">
+            <DropdownMenuRoot
+                :items="createItems"
+                :content-props="{ align: 'start' }"
+            >
+                <template #trigger>
+                    <Button
+                        class="cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100"
+                    >
+                        <LucidePlus :aria-hidden="true" />
+                        {{ $t("migrate.entry.create") }}
+                    </Button>
+                </template>
+            </DropdownMenuRoot>
+            <Button
+                variant="outline"
+                class="cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100"
+                @click="migrator.dispach.clear"
+            >
+                {{ $t("migrate.entry.deselect") }}
+            </Button>
+        </div>
     </div>
 </template>
