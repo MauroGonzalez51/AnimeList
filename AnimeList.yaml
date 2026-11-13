@@ -568,3 +568,9 @@ entries:
       name: Kanata no Astra
       status:
           watched: true
+
+    - kind: anime
+      name: Uruwashi no Yoi no Tsuki
+      status:
+          favorite: true
+          watched: true
